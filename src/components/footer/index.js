@@ -18,10 +18,10 @@ const Footer = () => {
             </div>
             <div className="col-lg-6">
               <div className="socials">
-                <a className='linkss' href="https://t.me/eloinclub" target="_blank"><img src={require("../../static/images/landing-leocorn/telegram.svg")} alt="" /></a>
-                <a className='linkss' href="https://twitter.com/eloinclub" target="_bkank"><img src={require("../../static/images/landing-leocorn/twitter.svg")} alt="" /></a>
-                <a className='linkss' href="https://medium.com/@eloinproject" target="_blank"><img src={require("../../static/images/landing-leocorn/discord.svg")} alt="" /></a>
-                <a className='linkss' href="https://medium.com/@eloinproject" target="_blank"><img src={require("../../static/images/landing-leocorn/facebook.svg")} alt="" /></a>
+                <a className='linkss'  ><img src={require("../../static/images/landing-leocorn/telegram.svg")} alt="" /></a>
+                <a className='linkss' ><img src={require("../../static/images/landing-leocorn/twitter.svg")} alt="" /></a>
+                <a className='linkss' ><img src={require("../../static/images/landing-leocorn/discord.svg")} alt="" /></a>
+                <a className='linkss' ><img src={require("../../static/images/landing-leocorn/facebook.svg")} alt="" /></a>
                 {/* <Link className='linkss' to='#'><img src={require("../../static/images/landing-leocorn/1-fot1.png")} alt="" /></Link> */}
                 {/* <Link className='linkss' to='#'><img src={require("../../static/images/landing-leocorn/5-fot-1.png")} alt="" /></Link> */}
               </div>
