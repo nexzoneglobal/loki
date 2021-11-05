@@ -1,0 +1,42 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3b99ae86.chunk.css",
+    "main.js": "/static/js/main.d2349549.chunk.js",
+    "main.js.map": "/static/js/main.d2349549.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.41dba76c.js",
+    "runtime-main.js.map": "/static/js/runtime-main.41dba76c.js.map",
+    "static/css/2.c3e8c614.chunk.css": "/static/css/2.c3e8c614.chunk.css",
+    "static/js/2.a6dadd2c.chunk.js": "/static/js/2.a6dadd2c.chunk.js",
+    "static/js/2.a6dadd2c.chunk.js.map": "/static/js/2.a6dadd2c.chunk.js.map",
+    "static/js/3.a1035175.chunk.js": "/static/js/3.a1035175.chunk.js",
+    "static/js/3.a1035175.chunk.js.map": "/static/js/3.a1035175.chunk.js.map",
+    "static/js/4.223fc41c.chunk.js": "/static/js/4.223fc41c.chunk.js",
+    "static/js/4.223fc41c.chunk.js.map": "/static/js/4.223fc41c.chunk.js.map",
+    "static/js/5.3c13530a.chunk.js": "/static/js/5.3c13530a.chunk.js",
+    "static/js/5.3c13530a.chunk.js.map": "/static/js/5.3c13530a.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.45b363f10b9932c986a0b201d3ee4955.js": "/precache-manifest.45b363f10b9932c986a0b201d3ee4955.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.c3e8c614.chunk.css.map": "/static/css/2.c3e8c614.chunk.css.map",
+    "static/css/main.3b99ae86.chunk.css.map": "/static/css/main.3b99ae86.chunk.css.map",
+    "static/js/2.a6dadd2c.chunk.js.LICENSE.txt": "/static/js/2.a6dadd2c.chunk.js.LICENSE.txt",
+    "static/js/3.a1035175.chunk.js.LICENSE.txt": "/static/js/3.a1035175.chunk.js.LICENSE.txt",
+    "static/media/1-fot.png": "/static/media/1-fot.1d38e03f.png",
+    "static/media/2-fot.png": "/static/media/2-fot.a462b5b2.png",
+    "static/media/3-fot.png": "/static/media/3-fot.5c5fe5dd.png",
+    "static/media/mdb.css": "/static/media/arrow_right.d9ccc77c.svg",
+    "static/media/back-ground-header.png": "/static/media/back-ground-header.cd66d52a.png",
+    "static/media/background-main-head.png": "/static/media/background-main-head.d9f6273e.png",
+    "static/media/background-main.png": "/static/media/background-main.e2b62e17.png",
+    "static/media/background-projectss.png": "/static/media/background-projectss.9be94231.png",
+    "static/media/all.min.css": "/static/media/fa-solid-900.d824df7e.woff2",
+    "static/media/font-awesome.min.css": "/static/media/fontawesome-webfont.fee66e71.woff"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.41dba76c.js",
+    "static/css/2.c3e8c614.chunk.css",
+    "static/js/2.a6dadd2c.chunk.js",
+    "static/css/main.3b99ae86.chunk.css",
+    "static/js/main.d2349549.chunk.js"
+  ]
+}
