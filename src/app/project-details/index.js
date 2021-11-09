@@ -82,7 +82,6 @@ const SubmitProject = (props) => {
                         console.log("response========edit>",response)
                         // getDate(response.data.msg)
                     });
-          
               }
               catch (err) {
                 // eslint-disable-next-line no-console
