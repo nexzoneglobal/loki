@@ -12,6 +12,7 @@ import ProjectDetails from './project-details';
 import Projects from './projects';
 import '../static/css/style.css';
 import ClosePool from "./closepool";
+import SignIn from "./signin";
 
 import 'jquery/dist/jquery.min.js';
 import 'bootstrap/dist/js/bootstrap.min.js';
@@ -46,7 +47,7 @@ useEagerConnect()
             <Route exact path='/pools/:id/:tier' component={props => <Pool {...props} />} />
             <Route exact path='/closepool/:id/:tier' component={props => <ClosePool {...props} />} />
             <Route exact path='/submit-project' component={props => <SubmitProject {...props} />} />
-            {/* <Route exact path='/sign-in' component={props => <SignIn {...props} />} /> */}
+            <Route exact path='/sign-in' component={props => <SignIn {...props} />} />
             <Route exact path='/project-details/:id' component={props => <ProjectDetails {...props} />} />
             <Route exact path='/projects' component={props => <Projects {...props} />} />
           </Switch>
