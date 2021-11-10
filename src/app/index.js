@@ -13,7 +13,8 @@ import Projects from './projects';
 import '../static/css/style.css';
 import ClosePool from "./closepool";
 import SignIn from "./signin";
-
+// import 'owl.carousel/dist/assets/owl.carousel.css';
+// import 'owl.carousel/dist/assets/owl.theme.default.css';
 import 'jquery/dist/jquery.min.js';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';

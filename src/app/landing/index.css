@@ -159,7 +159,61 @@ color: #7c7c7c;
   -webkit-transition: .4s;
   transition: .4s;
 }
+.first-second .main-card{
+  display: flex;
+}
+.first-second .item{
+  background: #1F1D26;
+  border-radius: 15px;
+  display: flex;
+  padding: 16px 0px 14px;
+  justify-content: center;
+}
+.banner-mju{
+  width: 100%;
+}
+.dfgh{
+  font-size: 22px!important;
+}
 
+.inner-banners-x .textsd h4{
+  font-size: 36px!important;
+  font-weight: 800;
+}
+
+.inner-banners-x{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  background: #8010B9;
+  padding: 9px 50px;
+  text-align: center;
+}
+.first-second .main-card .text-down span{
+ text-transform: uppercase;
+}
+.first-second .main-card .text-down h4{
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px!important;
+  line-height: 28px;
+  color: #FFFFFF;
+  margin-bottom: 14px;
+}
+.first-second .main-card .text-down{
+  margin-top: 17px;
+}
+.first-second .main-card .text-down h6{
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px!important;
+  line-height: 28px;
+  color: #3BB54A;
+  margin-bottom: 0px;
+}
 .featured-pool .slider:before {
   position: absolute;
   content: "";
@@ -171,7 +225,21 @@ color: #7c7c7c;
   -webkit-transition: .4s;
   transition: .4s;
 }
-
+.owl-carousel .owl-item img{
+ width: unset!important;
+}
+.iconxerc{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+.iconxerc .main-imgd{
+ width: 99px!important;
+ height: 99px!important;
+ border-radius: 50%!important;
+ border: 3px solid #1462fb;
+}
 .featured-pool input:checked + .slider {
   background-color: #17434F;
 }
