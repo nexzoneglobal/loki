@@ -111,8 +111,8 @@
     line-height: 28px;
     color: #1561FB;
     padding-top: 36px;
-
 }
+
 .submit-project .header-section .submit-project .inner-submit-lower-div .form-group label span{
     color: #DA3838;
 }
@@ -197,7 +197,6 @@
 .submit-project .header-section .submit-project .inner-submit-lower-div .form-group .dashed-border-new .main-image-div{
     text-align: center;
 }
-
 
 .submit-project .header-section .submit-project .hr-submit-form{
     background: #0F0E13;
@@ -481,6 +480,7 @@
     flex-direction: column;
     cursor: pointer;
 }
+
 .inner-logo-upload-main h4{
     font-size: 18px!important;
     color: rgb(105, 104, 104)!important;
@@ -489,12 +489,6 @@
 .inner-logo-upload-main label{
     cursor: pointer;
 }
-
-
-
-
-
-
 
 /* .projects .header-section .submit-project .inner-submit-upper-div .searchbar h1{
     font-family: 'poppins';

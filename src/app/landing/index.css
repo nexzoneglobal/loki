@@ -225,21 +225,25 @@ color: #7c7c7c;
   -webkit-transition: .4s;
   transition: .4s;
 }
+
 .owl-carousel .owl-item img{
  width: unset!important;
 }
+
 .iconxerc{
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
 }
+
 .iconxerc .main-imgd{
  width: 99px!important;
  height: 99px!important;
  border-radius: 50%!important;
  border: 3px solid #1462fb;
 }
+
 .featured-pool input:checked + .slider {
   background-color: #17434F;
 }
