@@ -1,11 +1,11 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import './index.css';
 import { Link } from 'react-router-dom';
 import Navbar from '../../components/navbar';
 import { Finalize } from "../../hooks/PoolDataFetcher";
 import axios from 'axios';
 const Projects = () => {
-    const {Final}=Finalize()
+    const { Final } = Finalize()
     const [searchTerm, setSearchTerm] = useState('')
     const [data, getDate] = useState([]);
     const getAlldata = async () => {
@@ -26,21 +26,21 @@ const Projects = () => {
             // alert("Invalid Address")
         }
     }
-    const [currentAddress,setCurrentAddress] = useState({
-        id:'',
-        address:'',
+    const [currentAddress, setCurrentAddress] = useState({
+        id: '',
+        address: '',
     });
     // const FinalFun=()=>{
-        
-        // }
-        useEffect(() => {
-            async function doFinal(){
-                const data = await Final(currentAddress)
-                     console.log(data)
 
-            }
+    // }
+    useEffect(() => {
+        async function doFinal() {
+            const data = await Final(currentAddress)
+            console.log(data)
 
-            doFinal()
+        }
+
+        doFinal()
     }, [currentAddress])
 
     React.useEffect(() => {
@@ -61,11 +61,15 @@ const Projects = () => {
                             <div className="row  ">
                                 <div className="searchbar">
                                     <h1>Projects</h1>
+                                    
                                     <div className="searchContainer">
-                                        <i class="fa fa-search " aria-hidden="true"></i>
                                         <input className="searchBox" type="search"
                                             name="search" placeholder="Search Pool" onChange={(e) => setSearchTerm(e.target.value)} />
+                                     <div className="main-search-ison">
+                                        <i class="fa fa-search " aria-hidden="true"></i>
                                     </div>
+                                    </div>
+                                  
                                     <div className="drop-down-single-line">
                                         <div class="dropdown show">
                                             <a class=" " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -92,17 +96,18 @@ const Projects = () => {
                                     <table class="table table-clr table-striped text-center">
                                         <thead>
                                             <tr>
-                                                <th scope="col"> Project Name </th>
-                                                <th scope="col"> Finalize </th>
-                                                {/* <th scope="col"> Contact Person </th> */}
-                                                <th scope="col"> contract address </th>
-                                                <th scope="col"> STATUS </th>
-                                                <th scope="col"> DETAILS </th>
+                                                <th scope="col"> PROJECT NAME </th>
+                                                {/* <th scope="col"> Finalize </th> */}
+                                                <th scope="col"> WEBSITE </th>
+                                                <th scope="col"> CONTACT PERSON</th>
+                                                <th scope="col">CONTRACT ADDRESS</th>
+                                                <th scope="col"> APPROVE/REJECT </th>
+                                              
                                             </tr>
                                         </thead>
                                         <tbody className="main-t-body-text" >
 
-                                            {data.filter((val) => {
+                                            {/* {data.filter((val) => {
                                                 if (searchTerm === "") {
                                                     return val
                                                 } else if (val.contactPersonName.toLowerCase().includes(searchTerm.toLowerCase())) {
@@ -114,7 +119,7 @@ const Projects = () => {
                                                                     val.preSaleEndDateAndTime && new Date(val.preSaleEndDateAndTime) < new Date() && val.statusOfApplication === 'Approved' ? <button className='disabled1' >Finalize</button> : <button className='disabled2' >Finalize</button>
                                                                 }
                                                             </td>
-                                                            {/* <td className='text-left-normal'>{val.contactPersonName}</td> */}
+                                                            <td className='text-left-normal'>{val.contactPersonName}</td>
                                                             <td className='text-left-normal'>{val.contractAddress}</td>
                                                             <td className='text-green-approved'>{val.status}</td>
                                                             <td className="button-details">
@@ -130,35 +135,36 @@ const Projects = () => {
                                                         <td className='text-left'><img className='balance-table-img' src={elem.logoURL} style={{ width: 40 }} alt="" /> {elem.projectName}</td>
                                                         <td className=''>
                                                             {
-                                                                elem.preSaleEndDateAndTime && new Date(elem.preSaleEndDateAndTime) < new Date() && elem.statusOfApplication === 'Approved' ? <button className={elem.finalizeSaleDone === true ? 'green1' : 'disabled1'} onClick={() => setCurrentAddress({id : elem.id, address : elem.contractAddressDeployed})}>Finalize</button> : <button className='disabled2' >Finalize</button>
+                                                                elem.preSaleEndDateAndTime && new Date(elem.preSaleEndDateAndTime) < new Date() && elem.statusOfApplication === 'Approved' ? <button className={elem.finalizeSaleDone === true ? 'green1' : 'disabled1'} onClick={() => setCurrentAddress({ id: elem.id, address: elem.contractAddressDeployed })}>Finalize</button> : <button className='disabled2' >Finalize</button>
                                                             }
 
-                                                        </td>
+                                                        </td> */}
                                                         {/* <td className='text-left-normal'>{elem.contactPersonName}</td> */}
-                                                        <td className='text-left-normal'>{elem.contractAddress}</td>
+                                                        {/* <td className='text-left-normal'>{elem.contractAddress}</td> */}
                                                         {/* <td className='text-green-approved'>{elem.status}</td> */}
 
-                                                        <td className={elem.statusOfApplication == 'Pending' ? 'text-green-pending' : elem.statusOfApplication == 'Approved' ? 'text-green-approved' : 'text-green-rejected'}>{elem.statusOfApplication}</td>
+                                                        {/* <td className={elem.statusOfApplication == 'Pending' ? 'text-green-pending' : elem.statusOfApplication == 'Approved' ? 'text-green-approved' : 'text-green-rejected'}>{elem.statusOfApplication}</td>
                                                         <td className="button-details">
                                                             <Link className='' to={'/project-details/' + id}>Detail</Link>
                                                         </td>
                                                     </tr>
                                                 )
                                             })
-                                            }
-
-                                            {/*                                                 
-                                           
+                                            } */}
                                                 <tr>
-                                                    <td className='text-left'><img className='balance-table-img' src={require("../../static/images/submit-form/table-icon-image-two.png")} alt="" /> PURIFI</td>
+                                                    <td className=''>
+                                                        <span className="main-image-dhgy"><img  src={require("../../static/images/submit-form/table-icon-image-two.png")}className="main-image-dhgy mr-2"  alt="" /></span>PURIFI</td>
                                                     <td className='text-left-2nd'><a href="#">fanadise.com </a></td>
                                                     <td className='text-left-normal'>Terrell Vargas</td>
                                                     <td className='text-left-normal'>0x8E9788D2B3288016...</td>
-                                                    <td className='text-green-rejected'>Rejected</td>
-                                                    <td className="button-details">
-                                                        <Link className='' to='/project-details'>Detail</Link>
+                                                    <td className="button-detailss">
+                                                        <div className="d-flex">
+                                                        <Link className='buttion-on' to='/project-details'>Approve</Link>
+                                                        <Link className='button-rig' to='/project-details'>Reject</Link>
+                                                        </div>
+                                                   
                                                     </td>
-                                                </tr> */}
+                                                </tr>
                                         </tbody>
                                     </table>
                                     <div className="load-more-button">
