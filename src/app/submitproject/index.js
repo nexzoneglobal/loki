@@ -115,11 +115,12 @@ const SubmitProject = () => {
         e.preventDefault();
         formValidation();
         try {
-            if (projectName !== '' && projectSymbol !== '' && projectDescription !== '' && logo64 !== '' && contractAddress !== ''
+            // && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
+            //     && price !== '' && iteration1 !== '' && iteration2 !== ''
+            if (projectName !== '' && projectSymbol !== '' && projectDescription !== '' && logo64 !== '' 
                 && websiteLink !== '' && twitterLink !== '' && telegramLink !== '' && personName !== '' && personEmail !== ''
-                && walletAddress !== '' && totalSupply !== '' && amount !== '' && date !== '' && decimals !== ''
-                && price !== '' && iteration1 !== '' && iteration2 !== '') {
-                await axios.post('https://api.leocorn.in/project/createProject', {
+                && walletAddress !== '' ) {
+                await axios.post('http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/createProject', {
                     projectName: projectName, symbol: projectSymbol,
                     projectDescription: projectDescription, logoURL: logo64, contractAddress: contractAddress, websiteLink: websiteLink,
                     twitterLink: twitterLink, telegramlink: telegramLink, discrodLink: discardLink, mediumLink: mediumLink,
@@ -359,15 +360,38 @@ const SubmitProject = () => {
                                     </div>
                                     <div className="col-lg-4 col-md-12 col-12 ">
                                         <div className="right-side-main-image inner-submit-lower-div ">
-                                            <div class="form-group">
+                                            {/* <div class="form-group">
                                                 <label for="example">Upload Logo<span>*</span></label>
                                                 <div className="inner-logo-upload-main">
-                                                    <label for="fileb" className="p-0"><img src={require("../../static/images/submit-form/cloud.png")} alt="" /></label>
+                                                 <div>   <label for="fileb" className="p-0"><img src={require("../../static/images/submit-form/cloud.png")} alt="" /></label>
                                                     <input className="input-fields d-none" id="fileb" type="file" />
                                                     <h4>Upload Image</h4>
+                                                    </div>
+                                                    
                                                 </div>
-                                            </div>
-                                        </div>
+                                            </div> */}
+                                              <div class="form-group">
+                                                    <label for="exampleInputsymbol">Upload Logo (500X500 pixels)<span>*</span></label>
+                                                    <div className="dashed-border-new">
+                                                        <div className="main-image-div"> 
+                                                <img src={logo?logo:require("../../static/images/submit-form/cloud.png")} alt="" />
+                                                 {selectedImg ? renderPhotos(selectedImg) : null}
+                                                        </div>
+                                                        <p className="text-center"><span>
+                                                            <label for="files" className="msindh">Upload Image</label>
+                                                            <input type="file" id="files"
+                                                        value={logo}
+                                                        onChange={handleImageChange}
+                                                        name="avatar" className="d-none custom-file-inputt" accept="image/*"  />
+                                                        </span></p>
+                                                    {Object.keys(logoError).map((key) => {
+                                                        return <p className="inputErrors">{logoError[key]}</p>
+                                                    })}
+                                                    </div>
+                                                 
+                                                </div>
+                                            </div> 
+                                             
                                     </div>
 
                                 </div>

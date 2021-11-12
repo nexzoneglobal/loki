@@ -42,13 +42,13 @@ const Navbar=(props)=>{
                             <ul className="navbar-nav ml-auto">
                                 <li className="nav-item active">
                                     {/* <Link className="nav-link  pr-lg-4" to="/pools">Pool  <span className="sr-only">(current)</span></Link> */}
-                                    {/* <NavLink activeClassName="nav-link " className='pr-lg-3' to='/submit-project'>Submit Your Project</NavLink> */}
+                                    <NavLink activeClassName="nav-link " className='pr-lg-3' to='/submit-project'>Submit Your Project</NavLink>
                                 </li>
                                 <li className="nav-item active">
                                     {/* <Link className="nav-link  pr-lg-4" href="/poolss">Pool  <span className="sr-only">(current)</span></Link> */}
                                     {/* <Link className='nav-link pr-lg-3' to='/sign-in'>Sign In</Link> */}
                                 </li>
-                                {account==="0x00d2482B95A4F552008338E5D4FC8B8c4D60a51d" || account === "0x49A61ba8E25FBd58cE9B30E1276c4Eb41dD80a80"?
+                                {account==="0x7d5b329759254348D532dab6Aef36A9710157C2A" || account === "0xe0aCDC61b4A33FEFCD604b93CabA23E3f04C755D"?
                                 <li className="nav-item active">
                                 {/* <Link className="nav-link  pr-lg-4" href="/poolss">Pool  <span className="sr-only">(current)</span></Link> */}
                                 <NavLink activeClassName="nav-link" className='pr-lg-3' to='/projects'>Projects</NavLink>

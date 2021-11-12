@@ -60,7 +60,7 @@ export const Finalize = () => {
             const contract = getBep20Contract(idr.address, web3)
             try{
                 const finalizeSale = await contract.methods.finalizeSale().send({ from: account.toString() });
-                const {data} = await axios.post('https://api.leocorn.in/project/finalizeSale', { id :idr.id });
+                const {data} = await axios.post('http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/finalizeSale', { id :idr.id });
                 if(data.status){
                     return true;
                 }

@@ -222,7 +222,7 @@ const Landing = () => {
             <h1>RC LAUNCHPAD Pools</h1>
             <p>RC LAUNCHPAD is a blockchain platform designed to provide an easy to use launchpad that aims to help new quality blockchain projects to raise capital and easily distribute their tokens at the same time. RC LAUNCHPAD currently operates on the Binance Smart Chain and helps launch the new IDO coins via a Decentralized liquidity Exchange(DEX) such as PancakeSwap.</p>
             <button>
-              <a>
+              <a href="https://bscscan.com/token/0x229a54fb9de889c271380452c0483ce89b8c1e0d" target="_blankl">
                 <img src={require("../../static/images/landing-leocorn/button-mamin-head.png")} alt="" />Buy on PancakeSwap
               </a>
             </button>

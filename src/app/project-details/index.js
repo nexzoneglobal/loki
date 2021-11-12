@@ -51,7 +51,7 @@ const SubmitProject = (props) => {
         const getProjectDetail=async()=>{
             try {
         
-                  await axios.post("https://api.leocorn.in/project/editProject",{...inputs,id,statusOfApplication:'Approved'})
+                  await axios.post("http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/editProject",{...inputs,id,statusOfApplication:'Approved'})
                     .then((response) => {
                         console.log("response========edit>",response)
                         // getDate(response.data.msg)
@@ -77,7 +77,7 @@ const SubmitProject = (props) => {
         const getProjectRejected=async()=>{
             try {
         
-                  await axios.post("https://api.leocorn.in/project/editProject",{id,statusOfApplication:'Rejected'})
+                  await axios.post("http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/editProject",{id,statusOfApplication:'Rejected'})
                     .then((response) => {
                         console.log("response========edit>",response)
                         // getDate(response.data.msg)
@@ -263,7 +263,7 @@ const SubmitProject = (props) => {
      
         try {
     
-               axios.get("https://api.leocorn.in/project/"+id)
+               axios.get("http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/"+id)
                 .then((response) => {
                     console.log("response========>",response)
                     setInputs(response.data.msg)

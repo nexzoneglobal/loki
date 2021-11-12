@@ -118,7 +118,7 @@ const Pool = (props) => {
     }, [tier])
     const timerdata = async () => {
         try {
-            axios.get("https://api.leocorn.in/project/" + id)
+            axios.get("http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/" + id)
                 .then((response) => {
                     var time = new Date(response.data.msg.preSaleStartDateAndTime);
                     if (tier == 1) {

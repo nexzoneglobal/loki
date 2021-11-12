@@ -11,7 +11,7 @@ const Projects = () => {
     const getAlldata = async () => {
         try {
 
-            await axios.get("https://api.leocorn.in/project/all")
+            await axios.get("http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/all")
                 .then((response) => {
 
                     if (response.data.status) {
@@ -61,15 +61,15 @@ const Projects = () => {
                             <div className="row  ">
                                 <div className="searchbar">
                                     <h1>Projects</h1>
-                                    
+
                                     <div className="searchContainer">
                                         <input className="searchBox" type="search"
                                             name="search" placeholder="Search Pool" onChange={(e) => setSearchTerm(e.target.value)} />
-                                     <div className="main-search-ison">
-                                        <i class="fa fa-search " aria-hidden="true"></i>
+                                        <div className="main-search-ison">
+                                            <i class="fa fa-search " aria-hidden="true"></i>
+                                        </div>
                                     </div>
-                                    </div>
-                                  
+
                                     <div className="drop-down-single-line">
                                         <div class="dropdown show">
                                             <a class=" " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -102,12 +102,12 @@ const Projects = () => {
                                                 <th scope="col"> CONTACT PERSON</th>
                                                 <th scope="col">CONTRACT ADDRESS</th>
                                                 <th scope="col"> APPROVE/REJECT </th>
-                                              
+
                                             </tr>
                                         </thead>
                                         <tbody className="main-t-body-text" >
 
-                                            {/* {data.filter((val) => {
+                                            {data.filter((val) => {
                                                 if (searchTerm === "") {
                                                     return val
                                                 } else if (val.contactPersonName.toLowerCase().includes(searchTerm.toLowerCase())) {
@@ -133,38 +133,48 @@ const Projects = () => {
                                                 return (
                                                     <tr index={key}>
                                                         <td className='text-left'><img className='balance-table-img' src={elem.logoURL} style={{ width: 40 }} alt="" /> {elem.projectName}</td>
-                                                        <td className=''>
+                                                        {/* <td className=''>
                                                             {
                                                                 elem.preSaleEndDateAndTime && new Date(elem.preSaleEndDateAndTime) < new Date() && elem.statusOfApplication === 'Approved' ? <button className={elem.finalizeSaleDone === true ? 'green1' : 'disabled1'} onClick={() => setCurrentAddress({ id: elem.id, address: elem.contractAddressDeployed })}>Finalize</button> : <button className='disabled2' >Finalize</button>
                                                             }
 
-                                                        </td> */}
-                                                        {/* <td className='text-left-normal'>{elem.contactPersonName}</td> */}
-                                                        {/* <td className='text-left-normal'>{elem.contractAddress}</td> */}
+                                                        </td>  */}
+                                                        <td className='text-left-2nd'><a href={elem.websiteLink} target="_blank">{elem.websiteLink} </a></td>
+                                                        <td className='text-left-normal'>{elem.contactPersonName}</td>
+                                                        <td className='text-left-normal'> <p>{elem.contactPersonWalletAddress == "" ? "" : `${elem.contactPersonWalletAddress.substring(0, 6)}...${elem.contactPersonWalletAddress.substring(
+                                                            elem.contactPersonWalletAddress.length - 4
+                                                        )}`}</p></td>
                                                         {/* <td className='text-green-approved'>{elem.status}</td> */}
 
-                                                        {/* <td className={elem.statusOfApplication == 'Pending' ? 'text-green-pending' : elem.statusOfApplication == 'Approved' ? 'text-green-approved' : 'text-green-rejected'}>{elem.statusOfApplication}</td>
-                                                        <td className="button-details">
+                                                        {/* <td className={elem.statusOfApplication == 'Pending' ? 'text-green-pending' : elem.statusOfApplication == 'Approved' ? 'text-green-approved' : 'text-green-rejected'}>{elem.statusOfApplication}</td> */}
+                                                        {/* <td className="button-details">
                                                             <Link className='' to={'/project-details/' + id}>Detail</Link>
+                                                        </td> */}
+                                                        <td className="button-detailss">
+                                                            <div className="d-flex">
+                                                                <Link className='buttion-on' >Approve</Link>
+                                                                <Link className='button-rig' >Reject</Link>
+                                                            </div>
+
                                                         </td>
                                                     </tr>
                                                 )
                                             })
-                                            } */}
-                                                <tr>
-                                                    <td className=''>
-                                                        <span className="main-image-dhgy"><img  src={require("../../static/images/submit-form/table-icon-image-two.png")}className="main-image-dhgy mr-2"  alt="" /></span>PURIFI</td>
-                                                    <td className='text-left-2nd'><a href="#">fanadise.com </a></td>
-                                                    <td className='text-left-normal'>Terrell Vargas</td>
-                                                    <td className='text-left-normal'>0x8E9788D2B3288016...</td>
-                                                    <td className="button-detailss">
-                                                        <div className="d-flex">
+                                            }
+                                            {/* <tr>
+                                                <td className=''>
+                                                    <span className="main-image-dhgy"><img src={require("../../static/images/submit-form/table-icon-image-two.png")} className="main-image-dhgy mr-2" alt="" /></span>PURIFI</td>
+                                                <td className='text-left-2nd'><a href="#">fanadise.com </a></td>
+                                                <td className='text-left-normal'>Terrell Vargas</td>
+                                                <td className='text-left-normal'>0x8E9788D2B3288016...</td>
+                                                <td className="button-detailss">
+                                                    <div className="d-flex">
                                                         <Link className='buttion-on' to='/project-details'>Approve</Link>
                                                         <Link className='button-rig' to='/project-details'>Reject</Link>
-                                                        </div>
-                                                   
-                                                    </td>
-                                                </tr>
+                                                    </div>
+
+                                                </td>
+                                            </tr> */}
                                         </tbody>
                                     </table>
                                     <div className="load-more-button">
