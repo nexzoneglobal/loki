@@ -153,7 +153,7 @@ const Projects = () => {
                                                         <td className="button-detailss">
                                                             <div className="d-flex">
                                                                 <Link className='buttion-on' >Approve</Link>
-                                                                <Link className='button-rig' >Reject</Link>
+                                                                <Link to="/project-details/:id" className='buttion-on' >Detail</Link>
                                                             </div>
 
                                                         </td>

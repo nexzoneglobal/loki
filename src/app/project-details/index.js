@@ -502,7 +502,7 @@ const SubmitProject = (props) => {
                                                     </div>
                                                 </div>
 
-                                                <div className="col-lg-12">
+                                                {/* <div className="col-lg-12">
                                                     <div className="form-group">
                                                         <label for="exampleInputcontractaddress">Project Contract Address<span>*</span></label>
                                                         <input type="text"
@@ -510,13 +510,9 @@ const SubmitProject = (props) => {
                                                                     name="contractAddress"
                                                                     onChange={handleChange}
                                                             className="form-control" id="exampleInputcontractaddress" placeholder="Enter Contract Address of your project" />
-                                                        {/* {Object.keys(contractAddressError).map((key) => {
-                                console.log("name",nameError);
-                                console.log("key", key);
-                                return <p className="inputErrors">{contractAddressError[key]}</p>
-                            })} */}
+                                                     
                                                     </div>
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </div>
                                     </div>
@@ -712,13 +708,36 @@ const SubmitProject = (props) => {
                                                 </div>
                                             </div>
 
-                                                <div className="col-lg-12">
+                                                <div className="col-lg-6">
                                                     <div className="form-group">
                                                         <label for="example">Presale Start Date & Time<span>*</span></label>
                                                         <br></br>
                                                         <div className="sd-container">
                                                             <input className="sd"
-                                                             value={inputs.preSaleStartDateAndTime.split('Z')[0]}
+                                                            //  value={inputs.preSaleStartDateAndTime.split('Z')[0]}
+                                                            
+                                                             name="preSaleStartDateAndTime"
+                                                             onChange={handleChange}
+                                                                id="party" type="datetime-local"  ></input>
+                                                                  {/* <input className="sd" style={{color:'white'}}
+                                                             value={inputs.preSaleStartDateAndTime}
+                                                             name="preSaleStartDateAndTime"
+                                                             onChange={handleChange}
+                                                                /> */}
+                                                            <span className="open-button">
+                                                                <button type="button">📅</button>
+                                                            </span>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="col-lg-6">
+                                                    <div className="form-group">
+                                                        <label for="example">Presale End Date & Time<span>*</span></label>
+                                                        <br></br>
+                                                        <div className="sd-container">
+                                                            <input className="sd"
+                                                            //  value={inputs.preSaleStartDateAndTime.split('Z')[0]}
                                                             
                                                              name="preSaleStartDateAndTime"
                                                              onChange={handleChange}
@@ -771,6 +790,19 @@ const SubmitProject = (props) => {
                                                     })} */}
                                                 </div>
                                             </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="exampleamount">Iteration 3 Percentage <span>*</span></label>
+                                                    <input type="number " 
+                                                        // onChange={(e) => setIteration2(e.target.value)}
+                                                        class="form-control" id="exampleamount" placeholder="Enter Your Iteration 3 Percentage" />
+                                                    {/* {Object.keys(iteration2Error).map((key) => {
+                                                        // console.log("name",nameError);
+                                                        console.log("key", key);
+                                                        return <p className="inputErrors">{iteration2Error[key]}</p>
+                                                    })} */}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -779,9 +811,9 @@ const SubmitProject = (props) => {
                                 <div className="row">
                                     <div className="col-xl-8 col-lg-10 col-md-12">
                                         <div className="inner-submit-lower-div">
-                                            <h4>Tier Details</h4>
-                                            <h6>Tier 1</h6>
-                                            <div className="row">
+                                            <h4>Allocation Limits</h4>
+                                       
+                                            {/* <div className="row">
                                                 <div className="col-lg-6">
                                                     <div className="form-group">
                                                         <label for="example">Tier 1 Allocation (65% of presale allocation) <span>*</span></label>
@@ -790,23 +822,19 @@ const SubmitProject = (props) => {
                                                         name="tier1Allocation"
                                                         onChange={handleChange}
                                                         className="form-control" id="example" aria-describedby="text" placeholder="Enter Tier 1 allocation" />
-                                                        {/* {Object.keys(tier1Error).map((key) => {
-                                                         console.log("name",tier1Error);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier1Error[key]}</p>
-                                                       })}  */}
+                                                       
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                             <div className="row">
                                                 <div className="col-lg-6">
                                                     <div className="form-group">
-                                                        <label for="exampleamount">Min contribution in Tier 1 (in BNB) <span>*</span></label>
+                                                        <label for="exampleamount">Min allocation per user <span>*</span></label>
                                                         <input type="text"
                                                          value={inputs.tier1MinAmountPerUserInBNB}
                                                          name="tier1MinAmountPerUserInBNB"
                                                          onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter min contribution" />
+                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter min allocation" />
                                                         {/* {Object.keys(tier1MinValueError).map((key) => {
                                                          console.log("name",tier1MinValueError);
                                                          console.log("key", key);
@@ -817,12 +845,12 @@ const SubmitProject = (props) => {
 
                                                 <div className="col-lg-6">
                                                     <div className="form-group">
-                                                        <label for="example">Max contribution in Tier 1 (in BNB)<span>*</span></label>
+                                                        <label for="example">Max allocation per user<span>*</span></label>
                                                         <input type="text" 
                                                            value={inputs.tier1MaxAmountPerUserInBNB}
                                                            name="tier1MaxAmountPerUserInBNB"
                                                            onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter max contribution" />
+                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter max allocation" />
                                                          {/* {Object.keys(tier1MaxValueError).map((key) => {
                                                          console.log("name",tier1MaxValueError);
                                                          console.log("key", key);
@@ -832,165 +860,12 @@ const SubmitProject = (props) => {
                                                 </div>
                                             </div>
 
-                                            <h6>Tier 2</h6>
                                             <div className="row">
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="example">Tier 2 Allocation (20% of presale allocation) <span>*</span></label>
-                                                        <input type="text" 
-                                                        value={inputs.tier2Allocation}
-                                                        name="tier2Allocation"
-                                                        onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter tier 2 allocation" />
-                                                        {/* {Object.keys(tier2Error).map((key) => {
-                                                         console.log("name",tier2Error);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier2Error[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="exampleamount">Min contribution in Tier 2 (in BNB) <span>*</span></label>
-                                                        <input type="text" 
-                                                         value={inputs.tier2MinAmountPerUserInBNB}
-                                                         name="tier2MinAmountPerUserInBNB"
-                                                         onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter min contribution" />
-                                                        {/* {Object.keys(tier2MinValueError).map((key) => {
-                                                         console.log("name",tier2MinValueError);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier2MinValueError[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="example">Max contribution Tier 2 (in BNB)<span>*</span></label>
-                                                        <input type="text" 
-                                                        value={inputs.tier2MaxAmountPerUserInBNB}
-                                                        name="tier2MaxAmountPerUserInBNB"
-                                                        onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter max contribution" />
-                                                          {/* {Object.keys(tier2MaxValueError).map((key) => {
-                                                         console.log("name",tier2MaxValueError);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier2MaxValueError[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <h6>Tier 3</h6>
-                                            <div className="row">
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="example">Tier 3 Allocation (10% of presale allocation) <span>*</span></label>
-                                                        <input type="text"
-                                                            value={inputs.tier3Allocation}
-                                                            name="tier3Allocation"
-                                                            onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter tier 3 contribution" />
-                                                         {/* {Object.keys(tier3Error).map((key) => {
-                                                         console.log("name",tier3Error);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier3Error[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="exampleamount">Min contribution in Tier 3 (in BNB) <span>*</span></label>
-                                                        <input type="text" 
-                                                           value={inputs.tier3MinAmountPerUserInBNB}
-                                                           name="tier3MinAmountPerUserInBNB"
-                                                           onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter min contribution" />
-                                                        {/* {Object.keys(tier3MinValueError).map((key) => {
-                                                         console.log("name",tier3MinValueError);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier3MinValueError[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="example">Max contribution Tier 3 (in BNB)<span>*</span></label>
-                                                        <input type="text"
-                                                          value={inputs.tier3MaxAmountPerUserInBNB}
-                                                          name="tier3MaxAmountPerUserInBNB"
-                                                          onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter max contribution" />
-                                                          {/* {Object.keys(tier3MaxValueError).map((key) => {
-                                                         console.log("name",tier3MaxValueError);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier3MaxValueError[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <h6>Tier 4</h6>
-                                            <div className="row">
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="example">Tier 4 Allocation (5% of presale allocation)  <span>*</span></label>
-                                                        <input type="text" 
-                                                            value={inputs.tier4Allocation}
-                                                            name="tier4Allocation"
-                                                            onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter teir 4 allocation" />
-                                                         {/* {Object.keys(tier4Error).map((key) => {
-                                                         console.log("name",tier4Error);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier4Error[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="exampleamount">Min contribution in Tier 4 (in BNB) <span>*</span></label>
-                                                        <input type="text"
-                                                           value={inputs.tier4MinAmountPerUserInBNB}
-                                                           name="tier4MinAmountPerUserInBNB"
-                                                           onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter min contribution" />
-                                                           {/* {Object.keys(tier4MinValueError).map((key) => {
-                                                         console.log("name",tier4MinValueError);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier4MinValueError[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="example">Max contribution Tier 4 (in BNB)<span>*</span></label>
-                                                        <input type="text" 
-                                                          value={inputs.tier4MaxAmountPerUserInBNB}
-                                                          name="tier4MaxAmountPerUserInBNB"
-                                                          onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter max contribution" />
-                                                          {/* {Object.keys(tier4MaxValueError).map((key) => {
-                                                         console.log("name",tier4MaxValueError);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier4MaxValueError[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
                                                 <div className="col-lg-12">
                                                     <div className="buttons-submit">
-                                                        <button type="button" 
+                                                        {/* <button type="button" 
                                                         className={inputs.statusOfApplication!=='Approved'?'button-approve':'disabled'}
-                                                        onClick={getProjectDetail}>SAVE & APPROVE</button>
+                                                        onClick={getProjectDetail}>SAVE & APPROVE</button> */}
                                                         <button   type="button" 
                                                         //  className={inputs.statusOfApplication!=='Approved'?'button-reject':'disabled'}
                                                         className="button-reject"

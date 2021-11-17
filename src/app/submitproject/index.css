@@ -522,3 +522,8 @@
   .msindh{
       cursor: pointer;
   }
+
+  .main-bvc img{
+      object-fit: cover;
+      border-radius: 10px;
+  }

@@ -373,7 +373,7 @@ const SubmitProject = () => {
                                               <div class="form-group">
                                                     <label for="exampleInputsymbol">Upload Logo (500X500 pixels)<span>*</span></label>
                                                     <div className="dashed-border-new">
-                                                        <div className="main-image-div"> 
+                                                        <div className="main-image-div main-bvc"> 
                                                 <img src={logo?logo:require("../../static/images/submit-form/cloud.png")} alt="" />
                                                  {selectedImg ? renderPhotos(selectedImg) : null}
                                                         </div>
