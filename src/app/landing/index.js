@@ -144,9 +144,10 @@ const Landing = () => {
 
 
   const display = store.map((elem, ind) => {
-    const { id, t1StarTtime, t1EndTime, t2StarTtime, t2EndTime, t3StarTtime, t3EndTime } = elem
-    const startTimeTier1 = parseInt(t1StarTtime)
-    const endTimeTier1 = parseInt(t1EndTime)
+    
+    const { id, preSaleStartDateAndTime, preSaleEndDateAndTime, t2StarTtime, t2EndTime, t3StarTtime, t3EndTime } = elem
+    const startTimeTier1 = parseInt(preSaleStartDateAndTime)
+    const endTimeTier1 = parseInt(preSaleEndDateAndTime)
     const startTimeTier2 = parseInt(t2StarTtime)
     const endTimeTier2 = parseInt(t2EndTime)
     const startTimeTier3 = parseInt(t3StarTtime)
@@ -159,17 +160,19 @@ const Landing = () => {
 
     const t1 = 1; const t2 = 2; const t3 = 3;
     let tier3Date = new Date(elem.preSaleStartDateAndTime);
-    tier3Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 24)
-    tier3Date.setMinutes(new Date(elem.preSaleStartDateAndTime).getMinutes() + 10)
+    // tier3Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 24)
+    // tier3Date.setMinutes(new Date(elem.preSaleStartDateAndTime).getMinutes() + 10)
     // let tier4Date = new Date(elem.preSaleStartDateAndTime);
     // tier4Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 15)
     // tier4Date.setMinutes(new Date(elem.preSaleStartDateAndTime).getMinutes() + 20)
     // tier4Date.setDate(new Date(elem.preSaleStartDateAndTime).getDate() + 1);
     return (
       <div className="row main-pool-featured">
+        
         <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={ind}>
+        <h1 className="main-pool-featured h1">Active Pool</h1>
           <div className={now > startTimeTier1 && now < endTimeTier1 ? "card-main" : "card-main_1"}>
-
+           
             <Link to={'/pools/' + id + '/' + t1} id={1} >
               <PoolCard {...elem} tier={1} allcation={elem.tier1Allocation} max={elem.tier1MaxAmountPerUserInBNB}
                 startTime={startTimeTier1} endTime={endTimeTier1}
@@ -178,7 +181,7 @@ const Landing = () => {
             </Link>
           </div>
         </div>
-        <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={ind}>
+        {/* <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={ind}>
           <div className={now > startTimeTier2 && now < endTimeTier2 ? "card-main" : "card-main_1"}>
             <Link to={'/pools/' + id + '/' + t2}>
               <PoolCard tier={2} {...elem} allcation={elem.tier2Allocation} max={elem.tier2MaxAmountPerUserInBNB}
@@ -197,7 +200,7 @@ const Landing = () => {
                 preSaleStartDateAndTime={tier3Date} />
             </Link>
           </div>
-        </div>
+        </div> */}
         {/* <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={index}>
         <div className={now>startTimeTier4  && now<endTimeTier4 ? "card-main" : "card-main_1"}>
           <Link to={'/pools/' + id + '/' + t4} >
@@ -211,7 +214,7 @@ const Landing = () => {
       </div>
     )
   })
-
+  console.log("pesndingstore",pesndingstore)
   return (
     <div className='landing-nft'>
       <Navbar />
@@ -229,57 +232,8 @@ const Landing = () => {
           </div>
         </div>
       </section>
-      <section className="featured-pool">
-        <div className="auto-container">
-          <div className="row  ">
-            <div className="searchbar">
-              {/* <h1>Active Pools</h1> */}
-              {/* <div className="main-slider " onClick={EligiblePool}>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider round"></span>
-                </label>
-                <p>Show Eligible Pools only</p>
-              </div> */}
-            </div>
-          </div>
-          {display}
-        </div>
-      </section>
-      {/* <section className="featured-pool-coming-soon">
-        <div className="auto-container">
-          <h1>Pools Coming Soon</h1>
-          {pesndingstore.map((elem, index) => {
-            let tier3Date = new Date(elem.preSaleStartDateAndTime);
-            tier3Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 23)
-            tier3Date.setMinutes(new Date(elem.preSaleStartDateAndTime).getMinutes() + 10)
-
-            let tier2Date = new Date(elem.preSaleStartDateAndTime);
-            tier2Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 20);
-            return (
-              <div className="row main-pool-featured">
-                <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={index}>
-                  <ComingPoolCard {...elem} tier={1} allcation={elem.tier1Allocation} max={elem.tier1MaxAmountPerUserInBNB}
-                    min={elem.tier1MinAmountPerUserInBNB}
-                    preSaleStartDateAndTime={new Date(elem.preSaleStartDateAndTime)}
-                  />
-                </div>
-                <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={index} >
-                  <ComingPoolCard tier={2} {...elem} allcation={elem.tier2Allocation} max={elem.tier2MaxAmountPerUserInBNB}
-                    min={elem.tier2MinAmountPerUserInBNB}
-                    preSaleStartDateAndTime={tier2Date} />
-                </div>
-                <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={index}>
-                  <ComingPoolCard tier={3} {...elem} allcation={elem.tier3Allocation} max={elem.tier3MaxAmountPerUserInBNB}
-                    min={elem.tier3MinAmountPerUserInBNB}
-                    preSaleStartDateAndTime={tier3Date} />
-                </div>
-            
-              </div>
-            )
-          })}
-        </div>
-      </section> */}
+    
+      
       <div className="banner-mju">
         <div className="container">
           <div className="row">
@@ -410,9 +364,62 @@ const Landing = () => {
 
         </div>
       </section>
-      <section className="featured-pool-closed">
+      <section className="featured-pool">
+        <div className="auto-container">
+          <div className="row  ">
+            <div className="searchbar">
+              {/* <h1>Active Pools</h1> */}
+              {/* <div className="main-slider " onClick={EligiblePool}>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider round"></span>
+                </label>
+                <p>Show Eligible Pools only</p>
+              </div> */}
+            </div>
+          </div>
+          {display}
+        </div>
+      </section>
+      <section className="featured-pool-coming-soon">
         <div className="auto-container">
           <h1>Pools Coming Soon</h1>
+          <div className="row main-pool-featured">
+          {pesndingstore.map((elem, index) => {
+            let tier3Date = new Date(elem.preSaleStartDateAndTime);
+            tier3Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 23)
+            tier3Date.setMinutes(new Date(elem.preSaleStartDateAndTime).getMinutes() + 10)
+
+            let tier2Date = new Date(elem.preSaleStartDateAndTime);
+            tier2Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 20);
+            return (
+             
+                <div className="col-xl-4 col-lg-4 col-md-6 col-12 mb-4" key={index}>
+                  <ComingPoolCard {...elem} tier={1} allcation={elem.tier1Allocation} max={elem.maxAllocationPerUser}
+                    min={elem.minAllocationPerUser}
+                    preSaleStartDateAndTime={new Date(elem.preSaleStartDateAndTime)}
+                  />
+                </div>
+                /* <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={index} >
+                  <ComingPoolCard tier={2} {...elem} allcation={elem.tier2Allocation} max={elem.tier2MaxAmountPerUserInBNB}
+                    min={elem.tier2MinAmountPerUserInBNB}
+                    preSaleStartDateAndTime={tier2Date} />
+                </div>
+                <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={index}>
+                  <ComingPoolCard tier={3} {...elem} allcation={elem.tier3Allocation} max={elem.tier3MaxAmountPerUserInBNB}
+                    min={elem.tier3MinAmountPerUserInBNB}
+                    preSaleStartDateAndTime={tier3Date} />
+                </div> */
+            
+              
+            )
+          })}
+          </div>
+        </div>
+      </section>
+      <section className="featured-pool-closed">
+        <div className="auto-container">
+          <h1>Pools Closed</h1>
           {closestore.map((elem, closeindex) => {
             const { id, TotalBnbinOneTier, TotalBnbinTwoTier, TotalBnbinThreeTier } = elem
             const t1 = 1; const t2 = 2; const t3 = 3; const t4 = 4;

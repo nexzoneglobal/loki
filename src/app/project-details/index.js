@@ -21,7 +21,7 @@ const SubmitProject = (props) => {
              amountAllocatedforPresale:'',tier1Allocation:'',tier1MaxAmountPerUserInBNB:'',tier1MinAmountPerUserInBNB:'',
              tier2Allocation:'', tier2MaxAmountPerUserInBNB:'', tier2MinAmountPerUserInBNB:'', tier3Allocation:'', 
              tier3MaxAmountPerUserInBNB:'', tier3MinAmountPerUserInBNB:'', tier4Allocation:'', tier4MaxAmountPerUserInBNB:'',
-            tier4MinAmountPerUserInBNB:'',statusOfApplication:'Pending'
+            tier4MinAmountPerUserInBNB:'',statusOfApplication:'Pending',maxAllocationPerUser:'',minAllocationPerUser:'',firstClaimTime:'',secondClaimTime:'',thirdClaimTime:'',firstIterationPercentage:'',secondIterationPercentage:'',thirdIterationPercentage:'',preSaleEndDateAndTime:''
         })
         const [projectSymbol,setProjectSymbol]=useState('');
         const [projectDescription,setprojectDescription]=useState('');
@@ -51,7 +51,7 @@ const SubmitProject = (props) => {
         const getProjectDetail=async()=>{
             try {
         
-                  await axios.post("http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/editProject",{...inputs,id,statusOfApplication:'Approved'})
+                  await axios.post("http://54.191.140.38:4750/project/editProject",{...inputs,id,statusOfApplication:'Approved'})
                     .then((response) => {
                         console.log("response========edit>",response)
                         // getDate(response.data.msg)
@@ -77,7 +77,7 @@ const SubmitProject = (props) => {
         const getProjectRejected=async()=>{
             try {
         
-                  await axios.post("http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/editProject",{id,statusOfApplication:'Rejected'})
+                  await axios.post("http://54.191.140.38:4750/project/editProject",{id,statusOfApplication:'Rejected'})
                     .then((response) => {
                         console.log("response========edit>",response)
                         // getDate(response.data.msg)
@@ -134,12 +134,16 @@ const SubmitProject = (props) => {
         const [totalSupplyError,setTotalSupplyError]=useState({});
         const [amountError,setAmountError]=useState({});
         const [dateError,setDateError]=useState({});
-    
+        
+
     
         const result = Web3.utils.isAddress(contractAddress);
         const result1 = Web3.utils.isAddress(walletAddress);
         console.log("result",result);
     
+        
+
+
         const formValidation=()=>{
            
             const projectNameError={};
@@ -263,7 +267,7 @@ const SubmitProject = (props) => {
      
         try {
     
-               axios.get("http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/"+id)
+               axios.get("http://54.191.140.38:4750/project/"+id)
                 .then((response) => {
                     console.log("response========>",response)
                     setInputs(response.data.msg)
@@ -340,57 +344,57 @@ const SubmitProject = (props) => {
    let isValid=true;
     
             
-   if(tier1===''){
-    tier1Error.tier1AllocationError="Tier1 Allocation is Required";
-      isValid=false;
-  }
-  if(tier2===''){
-    tier2Error.tier2AllocationError="Tier2 Allocation is Required";
-      isValid=false;
-  }
-  if(tier3===''){
-    tier3Error.tier3AllocationError="Tier3 Allocation is Required";
-      isValid=false;
-  }
-  if(tier4===''){
-    tier4Error.tier4AllocationError="Tier4 Allocation is Required";
-      isValid=false;
-  }
+//    if(tier1===''){
+//     tier1Error.tier1AllocationError="Tier1 Allocation is Required";
+//       isValid=false;
+//   }
+//   if(tier2===''){
+//     tier2Error.tier2AllocationError="Tier2 Allocation is Required";
+//       isValid=false;
+//   }
+//   if(tier3===''){
+//     tier3Error.tier3AllocationError="Tier3 Allocation is Required";
+//       isValid=false;
+//   }
+//   if(tier4===''){
+//     tier4Error.tier4AllocationError="Tier4 Allocation is Required";
+//       isValid=false;
+//   }
 
 
-  if(tier1MinValue===''){
-    tier1MinValueError.tier1MinError="Tier1 Min contribution is Required";
-      isValid=false;
-  }
-  if(tier2MinValue===''){
-    tier2MinValueError.tier2MinError="Tier2 Min contribution is Required";
-      isValid=false;
-  }
-  if(tier3MinValue===''){
-    tier3MinValueError.tier3MinError="Tier3 Min contribution is Required";
-      isValid=false;
-  }
-  if(tier4MinValue===''){
-    tier4MinValueError.tier4MinError="Tier4 Min contribution is Required";
-      isValid=false;
-  }
+//   if(tier1MinValue===''){
+//     tier1MinValueError.tier1MinError="Tier1 Min contribution is Required";
+//       isValid=false;
+//   }
+//   if(tier2MinValue===''){
+//     tier2MinValueError.tier2MinError="Tier2 Min contribution is Required";
+//       isValid=false;
+//   }
+//   if(tier3MinValue===''){
+//     tier3MinValueError.tier3MinError="Tier3 Min contribution is Required";
+//       isValid=false;
+//   }
+//   if(tier4MinValue===''){
+//     tier4MinValueError.tier4MinError="Tier4 Min contribution is Required";
+//       isValid=false;
+//   }
 
-  if(tier1MaxValue===''){
-    tier1MaxValueError.tier1MaxError="Tier1 Max contribution is Required";
-      isValid=false;
-  }
-  if(tier2MaxValue===''){
-    tier2MaxValueError.tier2MaxError="Tier2 Max Contribution is Required";
-      isValid=false;
-  }
-  if(tier3MaxValue===''){
-    tier3MaxValueError.tier3MaxError="Tier3 Max contribution is Required";
-      isValid=false;
-  }
-  if(tier3MaxValue===''){
-    tier4MaxValueError.tier4MaxError="Tier4 Max contribution is Required";
-      isValid=false;
-  }
+//   if(tier1MaxValue===''){
+//     tier1MaxValueError.tier1MaxError="Tier1 Max contribution is Required";
+//       isValid=false;
+//   }
+//   if(tier2MaxValue===''){
+//     tier2MaxValueError.tier2MaxError="Tier2 Max Contribution is Required";
+//       isValid=false;
+//   }
+//   if(tier3MaxValue===''){
+//     tier3MaxValueError.tier3MaxError="Tier3 Max contribution is Required";
+//       isValid=false;
+//   }
+//   if(tier3MaxValue===''){
+//     tier4MaxValueError.tier4MaxError="Tier4 Max contribution is Required";
+//       isValid=false;
+//   }
   setTier1Error(tier1Error);
   setTier2Error(tier2Error);
   setTier3Error(tier3Error);
@@ -449,7 +453,7 @@ const SubmitProject = (props) => {
                                                         value={inputs.projectName}
                                                         name="projectName"
                                                         onChange={handleChange}
-                                                        className="form-control white" id="example" aria-describedby="text" placeholder="Enter your project name here" />
+                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter your project name here" />
                                                         {/* {Object.keys(projectNameError).map((key) => {
                                                            console.log("name",projectNameError);
                                                            console.log("key", key);
@@ -714,7 +718,7 @@ const SubmitProject = (props) => {
                                                         <br></br>
                                                         <div className="sd-container">
                                                             <input className="sd"
-                                                            //  value={inputs.preSaleStartDateAndTime.split('Z')[0]}
+                                                            value={inputs.preSaleStartDateAndTime?.split('Z')[0]}
                                                             
                                                              name="preSaleStartDateAndTime"
                                                              onChange={handleChange}
@@ -737,9 +741,9 @@ const SubmitProject = (props) => {
                                                         <br></br>
                                                         <div className="sd-container">
                                                             <input className="sd"
-                                                            //  value={inputs.preSaleStartDateAndTime.split('Z')[0]}
+                                                            value={inputs.preSaleEndDateAndTime?.split('Z')[0]}
                                                             
-                                                             name="preSaleStartDateAndTime"
+                                                             name="preSaleEndDateAndTime"
                                                              onChange={handleChange}
                                                                 id="party" type="datetime-local"  ></input>
                                                                   {/* <input className="sd" style={{color:'white'}}
@@ -767,7 +771,7 @@ const SubmitProject = (props) => {
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label for="example">Iteration 1 Percentage<span>*</span></label>
-                                                    <input type="number" 
+                                                    <input type="number" name="firstIterationPercentage" value={inputs.firstIterationPercentage}
                                                         // onChange={(e) => setIteration1(e.target.value)}
                                                         class="form-control" id="example" aria-describedby="text" placeholder="Enter Your Iteration  1 Percentage" />
                                                     {/* {Object.keys(iteration1Error).map((key) => {
@@ -780,7 +784,7 @@ const SubmitProject = (props) => {
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label for="exampleamount">Iteration 2 Percentage <span>*</span></label>
-                                                    <input type="number " 
+                                                    <input type="number " name="secondIterationPercentage" value={inputs.secondIterationPercentage}
                                                         // onChange={(e) => setIteration2(e.target.value)}
                                                         class="form-control" id="exampleamount" placeholder="Enter Your Iteration 2 Percentage" />
                                                     {/* {Object.keys(iteration2Error).map((key) => {
@@ -793,7 +797,7 @@ const SubmitProject = (props) => {
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label for="exampleamount">Iteration 3 Percentage <span>*</span></label>
-                                                    <input type="number " 
+                                                    <input type="number " name="thirdIterationPercentage" value={inputs.thirdIterationPercentage}
                                                         // onChange={(e) => setIteration2(e.target.value)}
                                                         class="form-control" id="exampleamount" placeholder="Enter Your Iteration 3 Percentage" />
                                                     {/* {Object.keys(iteration2Error).map((key) => {
@@ -807,7 +811,54 @@ const SubmitProject = (props) => {
                                     </div>
                                 </div>
                             </div>
-
+                            <div className="row">
+                                <div className="col-xl-8 col-lg-10 col-md-12">
+                                    <div className="inner-submit-lower-div">
+                                        <h4>Claim Times</h4>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="example">First claim time</label>
+                                                    <input type="datetime-local" name="firstClaimTime" value={inputs.firstClaimTime?.split('Z')[0]}
+                                                        // onChange={(e) => setIteration1(e.target.value)}
+                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter Your First claim time" />
+                                                    {/* {Object.keys(iteration1Error).map((key) => {
+                                                        // console.log("name",nameError);
+                                                        console.log("key", key);
+                                                        return <p className="inputErrors">{iteration1Error[key]}</p>
+                                                    })} */}
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="exampleamount">Second claim time</label>
+                                                    <input type="datetime-local" name="secondClaimTime" value={inputs.secondClaimTime?.split('Z')[0]}
+                                                        // onChange={(e) => setIteration2(e.target.value)}
+                                                        class="form-control" id="exampleamount" placeholder="Enter Your Second claim time" />
+                                                    {/* {Object.keys(iteration2Error).map((key) => {
+                                                        // console.log("name",nameError);
+                                                        console.log("key", key);
+                                                        return <p className="inputErrors">{iteration2Error[key]}</p>
+                                                    })} */}
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="exampleamount">Third claim time</label>
+                                                    <input type="datetime-local" name="thirdClaimTime" value={inputs.thirdClaimTime?.split('Z')[0]}
+                                                        // onChange={(e) => setIteration2(e.target.value)}
+                                                        class="form-control" id="exampleamount" placeholder="Enter Your Third claim time" />
+                                                    {/* {Object.keys(iteration2Error).map((key) => {
+                                                        // console.log("name",nameError);
+                                                        console.log("key", key);
+                                                        return <p className="inputErrors">{iteration2Error[key]}</p>
+                                                    })} */}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                   
                                 <div className="row">
                                     <div className="col-xl-8 col-lg-10 col-md-12">
                                         <div className="inner-submit-lower-div">
@@ -830,9 +881,9 @@ const SubmitProject = (props) => {
                                                 <div className="col-lg-6">
                                                     <div className="form-group">
                                                         <label for="exampleamount">Min allocation per user <span>*</span></label>
-                                                        <input type="text"
-                                                         value={inputs.tier1MinAmountPerUserInBNB}
-                                                         name="tier1MinAmountPerUserInBNB"
+                                                        <input type="text" 
+                                                         value={inputs.minAllocationPerUser}
+                                                         name="minAllocationPerUser"
                                                          onChange={handleChange}
                                                         className="form-control" id="example" aria-describedby="text" placeholder="Enter min allocation" />
                                                         {/* {Object.keys(tier1MinValueError).map((key) => {
@@ -847,8 +898,8 @@ const SubmitProject = (props) => {
                                                     <div className="form-group">
                                                         <label for="example">Max allocation per user<span>*</span></label>
                                                         <input type="text" 
-                                                           value={inputs.tier1MaxAmountPerUserInBNB}
-                                                           name="tier1MaxAmountPerUserInBNB"
+                                                           value={inputs.maxAllocationPerUser}
+                                                           name="maxAllocationPerUser"
                                                            onChange={handleChange}
                                                         className="form-control" id="example" aria-describedby="text" placeholder="Enter max allocation" />
                                                          {/* {Object.keys(tier1MaxValueError).map((key) => {
@@ -863,9 +914,9 @@ const SubmitProject = (props) => {
                                             <div className="row">
                                                 <div className="col-lg-12">
                                                     <div className="buttons-submit">
-                                                        {/* <button type="button" 
+                                                        <button type="button" 
                                                         className={inputs.statusOfApplication!=='Approved'?'button-approve':'disabled'}
-                                                        onClick={getProjectDetail}>SAVE & APPROVE</button> */}
+                                                        onClick={getProjectDetail}>SAVE & APPROVE</button>
                                                         <button   type="button" 
                                                         //  className={inputs.statusOfApplication!=='Approved'?'button-reject':'disabled'}
                                                         className="button-reject"
@@ -879,6 +930,8 @@ const SubmitProject = (props) => {
                                         </div>
                                     </div>
                                 </div>
+                           
+                               
                          </form>
                         </div>
 

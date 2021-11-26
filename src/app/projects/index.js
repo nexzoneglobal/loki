@@ -11,7 +11,7 @@ const Projects = () => {
     const getAlldata = async () => {
         try {
 
-            await axios.get("http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/all")
+            await axios.get("http://54.191.140.38:4750/project/all")
                 .then((response) => {
 
                     if (response.data.status) {
@@ -153,7 +153,7 @@ const Projects = () => {
                                                         <td className="button-detailss">
                                                             <div className="d-flex">
                                                                 <Link className='buttion-on' >Approve</Link>
-                                                                <Link to="/project-details/:id" className='buttion-on' >Detail</Link>
+                                                                <Link to={"/project-details/" + id} className='buttion-on' >Detail</Link>
                                                             </div>
 
                                                         </td>

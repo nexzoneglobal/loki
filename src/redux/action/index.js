@@ -3,23 +3,31 @@ import Getweb3 from '../../hooks/Getweb3';
 import { getBep20Contract } from '../../utils/contractHelpers'
 export const useContarctAction = () => async (dispatch) => {
   const web3 = Getweb3();
-  await axios.get("http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/all/active")
-   .then(async (res) => {
+  await axios.get("http://54.191.140.38:4750/project/all/active")
+  .then(async (res) => {
      try{
        for (let elem of res.data.msg) {
-         let tokenAddress = elem.contractAddressDeployed;
-         const contract = getBep20Contract(tokenAddress, web3)
-          elem.t1StarTtime = await contract.methods.saleStartTimeTierOne().call();
-          elem.t1EndTime = await contract.methods.saleEndTimeTierOne().call()
-          elem.t2StarTtime = await contract.methods.saleStartTimeTierTwo().call();
-          elem.t2EndTime = await contract.methods.saleEndTimeTierTwo().call();
-          elem.t3StarTtime = await contract.methods.saleStartTimeTierThree().call();
-          elem.t3EndTime = await contract.methods.saleEndTimeTierThree().call()
-          elem.TotalBnbinOneTier = await contract.methods.totalBnbInTierOne().call();
-          elem.TotalBnbinTwoTier = await contract.methods.totalBnbInTierTwo().call()
-          elem.TotalBnbinThreeTier = await contract.methods.totalBnbInTierThree().call();
-         //  elem.t4StarTtime = await contract.methods.saleStartTimeTierFour().call();
-         //  elem.t4EndTime = await contract.methods.saleEndTimeTierFour().call()
+        
+        let tokenAddress = elem.contractAddressDeployed;
+        console.log("token address", tokenAddress)
+       const contract = getBep20Contract(tokenAddress, web3)
+       console.log('contracr', contract)
+         elem.preSaleStartDateAndTime = await contract.methods.saleStartTime().call();
+         elem.preSaleEndDateAndTime = await contract.methods.saleEndTime().call()
+
+        //  console.log("elmsssssss1",  preSaleStartDateAndTime)
+        //    console.log("elmsssssss2",  preSaleEndDateAndTime)
+          // elem.t1StarTtime = await contract.methods.saleStartTime().call();
+          // elem.t1EndTime = await contract.methods.saleEndTime().call()
+          // elem.t2StarTtime = await contract.methods.saleStartTimeTierTwo().call();
+          // elem.t2EndTime = await contract.methods.saleEndTimeTierTwo().call();
+          // elem.t3StarTtime = await contract.methods.saleStartTimeTierThree().call();
+          // elem.t3EndTime = await contract.methods.saleEndTimeTierThree().call()
+          elem.tokenPriceInBNB = await contract.methods.tokenPriceInBNB().call();
+          // elem.TotalBnbinTwoTier = await contract.methods.totalBnbInTierTwo().call()
+          // elem.TotalBnbinThreeTier = await contract.methods.totalBnbInTierThree().call();
+          // elem.t4StarTtime = await contract.methods.saleStartTimeTierFour().call();
+          // elem.t4EndTime = await contract.methods.saleEndTimeTierFour().call()
        }
      }
      catch(err){
@@ -39,7 +47,7 @@ export const useContarctAction = () => async (dispatch) => {
 };
 
 export const usePendingContarctAction = () => async (dispatch) => {
-  await axios.get("http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/all/pending")
+  await axios.get("http://54.191.140.38:4750/project/all/pending")
     .then(async (res) => {
       if (res.data.status) {
         dispatch({
@@ -56,7 +64,7 @@ export const usePendingContarctAction = () => async (dispatch) => {
 
 export const useClosingContarctAction = () => async (dispatch) => {
   const web3 = Getweb3();
-  await axios.get("http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/all/finished")
+  await axios.get("http://54.191.140.38:4750/project/all/finished")
     .then(async (res) => {
       try{
         for (let elem of res.data.msg) {

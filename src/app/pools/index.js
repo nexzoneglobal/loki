@@ -36,7 +36,7 @@ const Pool = (props) => {
     let mediumlink = '';
     let discardlink = '';
     let symbol = '';
-    let tokenPriceInBNB ;
+    let tokenPriceInBNB='' ;
     let tokenAddress='';
     let prersaleTime = new Date()
     let amountAllocatedForPresale='';
@@ -64,24 +64,24 @@ const Pool = (props) => {
         progressValue= ((((TotalBnbinOneTier/( 10**18) / tokenPriceInBNB))/((amountAllocatedForPresale)*(tier1Allocation/100)))*100).toFixed(3)
         prersaleTime = new Date(elem.t1EndTime * 1000);
         }
-        if (tier == 2) {
-            tierMinValue = elem.tier2MinAmountPerUserInBNB;
-            tierMaxValue = elem.tier2MaxAmountPerUserInBNB;
-            tier2Allocation=elem.tier2Allocation;
-            TotalBnbinTwoTier=elem.TotalBnbinTwoTier;
-            progressValue= ((((TotalBnbinTwoTier/( 10**18) / tokenPriceInBNB))/((amountAllocatedForPresale)*(tier2Allocation/100)))*100).toFixed(3)
-        prersaleTime = new Date(elem.t2EndTime * 1000);
+        // if (tier == 2) {
+        //     tierMinValue = elem.tier2MinAmountPerUserInBNB;
+        //     tierMaxValue = elem.tier2MaxAmountPerUserInBNB;
+        //     tier2Allocation=elem.tier2Allocation;
+        //     TotalBnbinTwoTier=elem.TotalBnbinTwoTier;
+        //     progressValue= ((((TotalBnbinTwoTier/( 10**18) / tokenPriceInBNB))/((amountAllocatedForPresale)*(tier2Allocation/100)))*100).toFixed(3)
+        // prersaleTime = new Date(elem.t2EndTime * 1000);
 
-        }
-        if (tier == 3) {
-            tierMinValue = elem.tier3MinAmountPerUserInBNB;
-            tierMaxValue = elem.tier3MaxAmountPerUserInBNB;
-            tier3Allocation=elem.tier3Allocation;
-            TotalBnbinThreeTier=elem.TotalBnbinThreeTier
-            progressValue= ((((TotalBnbinThreeTier/( 10**18) / tokenPriceInBNB))/((amountAllocatedForPresale)*(tier3Allocation/100)))*100).toFixed(3)
-        prersaleTime = new Date(elem.t3EndTime * 1000);
+        // }
+        // if (tier == 3) {
+        //     tierMinValue = elem.tier3MinAmountPerUserInBNB;
+        //     tierMaxValue = elem.tier3MaxAmountPerUserInBNB;
+        //     tier3Allocation=elem.tier3Allocation;
+        //     TotalBnbinThreeTier=elem.TotalBnbinThreeTier
+        //     progressValue= ((((TotalBnbinThreeTier/( 10**18) / tokenPriceInBNB))/((amountAllocatedForPresale)*(tier3Allocation/100)))*100).toFixed(3)
+        // prersaleTime = new Date(elem.t3EndTime * 1000);
 
-        }
+        // }
         // if (tier == 4) {
         //     tierMinValue = elem.tier4MinAmountPerUserInBNB;
         //     tierMaxValue = elem.tier4MaxAmountPerUserInBNB;
@@ -116,9 +116,10 @@ const Pool = (props) => {
     useEffect(() => {
         timerdata();
     }, [tier])
+    // http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/
     const timerdata = async () => {
         try {
-            axios.get("http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/" + id)
+            axios.get("http://54.191.140.38:4750/project/" + id)
                 .then((response) => {
                     var time = new Date(response.data.msg.preSaleStartDateAndTime);
                     if (tier == 1) {
@@ -270,17 +271,17 @@ const Pool = (props) => {
                                         {whiteList?
                                         <button className="button-three" type="button">WhiteListed</button>:
                                         <button className="button-four" type="button">Not WhiteListed</button>}
-                                        <div className="text_main"><p>{progressValue}%</p></div>
+                                        {/* <div className="text_main"><p>{progressValue}%</p></div> */}
                                     {/* <div class="progress">
                                      <div className="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                        </div> */}
-                                          <MDBProgress material  value={progressValue} />
+                                          {/* <MDBProgress material  value={progressValue} /> */}
                                       
                                     </div>
                                 </div>
-                                <div className="para">
+                                {/* <div className="para">
                                     <p className="para-one">{description}</p>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         <div className="col-xl-7 col-lg-8 col-md-12 col-12 offset-xl-0   offset-0">

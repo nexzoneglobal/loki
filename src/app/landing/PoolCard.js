@@ -12,11 +12,12 @@ const PoolCard = (props) => {
 
  console.log(props.endTime)
 
-  var time = new Date(props.preSaleStartDateAndTime)
+  var time = new Date(props.preSaleEndDateAndTime  *1000)
+  console.log('timeeeeeeee', time)
   function timer() {
-    var now = new Date()
-    var diff = time.getTime() - now.getTime()
-    if (diff <= 0) {
+   var now = new Date()
+  var diff = time.getTime() - now.getTime();
+ if (diff <= 0) {
       return;
     }
     var days = Math.floor(diff / (1000 * 60 * 60 * 24));
