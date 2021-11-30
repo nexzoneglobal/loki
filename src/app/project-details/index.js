@@ -55,18 +55,18 @@ const SubmitProject = (props) => {
                     .then((response) => {
                         console.log("response========edit>",response)
                         // getDate(response.data.msg)
-                        // toast.success('Project Approved Succesfully', {
-                        //     position: "top-right",
-                        //     autoClose: 2000,
-                        // });
+                        toast.success('Project Approved Succesfully', {
+                            position: "top-right",
+                            autoClose: 2000,
+                        });
                     });
           
               }
               catch (err) {
-                // toast.error('Project Not Approved', {
-                //     position: "bottom-center",
-                //     autoClose: 2000,
-                // });
+                toast.error('Project Not Approved', {
+                    position: "bottom-center",
+                    autoClose: 2000,
+                });
                 // eslint-disable-next-line no-console
                 // console.log(err);
                 // alert("Invalid Address")

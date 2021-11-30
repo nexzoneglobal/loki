@@ -146,13 +146,14 @@ const Projects = () => {
                                                         )}`}</p></td>
                                                         {/* <td className='text-green-approved'>{elem.status}</td> */}
 
-                                                        {/* <td className={elem.statusOfApplication == 'Pending' ? 'text-green-pending' : elem.statusOfApplication == 'Approved' ? 'text-green-approved' : 'text-green-rejected'}>{elem.statusOfApplication}</td> */}
+                                                       
                                                         {/* <td className="button-details">
                                                             <Link className='' to={'/project-details/' + id}>Detail</Link>
                                                         </td> */}
                                                         <td className="button-detailss">
                                                             <div className="d-flex">
-                                                                <Link className='buttion-on' >Approve</Link>
+                                                                {/* <Link className='buttion-on' >Approve</Link> */}
+                                                                <td className={elem.statusOfApplication == 'Pending' ? 'text-green-pending' : elem.statusOfApplication == 'Approved' ? 'text-green-approved' : 'text-green-rejected'}>{elem.statusOfApplication}</td>
                                                                 <Link to={"/project-details/" + id} className='buttion-on' >Detail</Link>
                                                             </div>
 

@@ -77,7 +77,7 @@ const Navbar=(props)=>{
                                             <h1>WalletConnect</h1>
                                             <Link className="link-scan" href="#"><p>Scan with WalletConnect to Connect</p></Link>
                                         </div> */}
-                                        <p className="main-term">By connecting, I accept LEOCORN's   <Link className="link-scan" href="#">Terms of Service</Link></p>
+                                        <p className="main-term">By connecting, I accept LEOCORN's   <Link className="link-scan" >Terms of Service</Link></p>
                                     </div>
                                 </ModalBody>
                             </Modal>

@@ -70,9 +70,9 @@ export const useClosingContarctAction = () => async (dispatch) => {
         for (let elem of res.data.msg) {
           let tokenAddress = elem.contractAddressDeployed;
           const contract = getBep20Contract(tokenAddress, web3)
-           elem.TotalBnbinOneTier = await contract.methods.totalBnbInTierOne().call();
-           elem.TotalBnbinTwoTier = await contract.methods.totalBnbInTierTwo().call()
-           elem.TotalBnbinThreeTier = await contract.methods.totalBnbInTierThree().call();
+          //  elem.TotalBnbinOneTier = await contract.methods.totalBnbInTierOne().call();
+          //  elem.TotalBnbinTwoTier = await contract.methods.totalBnbInTierTwo().call()
+          //  elem.TotalBnbinThreeTier = await contract.methods.totalBnbInTierThree().call();
         }
       }
       catch(err){

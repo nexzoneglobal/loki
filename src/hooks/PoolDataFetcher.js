@@ -83,9 +83,9 @@ export const Contribute = (tokenAddress) => {
     const web3 = Getweb3(); 
     const contract = getBep20Contract(tokenAddress, web3)
     const getContributedForTier1 = useCallback(async () => {
-        const tier1Contribute =await contract.methods.buyInOneTier(account).call();
-        const tier2Contribute = await contract.methods.buyInTwoTier(account).call()
-        const tier3Contribute =await  contract.methods.buyInThreeTier(account).call()
+        const tier1Contribute =await contract.methods.buyByUser(account).call();
+        const tier2Contribute = await contract.methods.buyByUser(account).call()
+        const tier3Contribute =await  contract.methods.buyByUser(account).call()
         // const tier4Contribute =await  contract.methods.buyInFourTier(account).call()
         return {tier1Contribute,tier2Contribute,tier3Contribute}
     }, [account, contract,tokenAddress])

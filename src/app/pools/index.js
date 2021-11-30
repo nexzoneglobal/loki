@@ -40,6 +40,7 @@ const Pool = (props) => {
     let tokenAddress='';
     let prersaleTime = new Date()
     let amountAllocatedForPresale='';
+    let preSaleEndDateAndTime='';
     store.find((elem) => {
         if(elem.id==id){
             console.log('elem:::' , elem)
@@ -54,15 +55,17 @@ const Pool = (props) => {
         symbol=elem.symbol;
         tokenPriceInBNB=elem.tokenPriceInBNB;
         tokenAddress=elem.contractAddressDeployed;
-        amountAllocatedForPresale=elem.amountAllocatedForPresale
+        amountAllocatedForPresale=elem.amountAllocatedForPresale;
+        preSaleEndDateAndTime= elem.preSaleEndDateAndTime;
+
     }
     if (tier == 1) {
-        tierMinValue = elem.tier1MinAmountPerUserInBNB;
-        tierMaxValue = elem.tier1MaxAmountPerUserInBNB;
+        tierMinValue = elem.minAllocationPerUser;
+        tierMaxValue = elem.maxAllocationPerUser;
         tier1Allocation=elem.tier1Allocation;
         TotalBnbinOneTier=elem.TotalBnbinOneTier
         progressValue= ((((TotalBnbinOneTier/( 10**18) / tokenPriceInBNB))/((amountAllocatedForPresale)*(tier1Allocation/100)))*100).toFixed(3)
-        prersaleTime = new Date(elem.t1EndTime * 1000);
+        prersaleTime = new Date(elem.preSaleEndDateAndTime * 1000);
         }
         // if (tier == 2) {
         //     tierMinValue = elem.tier2MinAmountPerUserInBNB;
@@ -95,6 +98,7 @@ const Pool = (props) => {
     const [min, setMin] = useState(0);
     const [sec, setSec] = useState(0);
     function timer(time) {
+        var time= new Date(preSaleEndDateAndTime * 1000);
         var now = new Date()
         var diff = time.getTime() - now.getTime()
         if (diff <= 0) {
@@ -163,7 +167,7 @@ const Pool = (props) => {
             return 0;
         }
     }, [tier1Con])
-
+    console.log('hereeeeeeeee', TierContribute)
     const JoinPool = useCallback(async (e) => {
         e.preventDefault();
         if (account) {
@@ -322,16 +326,20 @@ const Pool = (props) => {
                                                 <span className="span-one">You’ll recieve</span><span className="image">
                                                     <img src={data.logo} alt="" style={{ width: 25, height: 25, borderRadius: '50%', marginLeft: 10 }} /></span><span className="FAN">100,000,000 $FAN</span>
                                             </div> */}
-                                              {whiteList?
+                                              {/* {whiteList?
                                                 <div className="buttons">
                                                     {progressValue < 100?<button type="button" onClick={JoinPool}>CONTRIBUTE & JOIN POOL</button>:""}
-                                                    {/* <ToastContainer/> */}
+                                                 
                                                 </div>:
                                                  <div className="buttons1">
                                                  <button type="button" onClick={JoinPool}>CONTRIBUTE & JOIN POOL</button>
-                                                 {/* <ToastContainer/> */}
+                                                
                                              </div>
-                                              }
+                                              } */}
+                                               <div className="buttons">
+                                                 <button type="button" onClick={JoinPool}>CONTRIBUTE & JOIN POOL</button>
+                                                
+                                             </div>
                                             </form> :
                                             <div style={{ fontSize: 16, display: 'flex', justifyContent: 'center', marginTop: 100 }}>
                                                 <p style={{ color: 'yellow' }}>This Presale is currently in progress</p>

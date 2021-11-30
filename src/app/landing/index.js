@@ -167,21 +167,21 @@ const Landing = () => {
     // tier4Date.setMinutes(new Date(elem.preSaleStartDateAndTime).getMinutes() + 20)
     // tier4Date.setDate(new Date(elem.preSaleStartDateAndTime).getDate() + 1);
     return (
-      <div className="row main-pool-featured">
+     
         
         <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={ind}>
-        <h1 className="main-pool-featured h1">Active Pool</h1>
+      
           <div className={now > startTimeTier1 && now < endTimeTier1 ? "card-main" : "card-main_1"}>
            
             <Link to={'/pools/' + id + '/' + t1} id={1} >
-              <PoolCard {...elem} tier={1} allcation={elem.tier1Allocation} max={elem.tier1MaxAmountPerUserInBNB}
+              <PoolCard {...elem} tier={1} allcation={elem.tier1Allocation} max={elem.maxAllocationPerUser}
                 startTime={startTimeTier1} endTime={endTimeTier1}
-                min={elem.tier1MinAmountPerUserInBNB}
+                min={elem.minAllocationPerUser}
                 preSaleStartDateAndTime={new Date(elem.preSaleStartDateAndTime).setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 8)} />
             </Link>
           </div>
         </div>
-        {/* <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={ind}>
+        /* <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={ind}>
           <div className={now > startTimeTier2 && now < endTimeTier2 ? "card-main" : "card-main_1"}>
             <Link to={'/pools/' + id + '/' + t2}>
               <PoolCard tier={2} {...elem} allcation={elem.tier2Allocation} max={elem.tier2MaxAmountPerUserInBNB}
@@ -200,8 +200,8 @@ const Landing = () => {
                 preSaleStartDateAndTime={tier3Date} />
             </Link>
           </div>
-        </div> */}
-        {/* <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={index}>
+        </div> */
+        /* <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={index}>
         <div className={now>startTimeTier4  && now<endTimeTier4 ? "card-main" : "card-main_1"}>
           <Link to={'/pools/' + id + '/' + t4} >
             <PoolCard tier={4} {...elem} allcation={elem.tier4Allocation} max={elem.tier4MaxAmountPerUserInBNB}
@@ -210,8 +210,8 @@ const Landing = () => {
               preSaleStartDateAndTime={elem.preSaleEndDateAndTime} />
           </Link>
         </div>
-        </div> */}
-      </div>
+        </div> */
+     
     )
   })
   console.log("pesndingstore",pesndingstore)
@@ -378,7 +378,10 @@ const Landing = () => {
               </div> */}
             </div>
           </div>
+          <h1 className="main-pool-featured h1">Active Pool</h1>
+          <div className="row main-pool-featured">
           {display}
+          </div>
         </div>
       </section>
       <section className="featured-pool-coming-soon">
@@ -430,7 +433,7 @@ const Landing = () => {
                     <ClosedPoolCard {...elem} tier={1} TotalBnbPerTier={TotalBnbinOneTier} tierAllocation={elem.tier1Allocation} />
                   </Link>
                 </div>
-                <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={closeindex}>
+                {/* <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={closeindex}>
                   <Link to={'/closepool/' + id + '/' + t2}>
                     <ClosedPoolCard tier={2} {...elem} TotalBnbPerTier={TotalBnbinTwoTier} tierAllocation={elem.tier2Allocation} />
                   </Link>
@@ -439,7 +442,7 @@ const Landing = () => {
                   <Link to={'/closepool/' + id + '/' + t3}>
                     <ClosedPoolCard tier={3} {...elem} TotalBnbPerTier={TotalBnbinThreeTier} tierAllocation={elem.tier3Allocation} />
                   </Link>
-                </div>
+                </div> */}
                 {/* <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={closeindex}>
                   <Link to={'/closepool/' + id + '/' + t4}>
                     <ClosedPoolCard tier={4} {...elem} />

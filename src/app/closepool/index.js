@@ -52,21 +52,21 @@ const ClosePool = (props) => {
            secondIterationPercentage = elem.secondIterationPercentage
        }
         if (tier == 1) {
-            tierMinValue = elem.tier1MinAmountPerUserInBNB;
-            tierMaxValue = elem.tier1MaxAmountPerUserInBNB;
+            tierMinValue = elem.minAllocationPerUser;
+            tierMaxValue = elem.maxAllocationPerUser;
         }
-        if (tier == 2) {
-            tierMinValue = elem.tier2MinAmountPerUserInBNB;
-            tierMaxValue = elem.tier2MaxAmountPerUserInBNB;
-        }
-        if (tier == 3) {
-            tierMinValue = elem.tier3MinAmountPerUserInBNB;
-            tierMaxValue = elem.tier3MaxAmountPerUserInBNB;
-        }
-        if (tier == 4) {
-            tierMinValue = elem.tier4MinAmountPerUserInBNB;
-            tierMaxValue = elem.tier4MaxAmountPerUserInBNB;
-        }
+        // if (tier == 2) {
+        //     tierMinValue = elem.tier2MinAmountPerUserInBNB;
+        //     tierMaxValue = elem.tier2MaxAmountPerUserInBNB;
+        // }
+        // if (tier == 3) {
+        //     tierMinValue = elem.tier3MinAmountPerUserInBNB;
+        //     tierMaxValue = elem.tier3MaxAmountPerUserInBNB;
+        // }
+        // if (tier == 4) {
+        //     tierMinValue = elem.tier4MinAmountPerUserInBNB;
+        //     tierMaxValue = elem.tier4MaxAmountPerUserInBNB;
+        // }
 
     })
     const [show, setshow] = useState(false);
