@@ -4,7 +4,7 @@ import './index.css';
 import Navbar from '../../components/navbar';
 import Footer from '../../components/footer';
 import { Modal, ModalHeader, ModalBody } from "reactstrap";
-import { ClaimTokens, ClaimVestedToken, VestedPeriod, Contribute } from '../../hooks/PoolDataFetcher';
+import { ClaimTokens, ClaimVestedToken, VestedPeriod, Contribute,ClaimSecondVestedTokens } from '../../hooks/PoolDataFetcher';
 import useAuth from '../../hooks/useAuth';
 import { useSelector } from "react-redux";
 import {WhiteListedAllTiers} from '../../hooks/PoolDataFetcher'
@@ -31,6 +31,10 @@ const ClosePool = (props) => {
     let tokenSale='';
     let firstIterationPercentage = ''
     let secondIterationPercentage = ''
+    let thirdIterationPercentage=''
+    let firstClaimTime=''
+    let secondClaimTime=''
+    let thirdClaimTime=''
     closeingstore.find((elem) => {
            
        if(elem.id==id){
@@ -50,6 +54,10 @@ const ClosePool = (props) => {
            tokenSale=elem.amountAllocatedForPresale
            firstIterationPercentage = elem.firstIterationPercentage
            secondIterationPercentage = elem.secondIterationPercentage
+           thirdIterationPercentage=elem.thirdIterationPercentage
+           firstClaimTime=elem.firstClaimTime
+           secondClaimTime=elem.secondClaimTime
+           thirdClaimTime=elem.thirdClaimTime
        }
         if (tier == 1) {
             tierMinValue = elem.minAllocationPerUser;
@@ -74,6 +82,8 @@ const ClosePool = (props) => {
     const { account } = useWeb3React();
     const { claimToken } = ClaimTokens(tokenAddress)
     const { vestedClaim } = ClaimVestedToken(tokenAddress);
+
+    const { SecondvestedClaim } = ClaimSecondVestedTokens(tokenAddress);
     const { vestingPeriod } = VestedPeriod(tokenAddress)
     const { tier1Con } = Contribute(tokenAddress);
     const [TierContribute, setTierContribute] = useState('0');
@@ -156,6 +166,22 @@ const ClosePool = (props) => {
             login("injected")
         }
     }, [vestedClaim])
+
+
+    const SecondVestedClaimToken = useCallback(async (e) => {
+        e.preventDefault();
+        if (account) {
+            try {
+                await SecondvestedClaim();
+            }
+            catch (err) {
+                return false;
+            }
+        }
+        else {
+            login("injected")
+        }
+    }, [SecondvestedClaim])
     const [claimTime, setClaimTime] = useState('');
     const [period, setPeriod] = useState('')
     const [now, setNow] = useState('');
@@ -249,7 +275,7 @@ const ClosePool = (props) => {
                                        
                                        <div style={{ fontSize: 16, textAlign: 'center', fontWeight: 600 }}>
                                        <p style={{ color: 'green' }}>Presale Ended!You can reedem {firstIterationPercentage}% of<br />
-                                           your tokens now.
+                                           your tokens   on {firstClaimTime}
                                        </p>
                                    </div>
                                     
@@ -263,12 +289,21 @@ const ClosePool = (props) => {
                                        }
                                         <div style={{ fontSize: 16, textAlign: 'center', marginTop: 20, fontWeight: 600 }}>
                                             <p style={{ color: 'green' }}>You can reedem {secondIterationPercentage}% of Your tokens<br />
-                                                on {claimTime}
+                                                on {secondClaimTime}
                                             </p>
                                         </div>
                                         <div className="buttons">
                                             <button type="button" className={now > period ? "vested_btn" : "vested_btn1"} onClick={VestedClaimToken}>REDEEM</button>
                                         </div>
+                                        <div style={{ fontSize: 16, textAlign: 'center', marginTop: 20, fontWeight: 600 }}>
+                                            <p style={{ color: 'green' }}>You can reedem {thirdIterationPercentage}% of Your tokens<br />
+                                                on {thirdClaimTime}
+                                            </p>
+                                        </div>
+                                        <div className="buttons">
+                                            <button type="button" className={now > period ? "vested_btn" : "vested_btn1"} onClick={SecondVestedClaimToken}>REDEEM</button>
+                                        </div>
+                                        
                                         {/* ------------------Joinnning Pool MODAL----------------- */}
                                         <Modal isOpen={show} toggle={props.toggleBuyWallet} className="register-modal joining-pool-modal">
                                             <ModalHeader toggle={props.toggleBuyWallet}>
@@ -307,7 +342,7 @@ const ClosePool = (props) => {
                                             <h1>0 <br></br><span>MIN</span></h1>
                                             <h1>0 <br></br><span>SEC</span></h1>
                                         </div>
-                                        <p>{prersaleTime.toUTCString()}</p>
+                                        <p>{prersaleTime?.toUTCString()}</p>
                                     </div>
                                 </div>
                             </div>

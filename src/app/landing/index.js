@@ -422,18 +422,20 @@ const Landing = () => {
       </section>
       <section className="featured-pool-closed">
         <div className="auto-container">
-          <h1>Pools Closed</h1>
+        <h1>Pools Closed</h1>
+        <div className="row main-pool-featured">
+         
           {closestore.map((elem, closeindex) => {
             const { id, TotalBnbinOneTier, TotalBnbinTwoTier, TotalBnbinThreeTier } = elem
             const t1 = 1; const t2 = 2; const t3 = 3; const t4 = 4;
             return (
-              <div className="row main-pool-featured">
+           
                 <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={closeindex}>
                   <Link to={'/closepool/' + id + '/' + t1}>
                     <ClosedPoolCard {...elem} tier={1} TotalBnbPerTier={TotalBnbinOneTier} tierAllocation={elem.tier1Allocation} />
                   </Link>
                 </div>
-                {/* <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={closeindex}>
+                /* <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={closeindex}>
                   <Link to={'/closepool/' + id + '/' + t2}>
                     <ClosedPoolCard tier={2} {...elem} TotalBnbPerTier={TotalBnbinTwoTier} tierAllocation={elem.tier2Allocation} />
                   </Link>
@@ -442,15 +444,17 @@ const Landing = () => {
                   <Link to={'/closepool/' + id + '/' + t3}>
                     <ClosedPoolCard tier={3} {...elem} TotalBnbPerTier={TotalBnbinThreeTier} tierAllocation={elem.tier3Allocation} />
                   </Link>
-                </div> */}
-                {/* <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={closeindex}>
+                </div> */
+                /* <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={closeindex}>
                   <Link to={'/closepool/' + id + '/' + t4}>
                     <ClosedPoolCard tier={4} {...elem} />
                   </Link>
-                </div> */}
-              </div>
+                </div> */
+            
             )
+             
           })}
+           </div>
         </div>
       </section>
       <Footer />

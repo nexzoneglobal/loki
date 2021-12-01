@@ -40,6 +40,18 @@ export const ClaimVestedToken = (tokenAddress) => {
     return { vestedClaim:ClaimVestedTokens}
 }
 
+
+export const ClaimSecondVestedTokens = (tokenAddress) => {
+    const { account } = useWeb3React();
+    const web3 = Getweb3();
+    const contract = getBep20Contract(tokenAddress, web3)
+    const claimSecondVestedTokens = useCallback(async () => {
+        const claimVestedTokens = contract.methods.claimSecondVestedTokens().send({ from: account }).on('transactionHash', (tx) => { return tx.transactionHash })
+        return claimVestedTokens
+    }, [account, contract,tokenAddress])
+    return { SecondvestedClaim:claimSecondVestedTokens}
+}
+
 export const VestedPeriod = (tokenAddress) => {
     const web3 = Getweb3();
     const contract = getBep20Contract(tokenAddress, web3)
@@ -51,6 +63,8 @@ export const VestedPeriod = (tokenAddress) => {
 
     return {vestingPeriod:vestingPeriod}
 }
+
+
 
 export const Finalize = () => {
     const { account } = useWeb3React();
