@@ -8,8 +8,10 @@ const ClosedPoolCard = (props) => {
   // console.log("props in tierAllocation",props.tierAllocation);
   // const [progressValue,setProgressValue]=useState('')
 
-  let progressValue=(((((props.TotalBnbPerTier/( 10**18) / props.tokenPriceInBNB))/((props.amountAllocatedForPresale)*(props.tierAllocation/100)))*100).toFixed(3));
+  //let progressValue=(((((props.TotalBnbPerTier/( 10**18) / props.tokenPriceInBNB))/((props.amountAllocatedForPresale)*(props.tierAllocation/100)))*100).toFixed(3));
+  let progressValue=(((((props.TotalBnbPerTier/( 10**18) / props.tokenPriceInBNB))/((props.amountAllocatedForPresale)))*100).toFixed(3));
   progressValue = progressValue > 100 ? 100 : progressValue;
+  console.log('thissssssssssssssssssssssssssssssssssssssssssssssssss', props)
   return (
 
     <div className=" card-main">

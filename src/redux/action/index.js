@@ -28,6 +28,9 @@ export const useContarctAction = () => async (dispatch) => {
           // elem.TotalBnbinThreeTier = await contract.methods.totalBnbInTierThree().call();
           // elem.t4StarTtime = await contract.methods.saleStartTimeTierFour().call();
           // elem.t4EndTime = await contract.methods.saleEndTimeTierFour().call()
+          elem.softcap= await contract.methods.softCap().call();
+          elem.hardcap= await contract.methods.maxCap().call();
+     
        }
      }
      catch(err){
@@ -70,7 +73,8 @@ export const useClosingContarctAction = () => async (dispatch) => {
         for (let elem of res.data.msg) {
           let tokenAddress = elem.contractAddressDeployed;
           const contract = getBep20Contract(tokenAddress, web3)
-          //  elem.TotalBnbinOneTier = await contract.methods.totalBnbInTierOne().call();
+           elem.TotalBnbinOneTier = await contract.methods.totalBnbReceived().call();
+  
           //  elem.TotalBnbinTwoTier = await contract.methods.totalBnbInTierTwo().call()
           //  elem.TotalBnbinThreeTier = await contract.methods.totalBnbInTierThree().call();
         }

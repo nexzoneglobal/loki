@@ -287,7 +287,7 @@ const ClosePool = (props) => {
                                            <button type="button" className="vested_btn1" onClick={FirstClaimToken}>REDEEM</button>
                                          </div>
                                        }
-                                        <div style={{ fontSize: 16, textAlign: 'center', marginTop: 20, fontWeight: 600 }}>
+                                        {/* <div style={{ fontSize: 16, textAlign: 'center', marginTop: 20, fontWeight: 600 }}>
                                             <p style={{ color: 'green' }}>You can reedem {secondIterationPercentage}% of Your tokens<br />
                                                 on {secondClaimTime}
                                             </p>
@@ -303,7 +303,7 @@ const ClosePool = (props) => {
                                         <div className="buttons">
                                             <button type="button" className={now > period ? "vested_btn" : "vested_btn1"} onClick={SecondVestedClaimToken}>REDEEM</button>
                                         </div>
-                                        
+                                         */}
                                         {/* ------------------Joinnning Pool MODAL----------------- */}
                                         <Modal isOpen={show} toggle={props.toggleBuyWallet} className="register-modal joining-pool-modal">
                                             <ModalHeader toggle={props.toggleBuyWallet}>

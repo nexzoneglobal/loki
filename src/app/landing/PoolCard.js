@@ -1,3 +1,4 @@
+import { element } from 'prop-types';
 import React, { useState } from 'react';
 import './index.css';
 
@@ -44,6 +45,10 @@ const PoolCard = (props) => {
         <h1>{props.projectName}</h1>
         <button>{props.tier}</button>
       </div>
+      <div className="ksajdksj">
+        <h6>Presale Address :</h6>
+        <p>{props.contractAddressDeployed}</p>
+      </div>
       <div className="calender">
         {
          nowTime > props.endTime ? <h1>Closed</h1> : 
@@ -63,9 +68,13 @@ const PoolCard = (props) => {
         <div className="min-max">
           <p className="one">Min: {props.min} BNB</p>
           <p>Max: {props.max} BNB</p>
-          
         </div>:""
+        
         }
+         <div className="min-max">
+          <p className="one">SoftCap: {props.softcap/(10 ** 18)} BNB</p>
+          <p>HardCap: {props.hardcap/(10 ** 18)} BNB</p>
+        </div>
         {/* } */}
       </div>
     </>

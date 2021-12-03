@@ -21,7 +21,7 @@ const SubmitProject = (props) => {
              amountAllocatedforPresale:'',tier1Allocation:'',tier1MaxAmountPerUserInBNB:'',tier1MinAmountPerUserInBNB:'',
              tier2Allocation:'', tier2MaxAmountPerUserInBNB:'', tier2MinAmountPerUserInBNB:'', tier3Allocation:'', 
              tier3MaxAmountPerUserInBNB:'', tier3MinAmountPerUserInBNB:'', tier4Allocation:'', tier4MaxAmountPerUserInBNB:'',
-            tier4MinAmountPerUserInBNB:'',statusOfApplication:'Pending',maxAllocationPerUser:'',minAllocationPerUser:'',firstClaimTime:'',secondClaimTime:'',thirdClaimTime:'',firstIterationPercentage:'',secondIterationPercentage:'',thirdIterationPercentage:'',preSaleEndDateAndTime:''
+            tier4MinAmountPerUserInBNB:'',statusOfApplication:'Pending',maxAllocationPerUser:'',minAllocationPerUser:'',firstClaimTime:'',secondClaimTime:'',thirdClaimTime:'',firstIterationPercentage:'',secondIterationPercentage:'',thirdIterationPercentage:'',preSaleEndDateAndTime:'',liquidityPercentage:'',launchPadFeePercentage:''
         })
         const [projectSymbol,setProjectSymbol]=useState('');
         const [projectDescription,setprojectDescription]=useState('');
@@ -758,12 +758,30 @@ const SubmitProject = (props) => {
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="exampleamount">Liquidity Percentage For Pancake <span>*</span></label>
+                                                    <input type="number" value={inputs.liquidityPercentage}
+                                                       
+                                                        class="form-control" id="exampleamount" placeholder="Enter Liquidity Percentage For Pancake" />
+                                                
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="exampleamount">LaunchPad Fee Percentage<span>*</span></label>
+                                                    <input type="number" value={inputs.launchPadFeePercentage}
+                                                     
+                                                        class="form-control" id="exampleamount" placeholder="Enter LaunchPad Fee Percentage" />
+                                                 
+                                                </div>
+                                            </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="row">
+                                {/* <div className="row">
                                 <div className="col-xl-8 col-lg-10 col-md-12">
                                     <div className="inner-submit-lower-div">
                                         <h4>Vesting Details</h4>
@@ -772,45 +790,33 @@ const SubmitProject = (props) => {
                                                 <div class="form-group">
                                                     <label for="example">Iteration 1 Percentage<span>*</span></label>
                                                     <input type="number" name="firstIterationPercentage" value={inputs.firstIterationPercentage}
-                                                        // onChange={(e) => setIteration1(e.target.value)}
+                                                 
                                                         class="form-control" id="example" aria-describedby="text" placeholder="Enter Your Iteration  1 Percentage" />
-                                                    {/* {Object.keys(iteration1Error).map((key) => {
-                                                        // console.log("name",nameError);
-                                                        console.log("key", key);
-                                                        return <p className="inputErrors">{iteration1Error[key]}</p>
-                                                    })} */}
+                                                
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label for="exampleamount">Iteration 2 Percentage <span>*</span></label>
                                                     <input type="number " name="secondIterationPercentage" value={inputs.secondIterationPercentage}
-                                                        // onChange={(e) => setIteration2(e.target.value)}
+                                                      
                                                         class="form-control" id="exampleamount" placeholder="Enter Your Iteration 2 Percentage" />
-                                                    {/* {Object.keys(iteration2Error).map((key) => {
-                                                        // console.log("name",nameError);
-                                                        console.log("key", key);
-                                                        return <p className="inputErrors">{iteration2Error[key]}</p>
-                                                    })} */}
+                                              
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label for="exampleamount">Iteration 3 Percentage <span>*</span></label>
                                                     <input type="number " name="thirdIterationPercentage" value={inputs.thirdIterationPercentage}
-                                                        // onChange={(e) => setIteration2(e.target.value)}
+                                                       
                                                         class="form-control" id="exampleamount" placeholder="Enter Your Iteration 3 Percentage" />
-                                                    {/* {Object.keys(iteration2Error).map((key) => {
-                                                        // console.log("name",nameError);
-                                                        console.log("key", key);
-                                                        return <p className="inputErrors">{iteration2Error[key]}</p>
-                                                    })} */}
+                                             
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="row">
                                 <div className="col-xl-8 col-lg-10 col-md-12">
                                     <div className="inner-submit-lower-div">
@@ -818,10 +824,10 @@ const SubmitProject = (props) => {
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <label for="example">First claim time</label>
+                                                    <label for="example">Claim time</label>
                                                     <input type="datetime-local" name="firstClaimTime" value={inputs.firstClaimTime?.split('Z')[0]}
                                                         // onChange={(e) => setIteration1(e.target.value)}
-                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter Your First claim time" />
+                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter your  claim time" />
                                                     {/* {Object.keys(iteration1Error).map((key) => {
                                                         // console.log("name",nameError);
                                                         console.log("key", key);
@@ -829,32 +835,24 @@ const SubmitProject = (props) => {
                                                     })} */}
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6">
+                                            {/* <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label for="exampleamount">Second claim time</label>
                                                     <input type="datetime-local" name="secondClaimTime" value={inputs.secondClaimTime?.split('Z')[0]}
-                                                        // onChange={(e) => setIteration2(e.target.value)}
+                                                      
                                                         class="form-control" id="exampleamount" placeholder="Enter Your Second claim time" />
-                                                    {/* {Object.keys(iteration2Error).map((key) => {
-                                                        // console.log("name",nameError);
-                                                        console.log("key", key);
-                                                        return <p className="inputErrors">{iteration2Error[key]}</p>
-                                                    })} */}
+                                               
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-6">
+                                            </div> */}
+                                            {/* <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label for="exampleamount">Third claim time</label>
                                                     <input type="datetime-local" name="thirdClaimTime" value={inputs.thirdClaimTime?.split('Z')[0]}
-                                                        // onChange={(e) => setIteration2(e.target.value)}
+                                                       
                                                         class="form-control" id="exampleamount" placeholder="Enter Your Third claim time" />
-                                                    {/* {Object.keys(iteration2Error).map((key) => {
-                                                        // console.log("name",nameError);
-                                                        console.log("key", key);
-                                                        return <p className="inputErrors">{iteration2Error[key]}</p>
-                                                    })} */}
+                                                
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>

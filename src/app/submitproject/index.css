@@ -527,3 +527,7 @@
       object-fit: cover;
       border-radius: 10px;
   }
+  .errormsg{
+      font-size: 11px;
+      color: crimson;
+  }

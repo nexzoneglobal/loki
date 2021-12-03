@@ -47,6 +47,8 @@ const SubmitProject = () => {
     const [minAllocationPerUser, setminAllocationPerUser] = useState('');
     const [maxAllocationPerUser, setmaxAllocationPerUser] = useState('');
   
+    const [liquidityPercentage, setliquidityPercentage] = useState('');
+    const [launchPadFeePercentage, setlaunchPadFeePercentage] = useState('');
 
 
     const [projectNameError, setProjectNameError] = useState({});
@@ -155,8 +157,8 @@ const SubmitProject = () => {
                     projectDescription: projectDescription, logoURL: logo64, contractAddress: contractAddress, websiteLink: websiteLink,
                     twitterLink: twitterLink, telegramlink: telegramLink, discrodLink: discardLink, mediumLink: mediumLink,
                     contactPersonName: personName, contactPersonEmail: personEmail, contactPersonWalletAddress: walletAddress, totalSupplyOfToken: totalSupply, preSaleStartDateAndTime: date, amountAllocatedForPresale: amount,preSaleEndDateAndTime:dateend,
-                    tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: iteration1, secondIterationPercentage: iteration2, thirdIterationPercentage:iteration3, firstClaimTime:datefirst, secondClaimTime:datesecond,thirdClaimTime:datethird,
-                    minAllocationPerUser:minAllocationPerUser,   maxAllocationPerUser:maxAllocationPerUser             
+                    tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: '100', secondIterationPercentage: '0', thirdIterationPercentage:'0', firstClaimTime:datefirst, secondClaimTime:datefirst,thirdClaimTime:datefirst,
+                    minAllocationPerUser:minAllocationPerUser,   maxAllocationPerUser:maxAllocationPerUser, launchPadFeePercentage:launchPadFeePercentage,  liquidityPercentage:liquidityPercentage           
                 })
                     .then((response) => {
                         toast.success('Project Submitted', {
@@ -631,12 +633,38 @@ const SubmitProject = () => {
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="exampleamount">Liquidity Percentage For Pancake <span>*</span></label>
+                                                    <input type="number" value={liquidityPercentage}
+                                                        onChange={(e) => setliquidityPercentage(e.target.value)}
+                                                        class="form-control" id="exampleamount" placeholder="Enter Liquidity Percentage For Pancake" />
+                                                     <p className="errormsg">Pancake Liquidity must be greater than 51 %</p>   
+                                                    {Object.keys(amountError).map((key) => {
+                                                        console.log("key", key);
+                                                        return <p className="inputErrors">{amountError[key]}</p>
+                                                    })}
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="exampleamount">LaunchPad Fee Percentage<span>*</span></label>
+                                                    <input type="number" value={2}
+                                                        onChange={(e) => setlaunchPadFeePercentage('2')}
+                                                        class="form-control" id="exampleamount" placeholder="Enter LaunchPad Fee Percentage" readOnly/>
+                                                    {Object.keys(amountError).map((key) => {
+                                                        console.log("key", key);
+                                                        return <p className="inputErrors">{amountError[key]}</p>
+                                                    })}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                                <div className="row">
+                                {/* <div className="row">
                                 <div className="col-xl-8 col-lg-10 col-md-12">
                                     <div className="inner-submit-lower-div">
                                         <h4>Vesting Details</h4>
@@ -685,7 +713,7 @@ const SubmitProject = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="row">
                             <div className="col-xl-8 col-lg-10 col-md-12">
                                     <div className="inner-submit-lower-div">
@@ -699,7 +727,7 @@ const SubmitProject = () => {
 
                                             <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <label for="example">First Claim Date & Time<span>*</span></label>
+                                                    <label for="example"> Claim Date & Time<span>*</span></label>
                                                     <br></br>
                                                     <div class="sd-container">
                                                        
@@ -718,7 +746,7 @@ const SubmitProject = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6">
+                                            {/* <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label for="example">Second Claim Start Date & Time<span>*</span></label>
                                                     <br></br>
@@ -738,9 +766,9 @@ const SubmitProject = () => {
                                                         })}
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                             
-                                            <div class="col-lg-6">
+                                            {/* <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label for="example">Third Claim Start Date & Time<span>*</span></label>
                                                     <br></br>
@@ -760,7 +788,7 @@ const SubmitProject = () => {
                                                         })}
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>

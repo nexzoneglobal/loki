@@ -272,9 +272,9 @@ const Pool = (props) => {
                                     <div className="right-inner">
                                         <button className="button-one-one" type="button">LIVE</button>
                                         <button className="button-two" type="button">Tier {tier}</button>
-                                        {whiteList?
+                                        {/* {whiteList?
                                         <button className="button-three" type="button">WhiteListed</button>:
-                                        <button className="button-four" type="button">Not WhiteListed</button>}
+                                        <button className="button-four" type="button">Not WhiteListed</button>} */}
                                         {/* <div className="text_main"><p>{progressValue}%</p></div> */}
                                     {/* <div class="progress">
                                      <div className="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
@@ -283,9 +283,9 @@ const Pool = (props) => {
                                       
                                     </div>
                                 </div>
-                                {/* <div className="para">
+                                <div className="para">
                                     <p className="para-one">{description}</p>
-                                </div> */}
+                                </div>
                             </div>
                         </div>
                         <div className="col-xl-7 col-lg-8 col-md-12 col-12 offset-xl-0   offset-0">
@@ -299,7 +299,7 @@ const Pool = (props) => {
                                         </div>
                                         <div className="image-text">
                                             <img src={logo} style={{ width: 30, height: 30, borderRadius: '50%', marginTop: 5 }} alt="" />
-                                            <h4>{(TierContribute / (10 ** 18)) / (tokenPriceInBNB)} {symbol}</h4>
+                                            <h4>{(TierContribute ) / (tokenPriceInBNB)} {symbol}</h4>
                                         </div>
                                     </div>
                                     <hr className="hr-submit-form"></hr>
