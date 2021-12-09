@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import './index.css';
+import React, { useState, useCallback,useEffect } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Navbar from '../../components/navbar';
 import Footer from '../../components/footer';
@@ -12,6 +12,33 @@ import ClosedPoolCard from './ClosedPoolCard';
 import { useSelector } from "react-redux";
 // import { Eligible } from '../../hooks/PoolDataFetcher'
 const Landing = () => {
+
+  const [alltoken, setallTokens] = useState([]);
+  // const toptrending = () => {
+  //   axios.get('https://api.coingecko.com/api/v3/search/trending')
+  //     .then((response) => {
+
+  //       // setOpen(true)
+  //       setallTokens(response.data.coins)
+  //     //   toast.success("Login Succssfully", {
+  //     //     position: "top-center",
+  //     //     autoClose: 3000,
+  //     //   });
+  //     //   localStorage.setItem('mytoken', token)
+  //     //   history.push("admin/dashboard");
+
+  //     // }).catch((err) => {
+  //     //   toast.error(err.response?.data.msg, {
+  //     //     position: "top-center",
+  //     //     autoClose: 2000,
+  //     //   });
+  //     })
+  // }
+  // useEffect(() => {
+  //   toptrending()
+  // }, )
+  
+  console.log("hereeeeeeeeeeeee", alltoken);
   const store = useSelector((state) => state.PoolActiveReducer.AllActivePoolData);
   const pesndingstore = useSelector((state) => state.PoolActiveReducer.PendingData)
   const closestore = useSelector((state) => state.PoolActiveReducer.ClosedData)
@@ -65,6 +92,10 @@ const Landing = () => {
       },
     },
   };
+
+
+
+
   // const { eligible } = Eligible(tokenAddress);
 
   // const EligiblePool = useCallback(async (e) => {
@@ -144,9 +175,10 @@ const Landing = () => {
 
 
   const display = store.map((elem, ind) => {
-    const { id, t1StarTtime, t1EndTime, t2StarTtime, t2EndTime, t3StarTtime, t3EndTime } = elem
-    const startTimeTier1 = parseInt(t1StarTtime)
-    const endTimeTier1 = parseInt(t1EndTime)
+
+    const { id, preSaleStartDateAndTime, preSaleEndDateAndTime, t2StarTtime, t2EndTime, t3StarTtime, t3EndTime } = elem
+    const startTimeTier1 = parseInt(preSaleStartDateAndTime)
+    const endTimeTier1 = parseInt(preSaleEndDateAndTime)
     const startTimeTier2 = parseInt(t2StarTtime)
     const endTimeTier2 = parseInt(t2EndTime)
     const startTimeTier3 = parseInt(t3StarTtime)
@@ -159,58 +191,87 @@ const Landing = () => {
 
     const t1 = 1; const t2 = 2; const t3 = 3;
     let tier3Date = new Date(elem.preSaleStartDateAndTime);
-    tier3Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 24)
-    tier3Date.setMinutes(new Date(elem.preSaleStartDateAndTime).getMinutes() + 10)
+    // tier3Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 24)
+    // tier3Date.setMinutes(new Date(elem.preSaleStartDateAndTime).getMinutes() + 10)
     // let tier4Date = new Date(elem.preSaleStartDateAndTime);
     // tier4Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 15)
     // tier4Date.setMinutes(new Date(elem.preSaleStartDateAndTime).getMinutes() + 20)
     // tier4Date.setDate(new Date(elem.preSaleStartDateAndTime).getDate() + 1);
     return (
-      <div className="row main-pool-featured">
-        <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={ind}>
-          <div className={now > startTimeTier1 && now < endTimeTier1 ? "card-main" : "card-main_1"}>
 
-            <Link to={'/pools/' + id + '/' + t1} id={1} >
-              <PoolCard {...elem} tier={1} allcation={elem.tier1Allocation} max={elem.tier1MaxAmountPerUserInBNB}
-                startTime={startTimeTier1} endTime={endTimeTier1}
-                min={elem.tier1MinAmountPerUserInBNB}
-                preSaleStartDateAndTime={new Date(elem.preSaleStartDateAndTime).setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 8)} />
-            </Link>
-          </div>
-        </div>
-        <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={ind}>
-          <div className={now > startTimeTier2 && now < endTimeTier2 ? "card-main" : "card-main_1"}>
-            <Link to={'/pools/' + id + '/' + t2}>
-              <PoolCard tier={2} {...elem} allcation={elem.tier2Allocation} max={elem.tier2MaxAmountPerUserInBNB}
-                min={elem.tier3MinAmountPerUserInBNB}
-                startTime={startTimeTier2} endTime={endTimeTier2}
-                preSaleStartDateAndTime={new Date(elem.preSaleStartDateAndTime).setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 23)} />
-            </Link>
-          </div>
-        </div>
-        <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={ind}>
-          <div className={now > startTimeTier3 && now < endTimeTier3 ? "card-main" : "card-main_1"}>
-            <Link to={'/pools/' + id + '/' + t3}>
-              <PoolCard tier={3} {...elem} allcation={elem.tier3Allocation} max={elem.tier3MaxAmountPerUserInBNB}
-                min={elem.tier3MinAmountPerUserInBNB}
-                startTime={startTimeTier3} endTime={endTimeTier3}
-                preSaleStartDateAndTime={tier3Date} />
-            </Link>
-          </div>
-        </div>
-        {/* <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={index}>
-        <div className={now>startTimeTier4  && now<endTimeTier4 ? "card-main" : "card-main_1"}>
-          <Link to={'/pools/' + id + '/' + t4} >
-            <PoolCard tier={4} {...elem} allcation={elem.tier4Allocation} max={elem.tier4MaxAmountPerUserInBNB}
-              min={elem.tier4MinAmountPerUserInBNB}
-              startTime={startTimeTier4}  endTime={endTimeTier4} 
-              preSaleStartDateAndTime={elem.preSaleEndDateAndTime} />
+
+      <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={ind}>
+
+        <div className={now > startTimeTier1 && now < endTimeTier1 ? "card-main" : "card-main_1"}>
+
+          <Link to={'/pools/' + id + '/' + t1} id={1} >
+            <PoolCard {...elem} tier={1} allcation={elem.tier1Allocation} max={elem.maxAllocationPerUser}
+              startTime={startTimeTier1} endTime={endTimeTier1}
+              min={elem.minAllocationPerUser}
+              preSaleStartDateAndTime={new Date(elem.preSaleStartDateAndTime).setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 8)} />
           </Link>
         </div>
-        </div> */}
       </div>
+      /* <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={ind}>
+        <div className={now > startTimeTier2 && now < endTimeTier2 ? "card-main" : "card-main_1"}>
+          <Link to={'/pools/' + id + '/' + t2}>
+            <PoolCard tier={2} {...elem} allcation={elem.tier2Allocation} max={elem.tier2MaxAmountPerUserInBNB}
+              min={elem.tier3MinAmountPerUserInBNB}
+              startTime={startTimeTier2} endTime={endTimeTier2}
+              preSaleStartDateAndTime={new Date(elem.preSaleStartDateAndTime).setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 23)} />
+          </Link>
+        </div>
+      </div>
+      <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={ind}>
+        <div className={now > startTimeTier3 && now < endTimeTier3 ? "card-main" : "card-main_1"}>
+          <Link to={'/pools/' + id + '/' + t3}>
+            <PoolCard tier={3} {...elem} allcation={elem.tier3Allocation} max={elem.tier3MaxAmountPerUserInBNB}
+              min={elem.tier3MinAmountPerUserInBNB}
+              startTime={startTimeTier3} endTime={endTimeTier3}
+              preSaleStartDateAndTime={tier3Date} />
+          </Link>
+        </div>
+      </div> */
+      /* <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={index}>
+      <div className={now>startTimeTier4  && now<endTimeTier4 ? "card-main" : "card-main_1"}>
+        <Link to={'/pools/' + id + '/' + t4} >
+          <PoolCard tier={4} {...elem} allcation={elem.tier4Allocation} max={elem.tier4MaxAmountPerUserInBNB}
+            min={elem.tier4MinAmountPerUserInBNB}
+            startTime={startTimeTier4}  endTime={endTimeTier4} 
+            preSaleStartDateAndTime={elem.preSaleEndDateAndTime} />
+        </Link>
+      </div>
+      </div> */
+
     )
   })
+  
+ 
+ 
+//   const data = alltoken.map((elem) => {
+//     return(
+//       <Link to="sellerleaderboard">
+//       <div className="item mt-2">
+//         <div className="main-card text-center">
+//           <div className="iconxerc">
+//             <img src={require("../../static/images/landing-leocorn/img12.png")} alt="" className="img-fluid main-imgd" />
+//           </div>
+//           <div className="text-down ml-4">
+//             <h4>
+//               ShibX <br></br>
+//               <span>ShibX
+//               </span>
+//             </h4>
+//             <h6>64.48%</h6>
+//             <p></p>
+//           </div>
+  
+//         </div>
+//       </div>
+//     </Link>
+//     )
+// })
+
 
   return (
     <div className='landing-nft'>
@@ -229,77 +290,28 @@ const Landing = () => {
           </div>
         </div>
       </section>
-      <section className="featured-pool">
-        <div className="auto-container">
-          <div className="row  ">
-            <div className="searchbar">
-              {/* <h1>Active Pools</h1> */}
-              {/* <div className="main-slider " onClick={EligiblePool}>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider round"></span>
-                </label>
-                <p>Show Eligible Pools only</p>
-              </div> */}
-            </div>
-          </div>
-          {display}
-        </div>
-      </section>
-      {/* <section className="featured-pool-coming-soon">
-        <div className="auto-container">
-          <h1>Pools Coming Soon</h1>
-          {pesndingstore.map((elem, index) => {
-            let tier3Date = new Date(elem.preSaleStartDateAndTime);
-            tier3Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 23)
-            tier3Date.setMinutes(new Date(elem.preSaleStartDateAndTime).getMinutes() + 10)
 
-            let tier2Date = new Date(elem.preSaleStartDateAndTime);
-            tier2Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 20);
-            return (
-              <div className="row main-pool-featured">
-                <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={index}>
-                  <ComingPoolCard {...elem} tier={1} allcation={elem.tier1Allocation} max={elem.tier1MaxAmountPerUserInBNB}
-                    min={elem.tier1MinAmountPerUserInBNB}
-                    preSaleStartDateAndTime={new Date(elem.preSaleStartDateAndTime)}
-                  />
-                </div>
-                <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={index} >
-                  <ComingPoolCard tier={2} {...elem} allcation={elem.tier2Allocation} max={elem.tier2MaxAmountPerUserInBNB}
-                    min={elem.tier2MinAmountPerUserInBNB}
-                    preSaleStartDateAndTime={tier2Date} />
-                </div>
-                <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={index}>
-                  <ComingPoolCard tier={3} {...elem} allcation={elem.tier3Allocation} max={elem.tier3MaxAmountPerUserInBNB}
-                    min={elem.tier3MinAmountPerUserInBNB}
-                    preSaleStartDateAndTime={tier3Date} />
-                </div>
-            
-              </div>
-            )
-          })}
-        </div>
-      </section> */}
+
       <div className="banner-mju">
         <div className="container">
           <div className="row">
             <div className="col-md-9 m-auto">
-            <div className="inner-banners-x">
-              <div className="imgds">
-              <img src={require("../../static/images/landing-leocorn/ing12.png")} alt="" className="img-fluid main-imgd" />
+              <div className="inner-banners-x">
+                <div className="imgds">
+                  <img src={require("../../static/images/landing-leocorn/ing12.png")} alt="" className="img-fluid main-imgd" />
+                </div>
+                <div className="textsd">
+                  <h4 className="dfgh">MISSED DOGE? BUY <span>FLOKI</span></h4>
+                </div>
+                <div className="imgds">
+                  <img src={require("../../static/images/landing-leocorn/ing12.png")} alt="" className="img-fluid main-imgd" />
+                </div>
               </div>
-              <div className="textsd">
-                <h4 className="dfgh">MISSED DOGE? BUY <span>FLOKI</span></h4>
-              </div>
-              <div className="imgds">
-              <img src={require("../../static/images/landing-leocorn/ing12.png")} alt="" className="img-fluid main-imgd" />
-              </div>
-          </div>
-     
+
             </div>
           </div>
         </div>
-         
+
       </div>
       <section className="featured-pool-closed">
         <div className="auto-container">
@@ -327,7 +339,7 @@ const Landing = () => {
                 </div>
               </div>
             </Link>
-            <Link to="sellerleaderboard">
+            {/* <Link to="sellerleaderboard">
               <div className="item mt-2">
                 <div className="main-card text-center">
                   <div className="iconxerc">
@@ -404,26 +416,84 @@ const Landing = () => {
 
                 </div>
               </div>
-            </Link>
+            </Link> */}
           </OwlCarousel>
 
 
         </div>
       </section>
-      <section className="featured-pool-closed">
+      <section className="featured-pool">
+        <div className="auto-container">
+          <div className="row  ">
+            <div className="searchbar">
+              {/* <h1>Active Pools</h1> */}
+              {/* <div className="main-slider " onClick={EligiblePool}>
+                <label class="switch">
+                  <input type="checkbox" />
+                  <span class="slider round"></span>
+                </label>
+                <p>Show Eligible Pools only</p>
+              </div> */}
+            </div>
+          </div>
+          <h1 className="main-pool-featured h1">Active Pool</h1>
+          <div className="row main-pool-featured">
+            {display}
+          </div>
+        </div>
+      </section>
+      <section className="featured-pool-coming-soon">
         <div className="auto-container">
           <h1>Pools Coming Soon</h1>
-          {closestore.map((elem, closeindex) => {
-            const { id, TotalBnbinOneTier, TotalBnbinTwoTier, TotalBnbinThreeTier } = elem
-            const t1 = 1; const t2 = 2; const t3 = 3; const t4 = 4;
-            return (
-              <div className="row main-pool-featured">
-                <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={closeindex}>
+          <div className="row main-pool-featured">
+            {pesndingstore.map((elem, index) => {
+              let tier3Date = new Date(elem.preSaleStartDateAndTime);
+              tier3Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 23)
+              tier3Date.setMinutes(new Date(elem.preSaleStartDateAndTime).getMinutes() + 10)
+
+              let tier2Date = new Date(elem.preSaleStartDateAndTime);
+              tier2Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 20);
+              return (
+
+                <div className="col-xl-4 col-lg-4 col-md-6 col-12 mb-4" key={index}>
+                  <ComingPoolCard {...elem} tier={1} allcation={elem.tier1Allocation} max={elem.maxAllocationPerUser}
+                    min={elem.minAllocationPerUser}
+                    preSaleStartDateAndTime={new Date(elem.preSaleStartDateAndTime)}
+                  />
+                </div>
+                /* <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={index} >
+                  <ComingPoolCard tier={2} {...elem} allcation={elem.tier2Allocation} max={elem.tier2MaxAmountPerUserInBNB}
+                    min={elem.tier2MinAmountPerUserInBNB}
+                    preSaleStartDateAndTime={tier2Date} />
+                </div>
+                <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={index}>
+                  <ComingPoolCard tier={3} {...elem} allcation={elem.tier3Allocation} max={elem.tier3MaxAmountPerUserInBNB}
+                    min={elem.tier3MinAmountPerUserInBNB}
+                    preSaleStartDateAndTime={tier3Date} />
+                </div> */
+
+
+              )
+            })}
+          </div>
+        </div>
+      </section>
+      <section className="featured-pool-closed">
+        <div className="auto-container">
+          <h1>Pools Closed</h1>
+          <div className="row main-pool-featured">
+
+            {closestore.map((elem, closeindex) => {
+              const { id, TotalBnbinOneTier, TotalBnbinTwoTier, TotalBnbinThreeTier } = elem
+              const t1 = 1; const t2 = 2; const t3 = 3; const t4 = 4;
+              return (
+
+                <div className="col-xl-4 col-lg-4 col-md-6 col-12 mt-4" key={closeindex}>
                   <Link to={'/closepool/' + id + '/' + t1}>
                     <ClosedPoolCard {...elem} tier={1} TotalBnbPerTier={TotalBnbinOneTier} tierAllocation={elem.tier1Allocation} />
                   </Link>
                 </div>
-                <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={closeindex}>
+                /* <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={closeindex}>
                   <Link to={'/closepool/' + id + '/' + t2}>
                     <ClosedPoolCard tier={2} {...elem} TotalBnbPerTier={TotalBnbinTwoTier} tierAllocation={elem.tier2Allocation} />
                   </Link>
@@ -432,15 +502,17 @@ const Landing = () => {
                   <Link to={'/closepool/' + id + '/' + t3}>
                     <ClosedPoolCard tier={3} {...elem} TotalBnbPerTier={TotalBnbinThreeTier} tierAllocation={elem.tier3Allocation} />
                   </Link>
-                </div>
-                {/* <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={closeindex}>
+                </div> */
+                /* <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={closeindex}>
                   <Link to={'/closepool/' + id + '/' + t4}>
                     <ClosedPoolCard tier={4} {...elem} />
                   </Link>
-                </div> */}
-              </div>
-            )
-          })}
+                </div> */
+
+              )
+
+            })}
+          </div>
         </div>
       </section>
       <Footer />

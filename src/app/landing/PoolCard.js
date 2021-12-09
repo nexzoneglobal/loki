@@ -1,3 +1,4 @@
+import { element } from 'prop-types';
 import React, { useState } from 'react';
 import './index.css';
 
@@ -12,11 +13,12 @@ const PoolCard = (props) => {
 
  console.log(props.endTime)
 
-  var time = new Date(props.preSaleStartDateAndTime)
+  var time = new Date(props.preSaleEndDateAndTime  *1000)
+  console.log('timeeeeeeee', time)
   function timer() {
-    var now = new Date()
-    var diff = time.getTime() - now.getTime()
-    if (diff <= 0) {
+   var now = new Date()
+  var diff = time.getTime() - now.getTime();
+ if (diff <= 0) {
       return;
     }
     var days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -41,7 +43,11 @@ const PoolCard = (props) => {
       <div className="main-image">
         <img src={props.logoURL} alt="" style={{ width: 60, height: 60, borderRadius: '50%' }} />
         <h1>{props.projectName}</h1>
-        <button>{props.tier}</button>
+        {/* <button>{props.tier}</button> */}
+      </div>
+      <div className="ksajdksj">
+        <h6>Presale Address :</h6>
+        <p>{props.contractAddressDeployed}</p>
       </div>
       <div className="calender">
         {
@@ -62,9 +68,13 @@ const PoolCard = (props) => {
         <div className="min-max">
           <p className="one">Min: {props.min} BNB</p>
           <p>Max: {props.max} BNB</p>
-          
         </div>:""
+        
         }
+         <div className="min-max">
+          <p className="one">SoftCap: {props.softcap/(10 ** 18)} BNB</p>
+          <p>HardCap: {props.hardcap/(10 ** 18)} BNB</p>
+        </div>
         {/* } */}
       </div>
     </>

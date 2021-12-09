@@ -36,10 +36,11 @@ const Pool = (props) => {
     let mediumlink = '';
     let discardlink = '';
     let symbol = '';
-    let tokenPriceInBNB ;
+    let tokenPriceInBNB='' ;
     let tokenAddress='';
     let prersaleTime = new Date()
     let amountAllocatedForPresale='';
+    let preSaleEndDateAndTime='';
     store.find((elem) => {
         if(elem.id==id){
             console.log('elem:::' , elem)
@@ -54,34 +55,36 @@ const Pool = (props) => {
         symbol=elem.symbol;
         tokenPriceInBNB=elem.tokenPriceInBNB;
         tokenAddress=elem.contractAddressDeployed;
-        amountAllocatedForPresale=elem.amountAllocatedForPresale
+        amountAllocatedForPresale=elem.amountAllocatedForPresale;
+        preSaleEndDateAndTime= elem.preSaleEndDateAndTime;
+
     }
     if (tier == 1) {
-        tierMinValue = elem.tier1MinAmountPerUserInBNB;
-        tierMaxValue = elem.tier1MaxAmountPerUserInBNB;
+        tierMinValue = elem.minAllocationPerUser;
+        tierMaxValue = elem.maxAllocationPerUser;
         tier1Allocation=elem.tier1Allocation;
         TotalBnbinOneTier=elem.TotalBnbinOneTier
         progressValue= ((((TotalBnbinOneTier/( 10**18) / tokenPriceInBNB))/((amountAllocatedForPresale)*(tier1Allocation/100)))*100).toFixed(3)
-        prersaleTime = new Date(elem.t1EndTime * 1000);
+        prersaleTime = new Date(elem.preSaleEndDateAndTime * 1000);
         }
-        if (tier == 2) {
-            tierMinValue = elem.tier2MinAmountPerUserInBNB;
-            tierMaxValue = elem.tier2MaxAmountPerUserInBNB;
-            tier2Allocation=elem.tier2Allocation;
-            TotalBnbinTwoTier=elem.TotalBnbinTwoTier;
-            progressValue= ((((TotalBnbinTwoTier/( 10**18) / tokenPriceInBNB))/((amountAllocatedForPresale)*(tier2Allocation/100)))*100).toFixed(3)
-        prersaleTime = new Date(elem.t2EndTime * 1000);
+        // if (tier == 2) {
+        //     tierMinValue = elem.tier2MinAmountPerUserInBNB;
+        //     tierMaxValue = elem.tier2MaxAmountPerUserInBNB;
+        //     tier2Allocation=elem.tier2Allocation;
+        //     TotalBnbinTwoTier=elem.TotalBnbinTwoTier;
+        //     progressValue= ((((TotalBnbinTwoTier/( 10**18) / tokenPriceInBNB))/((amountAllocatedForPresale)*(tier2Allocation/100)))*100).toFixed(3)
+        // prersaleTime = new Date(elem.t2EndTime * 1000);
 
-        }
-        if (tier == 3) {
-            tierMinValue = elem.tier3MinAmountPerUserInBNB;
-            tierMaxValue = elem.tier3MaxAmountPerUserInBNB;
-            tier3Allocation=elem.tier3Allocation;
-            TotalBnbinThreeTier=elem.TotalBnbinThreeTier
-            progressValue= ((((TotalBnbinThreeTier/( 10**18) / tokenPriceInBNB))/((amountAllocatedForPresale)*(tier3Allocation/100)))*100).toFixed(3)
-        prersaleTime = new Date(elem.t3EndTime * 1000);
+        // }
+        // if (tier == 3) {
+        //     tierMinValue = elem.tier3MinAmountPerUserInBNB;
+        //     tierMaxValue = elem.tier3MaxAmountPerUserInBNB;
+        //     tier3Allocation=elem.tier3Allocation;
+        //     TotalBnbinThreeTier=elem.TotalBnbinThreeTier
+        //     progressValue= ((((TotalBnbinThreeTier/( 10**18) / tokenPriceInBNB))/((amountAllocatedForPresale)*(tier3Allocation/100)))*100).toFixed(3)
+        // prersaleTime = new Date(elem.t3EndTime * 1000);
 
-        }
+        // }
         // if (tier == 4) {
         //     tierMinValue = elem.tier4MinAmountPerUserInBNB;
         //     tierMaxValue = elem.tier4MaxAmountPerUserInBNB;
@@ -95,6 +98,7 @@ const Pool = (props) => {
     const [min, setMin] = useState(0);
     const [sec, setSec] = useState(0);
     function timer(time) {
+        var time= new Date(preSaleEndDateAndTime * 1000);
         var now = new Date()
         var diff = time.getTime() - now.getTime()
         if (diff <= 0) {
@@ -116,9 +120,10 @@ const Pool = (props) => {
     useEffect(() => {
         timerdata();
     }, [tier])
+    // http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/
     const timerdata = async () => {
         try {
-            axios.get("http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/" + id)
+            axios.get("http://54.191.140.38:4750/project/" + id)
                 .then((response) => {
                     var time = new Date(response.data.msg.preSaleStartDateAndTime);
                     if (tier == 1) {
@@ -162,7 +167,7 @@ const Pool = (props) => {
             return 0;
         }
     }, [tier1Con])
-
+    console.log('hereeeeeeeee', TierContribute)
     const JoinPool = useCallback(async (e) => {
         e.preventDefault();
         if (account) {
@@ -266,15 +271,15 @@ const Pool = (props) => {
                                     </div>
                                     <div className="right-inner">
                                         <button className="button-one-one" type="button">LIVE</button>
-                                        <button className="button-two" type="button">Tier {tier}</button>
-                                        {whiteList?
+                                        {/* <button className="button-two" type="button">Tier {tier}</button> */}
+                                        {/* {whiteList?
                                         <button className="button-three" type="button">WhiteListed</button>:
-                                        <button className="button-four" type="button">Not WhiteListed</button>}
-                                        <div className="text_main"><p>{progressValue}%</p></div>
+                                        <button className="button-four" type="button">Not WhiteListed</button>} */}
+                                        {/* <div className="text_main"><p>{progressValue}%</p></div> */}
                                     {/* <div class="progress">
                                      <div className="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                        </div> */}
-                                          <MDBProgress material  value={progressValue} />
+                                          {/* <MDBProgress material  value={progressValue} /> */}
                                       
                                     </div>
                                 </div>
@@ -294,7 +299,7 @@ const Pool = (props) => {
                                         </div>
                                         <div className="image-text">
                                             <img src={logo} style={{ width: 30, height: 30, borderRadius: '50%', marginTop: 5 }} alt="" />
-                                            <h4>{(TierContribute / (10 ** 18)) / (tokenPriceInBNB)} {symbol}</h4>
+                                            <h4>{(TierContribute ) / (tokenPriceInBNB)} {symbol}</h4>
                                         </div>
                                     </div>
                                     <hr className="hr-submit-form"></hr>
@@ -321,16 +326,20 @@ const Pool = (props) => {
                                                 <span className="span-one">You’ll recieve</span><span className="image">
                                                     <img src={data.logo} alt="" style={{ width: 25, height: 25, borderRadius: '50%', marginLeft: 10 }} /></span><span className="FAN">100,000,000 $FAN</span>
                                             </div> */}
-                                              {whiteList?
+                                              {/* {whiteList?
                                                 <div className="buttons">
                                                     {progressValue < 100?<button type="button" onClick={JoinPool}>CONTRIBUTE & JOIN POOL</button>:""}
-                                                    {/* <ToastContainer/> */}
+                                                 
                                                 </div>:
                                                  <div className="buttons1">
                                                  <button type="button" onClick={JoinPool}>CONTRIBUTE & JOIN POOL</button>
-                                                 {/* <ToastContainer/> */}
+                                                
                                              </div>
-                                              }
+                                              } */}
+                                               <div className="buttons">
+                                                 <button type="button" onClick={JoinPool}>CONTRIBUTE & JOIN POOL</button>
+                                                
+                                             </div>
                                             </form> :
                                             <div style={{ fontSize: 16, display: 'flex', justifyContent: 'center', marginTop: 100 }}>
                                                 <p style={{ color: 'yellow' }}>This Presale is currently in progress</p>

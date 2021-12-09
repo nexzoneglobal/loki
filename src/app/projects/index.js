@@ -4,14 +4,17 @@ import { Link } from 'react-router-dom';
 import Navbar from '../../components/navbar';
 import { Finalize } from "../../hooks/PoolDataFetcher";
 import axios from 'axios';
+import { useWeb3React } from '@web3-react/core'
+
 const Projects = () => {
+    const { account } = useWeb3React();
     const { Final } = Finalize()
     const [searchTerm, setSearchTerm] = useState('')
     const [data, getDate] = useState([]);
     const getAlldata = async () => {
         try {
 
-            await axios.get("http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/project/all")
+            await axios.post("http://54.191.140.38:4750/project/getAllProjectsOfUser", {account:account})
                 .then((response) => {
 
                     if (response.data.status) {
@@ -70,7 +73,7 @@ const Projects = () => {
                                         </div>
                                     </div>
 
-                                    <div className="drop-down-single-line">
+                                    {/* <div className="drop-down-single-line">
                                         <div class="dropdown show">
                                             <a class=" " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Sort By<span><i class="fa fa-caret-down" aria-hidden="true"></i></span>
@@ -81,7 +84,7 @@ const Projects = () => {
                                                 <a class="dropdown-item" href="#">Rejected</a>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     {/* <div className="buttons-filter">
                                             <button type="button">
                                                 <span><i class="fa fa-filter" aria-hidden="true"></i></span> Filter
@@ -133,12 +136,7 @@ const Projects = () => {
                                                 return (
                                                     <tr index={key}>
                                                         <td className='text-left'><img className='balance-table-img' src={elem.logoURL} style={{ width: 40 }} alt="" /> {elem.projectName}</td>
-                                                        {/* <td className=''>
-                                                            {
-                                                                elem.preSaleEndDateAndTime && new Date(elem.preSaleEndDateAndTime) < new Date() && elem.statusOfApplication === 'Approved' ? <button className={elem.finalizeSaleDone === true ? 'green1' : 'disabled1'} onClick={() => setCurrentAddress({ id: elem.id, address: elem.contractAddressDeployed })}>Finalize</button> : <button className='disabled2' >Finalize</button>
-                                                            }
-
-                                                        </td>  */}
+                                                     
                                                         <td className='text-left-2nd'><a href={elem.websiteLink} target="_blank">{elem.websiteLink} </a></td>
                                                         <td className='text-left-normal'>{elem.contactPersonName}</td>
                                                         <td className='text-left-normal'> <p>{elem.contactPersonWalletAddress == "" ? "" : `${elem.contactPersonWalletAddress.substring(0, 6)}...${elem.contactPersonWalletAddress.substring(
@@ -146,17 +144,25 @@ const Projects = () => {
                                                         )}`}</p></td>
                                                         {/* <td className='text-green-approved'>{elem.status}</td> */}
 
-                                                        {/* <td className={elem.statusOfApplication == 'Pending' ? 'text-green-pending' : elem.statusOfApplication == 'Approved' ? 'text-green-approved' : 'text-green-rejected'}>{elem.statusOfApplication}</td> */}
+                                                       
                                                         {/* <td className="button-details">
                                                             <Link className='' to={'/project-details/' + id}>Detail</Link>
                                                         </td> */}
                                                         <td className="button-detailss">
-                                                            <div className="d-flex">
-                                                                <Link className='buttion-on' >Approve</Link>
-                                                                <Link to="/project-details/:id" className='buttion-on' >Detail</Link>
+                                                            <div className="">
+                                                                {/* <Link className='buttion-on' >Approve</Link>  {elem.statusOfApplication}*/}
+                                                                <td id="gfngfmg" className={elem.statusOfApplication == 'Pending' ? 'text-green-pending' : elem.statusOfApplication == 'Approved' ? 'text-green-approved' : 'text-green-rejected'}>   {
+                                                                elem.preSaleEndDateAndTime && new Date(elem.preSaleEndDateAndTime) < new Date() && elem.statusOfApplication === 'Approved' ? <button className={elem.finalizeSaleDone === true ? 'green1' : 'disabled1'} onClick={() => setCurrentAddress({ id: elem.id, address: elem.contractAddressDeployed })}>Finalize</button> : <button className='disabled2' >Finalize</button>
+                                                            } <Link to={"/project-details/" + id} className='disabled1 ml-2 text-white' >Detail</Link></td>
+                                                               
+                                                              
                                                             </div>
 
                                                         </td>
+                                                        {/* <td className=''>
+                                                           
+
+                                                        </td>  */}
                                                     </tr>
                                                 )
                                             })
