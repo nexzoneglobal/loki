@@ -12,6 +12,7 @@ import Environment from '../../utils/Environment';
 import DeployContact from '../../hooks/DeployContact'
 import ApproveContract, { BalanceOfContract } from '../../hooks/approve'
 import BigNumber from 'bignumber.js';
+import moment from 'moment';
 const SubmitProject = () => {
     const { account } = useWeb3React();
 
@@ -661,7 +662,7 @@ const SubmitProject = () => {
                                                                 type="date"
                                                                 value={date}
                                                                 onChange={handleChangeDate}
-                                                                id="party" type="datetime-local" name="partydate"  ></input>
+                                                                id="party" type="datetime-local" name="partydate" minDate={moment().toDate()} ></input>
                                                             <span class="open-button">
                                                                 <button type="button">📅</button>
                                                             </span>
