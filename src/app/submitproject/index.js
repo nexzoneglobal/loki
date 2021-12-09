@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import './index.css';
 import Navbar from '../../components/navbar';
 import Footer from '../../components/footer';
 import { useWeb3React } from '@web3-react/core'
+import Getweb3 from '../../hooks/Getweb3';
 import Web3 from "web3";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Environment from '../../utils/Environment';
+import DeployContact from '../../hooks/DeployContact'
+import ApproveContract, { BalanceOfContract } from '../../hooks/approve'
+import BigNumber from 'bignumber.js';
 const SubmitProject = () => {
     const { account } = useWeb3React();
 
@@ -21,7 +26,6 @@ const SubmitProject = () => {
     const [websiteLink, setWebsiteLink] = useState('');
     const [twitterLink, setTwitterLinkt] = useState('');
     const [telegramLink, setTelegramLink] = useState('');
-
     //optional link
     const [discardLink, setDiscardLink] = useState('');
     const [mediumLink, setMediumLink] = useState('');
@@ -46,7 +50,7 @@ const SubmitProject = () => {
 
     const [minAllocationPerUser, setminAllocationPerUser] = useState('');
     const [maxAllocationPerUser, setmaxAllocationPerUser] = useState('');
-  
+
     const [liquidityPercentage, setliquidityPercentage] = useState('');
     const [launchPadFeePercentage, setlaunchPadFeePercentage] = useState('');
 
@@ -73,8 +77,11 @@ const SubmitProject = () => {
     const [priceError, setPriceError] = useState('');
     const [iteration1Error, setIteration1Error] = useState('');
     const [iteration2Error, setIteration2Error] = useState('');
+    const [liquidityPercentageError, setliquidityPercentageError] = useState('');
 
-
+    const { deployprojectonlaunchpad } = DeployContact();
+    const { Approvetoken } = ApproveContract(contractAddress);
+    const { BalanceOfToken } = BalanceOfContract(contractAddress);
 
     const handleImageChange = (e) => {
         setLogo(e.target.value);
@@ -142,43 +149,90 @@ const SubmitProject = () => {
     const result = Web3.utils.isAddress(contractAddress);
     const result1 = Web3.utils.isAddress(walletAddress);
 
-    const SubmitForm = async (e) => {
+    const SubmitForm = useCallback(async (e) => {
         e.preventDefault();
         formValidation();
-        try {
-            // && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
-            //     && price !== '' && iteration1 !== '' && iteration2 !== ''   totalSupplyOfToken: totalSupply, preSaleStartDateAndTime: '', amountAllocatedForPresale: amount,
-                  //  tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: iteration1, secondIterationPercentage: iteration2
-            if (projectName !== '' && projectSymbol !== '' && projectDescription !== '' && logo64 !== '' 
-                && websiteLink !== '' && twitterLink !== '' && telegramLink !== '' && personName !== '' && personEmail !== ''  && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
-                && walletAddress !== '' ) {
-                await axios.post('http://54.191.140.38:4750/project/createProject', {
-                    projectName: projectName, symbol: projectSymbol,
-                    projectDescription: projectDescription, logoURL: logo64, contractAddress: contractAddress, websiteLink: websiteLink,
-                    twitterLink: twitterLink, telegramlink: telegramLink, discrodLink: discardLink, mediumLink: mediumLink,
-                    contactPersonName: personName, contactPersonEmail: personEmail, contactPersonWalletAddress: walletAddress, totalSupplyOfToken: totalSupply, preSaleStartDateAndTime: date, amountAllocatedForPresale: amount,preSaleEndDateAndTime:dateend,
-                    tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: '100', secondIterationPercentage: '0', thirdIterationPercentage:'0', firstClaimTime:datefirst, secondClaimTime:datefirst,thirdClaimTime:datefirst,
-                    minAllocationPerUser:minAllocationPerUser,   maxAllocationPerUser:maxAllocationPerUser, launchPadFeePercentage:launchPadFeePercentage,  liquidityPercentage:liquidityPercentage           
+        const epochStartTime = new Date(date).getTime() / 1000.0;
+        const epochEndTime = new Date(dateend).getTime() / 1000.0;
+        const tokenPriceInBNB = new BigNumber(price).multipliedBy(new BigNumber(10).pow(18));
+        const maxAllocationPerUsers = new BigNumber(maxAllocationPerUser).multipliedBy(new BigNumber(10).pow(18));
+        const minAllocationPerUsers = new BigNumber(minAllocationPerUser).multipliedBy(new BigNumber(10).pow(18));
+        const amountAllocatedForPresale = new BigNumber(amount);
+
+        const maxCap = (amountAllocatedForPresale).multipliedBy(tokenPriceInBNB);
+
+        const _liquidityPercentage = new BigNumber(liquidityPercentage);
+        const launchPadFeePercentage = new BigNumber(2);
+        const participationBalanceTokens = (maxCap).dividedBy(tokenPriceInBNB).multipliedBy(new BigNumber(10).pow(decimals));
+        const liquidityBalanceTokens = participationBalanceTokens.multipliedBy(_liquidityPercentage).dividedBy(new BigNumber(100));
+        const launchPadBalanceTokens = participationBalanceTokens.multipliedBy(launchPadFeePercentage).dividedBy(new BigNumber(100));
+        const totalTokens = participationBalanceTokens.plus(liquidityBalanceTokens).plus(launchPadBalanceTokens).dividedBy(new BigNumber(10).pow(18));
+        const totalTokensinWei = participationBalanceTokens.plus(liquidityBalanceTokens).plus(launchPadBalanceTokens);
+        console.log("hereeeeeeeee", totalTokens.toNumber().toString());
+        let BalanceOfContract = await BalanceOfToken();
+        console.log("balvvvvvvvvvvvvvv", BalanceOfContract);
+        if (BalanceOfContract >= totalTokensinWei) {
+            let approve = await Approvetoken(Environment.DeployerAddress, totalTokensinWei)
+            if (approve.status) {
+
+
+
+                const leoCornArguments = ({
+                    nameOfProject: projectName,
+                    _saleStartTime: epochStartTime,
+                    _saleEndTime: epochEndTime,
+                    _projectOwner: walletAddress,
+                    tokenToIDO: contractAddress,
+                    tokenDecimals: decimals,
+                    _numberOfIdoTokensToSell: amountAllocatedForPresale.toNumber().toString(),
+                    _tokenPriceInBNB: tokenPriceInBNB.toNumber().toString(),
+                    maxAllocaPerUser: maxAllocationPerUsers.toNumber().toString(),
+                    minAllocaPerUser: minAllocationPerUsers.toNumber().toString(),
+                    liquidityPercentage: liquidityPercentage,
+
                 })
-                    .then((response) => {
-                        toast.success('Project Submitted', {
-                            position: "top-right",
+
+
+
+
+                let deployer = await deployprojectonlaunchpad(leoCornArguments)
+                let contractAddressDeployed = deployer.events.OwnershipTransferred[0].address;
+               
+                try {
+                    // && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
+                    //     && price !== '' && iteration1 !== '' && iteration2 !== ''   totalSupplyOfToken: totalSupply, preSaleStartDateAndTime: '', amountAllocatedForPresale: amount,
+                    //  tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: iteration1, secondIterationPercentage: iteration2
+                    if (projectName !== '' && projectSymbol !== '' && projectDescription !== '' && logo64 !== ''
+                        && websiteLink !== '' && twitterLink !== '' && telegramLink !== '' && personName !== '' && personEmail !== '' && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
+                        && walletAddress !== '' ) {
+                        await axios.post('http://54.191.140.38:4750/project/createProject', {
+                            projectName: projectName, symbol: projectSymbol,
+                            projectDescription: projectDescription, logoURL: logo64, contractAddress: contractAddress, websiteLink: websiteLink,
+                            twitterLink: twitterLink, telegramlink: telegramLink, discrodLink: discardLink, mediumLink: mediumLink,
+                            contactPersonName: personName, contactPersonEmail: personEmail, contactPersonWalletAddress: walletAddress, totalSupplyOfToken: totalSupply, preSaleStartDateAndTime: date, amountAllocatedForPresale: amount, preSaleEndDateAndTime: dateend,
+                            tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: '100', secondIterationPercentage: '0', thirdIterationPercentage: '0', firstClaimTime: dateend, secondClaimTime: dateend, thirdClaimTime: dateend,
+                            minAllocationPerUser: minAllocationPerUser, maxAllocationPerUser: maxAllocationPerUser, launchPadFeePercentage: '2', liquidityPercentage: liquidityPercentage, contractAddressDeployed: contractAddressDeployed, statusOfApplication: 'Approved'
+                        })
+                            .then((response) => {
+                                toast.success('Project Submitted', {
+                                    position: "top-right",
+                                    autoClose: 2000,
+                                });
+                            });
+                    }
+                    else {
+                        toast.error('Invalid Form Submission', {
+                            position: "bottom-center",
                             autoClose: 2000,
                         });
-                    });
-            }
-            else {
-                toast.error('Invalid Form Submission', {
-                    position: "bottom-center",
-                    autoClose: 2000,
-                });
+                    }
+                }
+                catch (err) {
+                    return false
+                }
             }
         }
-        catch (err) {
-            return false
-        }
-
-    }
+    })
     const formValidation = () => {
         const projectNameError = {};
         const projectSymbolError = {};
@@ -199,6 +253,7 @@ const SubmitProject = () => {
         const priceError = {};
         const iteration1Error = {};
         const iteration2Error = {};
+        const liquidityPercentageError={};
         let isValid = true;
         if (projectName === '') {
             projectNameError.nameError = "Project Name is Required";
@@ -284,6 +339,10 @@ const SubmitProject = () => {
             iteration2Error.iteration1Error = "Iteration 2 is Required";
             isValid = false;
         }
+        if (liquidityPercentage === '' && liquidityPercentage< 51) {
+            liquidityPercentageError.liquidityPercentage = "Pancake Liquidity must be greater than 51 %";
+            isValid = false;
+        }
         setProjectNameError(projectNameError);
         setProjectSymbolError(projectSymbolError)
         setProjectDescriptionError(projectDescriptionError);
@@ -304,6 +363,7 @@ const SubmitProject = () => {
         setPriceError(priceError);
         setIteration1Error(iteration1Error);
         setIteration2Error(iteration2Error);
+        setliquidityPercentageError(liquidityPercentageError)
         return isValid;
     }
     return (
@@ -375,17 +435,17 @@ const SubmitProject = () => {
                                                 </div>
                                             </div> */}
                                                 <div class="col-lg-12">
-                                                <div class="form-group">
-                                                    <label for="exampleInputcontractaddress">Project Contract Address<span>*</span></label>
-                                                    <input type="text" value={contractAddress}
-                                                        onChange={(e) => setContractAddress(e.target.value)}
-                                                        class="form-control" id="exampleInputcontractaddress" placeholder="Enter Contract Address of your project" />
-                                                    {Object.keys(contractAddressError).map((key) => {
-                                                        console.log("key", key);
-                                                        return <p className="inputErrors">{contractAddressError[key]}</p>
-                                                    })}
+                                                    <div class="form-group">
+                                                        <label for="exampleInputcontractaddress">Project Contract Address<span>*</span></label>
+                                                        <input type="text" value={contractAddress}
+                                                            onChange={(e) => setContractAddress(e.target.value)}
+                                                            class="form-control" id="exampleInputcontractaddress" placeholder="Enter Contract Address of your project" />
+                                                        {Object.keys(contractAddressError).map((key) => {
+                                                            console.log("key", key);
+                                                            return <p className="inputErrors">{contractAddressError[key]}</p>
+                                                        })}
+                                                    </div>
                                                 </div>
-                                            </div>
                                             </div>
                                         </div>
 
@@ -402,28 +462,28 @@ const SubmitProject = () => {
                                                     
                                                 </div>
                                             </div> */}
-                                              <div class="form-group">
-                                                    <label for="exampleInputsymbol">Upload Logo (500X500 pixels)<span>*</span></label>
-                                                    <div className="dashed-border-new">
-                                                        <div className="main-image-div main-bvc"> 
-                                                <img src={logo?logo:require("../../static/images/submit-form/cloud.png")} alt="" />
-                                                 {selectedImg ? renderPhotos(selectedImg) : null}
-                                                        </div>
-                                                        <p className="text-center"><span>
-                                                            <label for="files" className="msindh">Upload Image</label>
-                                                            <input type="file" id="files"
-                                                        value={logo}
-                                                        onChange={handleImageChange}
-                                                        name="avatar" className="d-none custom-file-inputt" accept="image/*"  />
-                                                        </span></p>
+                                            <div class="form-group">
+                                                <label for="exampleInputsymbol">Upload Logo (500X500 pixels)<span>*</span></label>
+                                                <div className="dashed-border-new">
+                                                    <div className="main-image-div main-bvc">
+                                                        <img src={logo ? logo : require("../../static/images/submit-form/cloud.png")} alt="" />
+                                                        {selectedImg ? renderPhotos(selectedImg) : null}
+                                                    </div>
+                                                    <p className="text-center"><span>
+                                                        <label for="files" className="msindh">Upload Image</label>
+                                                        <input type="file" id="files"
+                                                            value={logo}
+                                                            onChange={handleImageChange}
+                                                            name="avatar" className="d-none custom-file-inputt" accept="image/*" />
+                                                    </span></p>
                                                     {Object.keys(logoError).map((key) => {
                                                         return <p className="inputErrors">{logoError[key]}</p>
                                                     })}
-                                                    </div>
-                                                 
                                                 </div>
-                                            </div> 
-                                             
+
+                                            </div>
+                                        </div>
+
                                     </div>
 
                                 </div>
@@ -458,7 +518,7 @@ const SubmitProject = () => {
                                                 </div>
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
-                                                        <label for="example">Contact Person Wallet Address<span>*</span></label>
+                                                        <label for="example">Token Owner Wallet Address<span>*</span></label>
                                                         <input type="text" value={walletAddress}
                                                             onChange={(e) => setWalletAddress(e.target.value)}
                                                             class="form-control" id="example" aria-describedby="text" placeholder="Enter Contact Person’s Wallet Address" />
@@ -507,7 +567,7 @@ const SubmitProject = () => {
                                                         <label for="example">Telegram Link<span>*</span></label>
                                                         <input type="text" value={telegramLink}
                                                             onChange={(e) => setTelegramLink(e.target.value)}
-                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter your project name here" />
+                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter Telegram link" />
                                                         {Object.keys(telegramLinkError).map((key) => {
                                                             console.log("key", key);
                                                             return <p className="inputErrors">{telegramLinkError[key]}</p>
@@ -520,16 +580,16 @@ const SubmitProject = () => {
                                                         <input type="text"
                                                             value={discardLink}
                                                             onChange={(e) => setDiscardLink(e.target.value)}
-                                                            class="form-control" id="exampleInputsymbol" placeholder="Enter telegram link " />
+                                                            class="form-control" id="exampleInputsymbol" placeholder="Enter Discord link " />
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label for="exampleInputsymbol">Medium Link<span>*</span></label>
+                                                        <label for="exampleInputsymbol">Medium Link</label>
                                                         <input type="text"
                                                             value={mediumLink}
                                                             onChange={(e) => setMediumLink(e.target.value)}
-                                                            class="form-control" id="exampleInputsymbol" placeholder="Enter discord link " />
+                                                            class="form-control" id="exampleInputsymbol" placeholder="Enter Medium link " />
                                                     </div>
                                                 </div>
                                             </div>
@@ -537,132 +597,132 @@ const SubmitProject = () => {
                                     </div>
                                 </div>
                                 <div className="row">
-                                <div className="col-xl-8 col-lg-10 col-md-12">
-                                    <div className="inner-submit-lower-div">
-                                        <h4>Presale Details</h4>
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="example">Total Supply of Token<span>*</span></label>
-                                                    <input type="number" value={totalSupply}
-                                                        onChange={(e) => setTotalSupply(e.target.value)}
-                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter total supply of your token" />
-                                                    {Object.keys(totalSupplyError).map((key) => {
-                                                        console.log("key", key);
-                                                        return <p className="inputErrors">{totalSupplyError[key]}</p>
-                                                    })}
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="exampleamount">Amount Allocated for Presale <span>*</span></label>
-                                                    <input type="number" value={amount}
-                                                        onChange={(e) => setAmount(e.target.value)}
-                                                        class="form-control" id="exampleamount" placeholder="Enter total allocation for this presale" />
-                                                    {Object.keys(amountError).map((key) => {
-                                                        console.log("key", key);
-                                                        return <p className="inputErrors">{amountError[key]}</p>
-                                                    })}
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="example">Token Decimals<span>*</span></label>
-                                                    <input type="number" value={decimals}
-                                                        onChange={(e) => setDecimals(e.target.value)}
-                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter Your Token Decimals" />
-                                                    {Object.keys(decimalsError).map((key) => {
-                                                        console.log("key", key);
-                                                        return <p className="inputErrors">{decimalsError[key]}</p>
-                                                    })}
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="exampleamount">Token Price in BNB<span>*</span></label>
-                                                    <input type="number" value={price}
-                                                        onChange={(e) => setPrice(e.target.value)}
-                                                        class="form-control" id="exampleamount" placeholder="Enter Your Token Price" />
-                                                    {Object.keys(priceError).map((key) => {
-                                                        console.log("key", key);
-                                                        return <p className="inputErrors">{priceError[key]}</p>
-                                                    })}
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="example">Presale Start Date & Time<span>*</span></label>
-                                                    <br></br>
-                                                    <div class="sd-container">
-                                                       
-                                                        <input class="sd"
-                                                            type="date"
-                                                            value={date}
-                                                            onChange={handleChangeDate}
-                                                            id="party" type="datetime-local" name="partydate" ></input>
-                                                        <span class="open-button">
-                                                            <button type="button">📅</button>
-                                                        </span>
-                                                        {Object.keys(dateError).map((key) => {
+                                    <div className="col-xl-8 col-lg-10 col-md-12">
+                                        <div className="inner-submit-lower-div">
+                                            <h4>Presale Details</h4>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="example">Total Supply of Token<span>*</span></label>
+                                                        <input type="number" value={totalSupply}
+                                                            onChange={(e) => setTotalSupply(e.target.value)}
+                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter total supply of your token" />
+                                                        {Object.keys(totalSupplyError).map((key) => {
                                                             console.log("key", key);
-                                                            return <p className="inputErrors">{dateError[key]}</p>
+                                                            return <p className="inputErrors">{totalSupplyError[key]}</p>
                                                         })}
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="example">Presale End Date & Time<span>*</span></label>
-                                                    <br></br>
-                                                    <div class="sd-container">
-                                                       
-                                                        <input class="sd"
-                                                            type="date"
-                                                            value={dateend}
-                                                            onChange={handlePresaleEndDate}
-                                                            id="party" type="datetime-local" name="partydate" ></input>
-                                                        <span class="open-button">
-                                                            <button type="button">📅</button>
-                                                        </span>
-                                                        {Object.keys(dateError).map((key) => {
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="exampleamount">Amount Allocated for Presale <span>*</span></label>
+                                                        <input type="number" value={amount}
+                                                            onChange={(e) => setAmount(e.target.value)}
+                                                            class="form-control" id="exampleamount" placeholder="Enter total allocation for this presale" />
+                                                        {Object.keys(amountError).map((key) => {
                                                             console.log("key", key);
-                                                            return <p className="inputErrors">{dateError[key]}</p>
+                                                            return <p className="inputErrors">{amountError[key]}</p>
                                                         })}
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="exampleamount">Liquidity Percentage For Pancake <span>*</span></label>
-                                                    <input type="number" value={liquidityPercentage}
-                                                        onChange={(e) => setliquidityPercentage(e.target.value)}
-                                                        class="form-control" id="exampleamount" placeholder="Enter Liquidity Percentage For Pancake" />
-                                                     <p className="errormsg">Pancake Liquidity must be greater than 51 %</p>   
-                                                    {Object.keys(amountError).map((key) => {
-                                                        console.log("key", key);
-                                                        return <p className="inputErrors">{amountError[key]}</p>
-                                                    })}
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="example">Token Decimals<span>*</span></label>
+                                                        <input type="number" value={decimals}
+                                                            onChange={(e) => setDecimals(e.target.value)}
+                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter Your Token Decimals" />
+                                                        {Object.keys(decimalsError).map((key) => {
+                                                            console.log("key", key);
+                                                            return <p className="inputErrors">{decimalsError[key]}</p>
+                                                        })}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="exampleamount">LaunchPad Fee Percentage<span>*</span></label>
-                                                    <input type="number" value={2}
-                                                        onChange={(e) => setlaunchPadFeePercentage('2')}
-                                                        class="form-control" id="exampleamount" placeholder="Enter LaunchPad Fee Percentage" readOnly/>
-                                                    {Object.keys(amountError).map((key) => {
-                                                        console.log("key", key);
-                                                        return <p className="inputErrors">{amountError[key]}</p>
-                                                    })}
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="exampleamount">Token Price in BNB<span>*</span></label>
+                                                        <input type="number" value={price}
+                                                            onChange={(e) => setPrice(e.target.value)}
+                                                            class="form-control" id="exampleamount" placeholder="Enter Your Token Price" />
+                                                        {Object.keys(priceError).map((key) => {
+                                                            console.log("key", key);
+                                                            return <p className="inputErrors">{priceError[key]}</p>
+                                                        })}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="example">Presale Start Date & Time(UTC)<span>*</span></label>
+                                                        <br></br>
+                                                        <div class="sd-container">
+
+                                                            <input class="sd"
+                                                                type="date"
+                                                                value={date}
+                                                                onChange={handleChangeDate}
+                                                                id="party" type="datetime-local" name="partydate"  ></input>
+                                                            <span class="open-button">
+                                                                <button type="button">📅</button>
+                                                            </span>
+                                                            {Object.keys(dateError).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{dateError[key]}</p>
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="example">Presale End Date & Time(UTC)<span>*</span></label>
+                                                        <br></br>
+                                                        <div class="sd-container">
+
+                                                            <input class="sd"
+                                                                type="date"
+                                                                value={dateend}
+                                                                onChange={handlePresaleEndDate}
+                                                                id="party" type="datetime-local" name="partydate" ></input>
+                                                            <span class="open-button">
+                                                                <button type="button">📅</button>
+                                                            </span>
+                                                            {Object.keys(dateError).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{dateError[key]}</p>
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="exampleamount">Liquidity Percentage For Pancake <span>*</span></label>
+                                                        <input type="number" value={liquidityPercentage}
+                                                            onChange={(e) => setliquidityPercentage(e.target.value)}
+                                                            class="form-control" id="exampleamount" placeholder="Enter Liquidity Percentage For Pancake" />
+                                                        {/* <p className="errormsg">Pancake Liquidity must be greater than 51 %</p> */}
+                                                        {Object.keys(liquidityPercentageError).map((key) => {
+                                                            console.log("key", key);
+                                                            return <p className="inputErrors">{liquidityPercentageError[key]}</p>
+                                                        })}
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="exampleamount">LaunchPad Fee Percentage<span>*</span></label>
+                                                        <input type="number" value={2}
+                                                            onChange={(e) => setlaunchPadFeePercentage('2')}
+                                                            class="form-control" id="exampleamount" placeholder="Enter LaunchPad Fee Percentage" readOnly />
+                                                        {/* {Object.keys(amountError).map((key) => {
+                                                            console.log("key", key);
+                                                            return <p className="inputErrors">{amountError[key]}</p>
+                                                        })} */}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
                                 {/* <div className="row">
                                 <div className="col-xl-8 col-lg-10 col-md-12">
@@ -714,39 +774,34 @@ const SubmitProject = () => {
                                     </div>
                                 </div>
                             </div> */}
-                            <div className="row">
-                            <div className="col-xl-8 col-lg-10 col-md-12">
-                                    <div className="inner-submit-lower-div">
-                                        <h4>Claim Time</h4>
-                                        <div class="row">
-                                       
-                                        
+                                {/* <div className="row">
+                                    <div className="col-xl-8 col-lg-10 col-md-12">
+                                        <div className="inner-submit-lower-div">
+                                            <h4>Claim Time</h4>
+                                            <div class="row"> */}
 
-                                        
-                                   
+                                                {/* <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="example"> Claim Date & Time<span>*</span></label>
+                                                        <br></br>
+                                                        <div class="sd-container">
 
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="example"> Claim Date & Time<span>*</span></label>
-                                                    <br></br>
-                                                    <div class="sd-container">
-                                                       
-                                                        <input class="sd"
-                                                            type="date"
-                                                            value={datefirst}
-                                                            onChange={firstClaimDate}
-                                                            id="party" type="datetime-local" name="partydate" ></input>
-                                                        <span class="open-button">
-                                                            <button type="button">📅</button>
-                                                        </span>
-                                                        {Object.keys(dateError).map((key) => {
-                                                            console.log("key", key);
-                                                            return <p className="inputErrors">{dateError[key]}</p>
-                                                        })}
+                                                            <input class="sd"
+                                                                type="date"
+                                                                value={datefirst}
+                                                                onChange={firstClaimDate}
+                                                                id="party" type="datetime-local" name="partydate" ></input>
+                                                            <span class="open-button">
+                                                                <button type="button">📅</button>
+                                                            </span>
+                                                            {Object.keys(dateError).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{dateError[key]}</p>
+                                                            })}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            {/* <div class="col-lg-6">
+                                                </div> */}
+                                                {/* <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label for="example">Second Claim Start Date & Time<span>*</span></label>
                                                     <br></br>
@@ -767,8 +822,8 @@ const SubmitProject = () => {
                                                     </div>
                                                 </div>
                                             </div> */}
-                                            
-                                            {/* <div class="col-lg-6">
+
+                                                {/* <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label for="example">Third Claim Start Date & Time<span>*</span></label>
                                                     <br></br>
@@ -789,46 +844,41 @@ const SubmitProject = () => {
                                                     </div>
                                                 </div>
                                             </div> */}
+                                            {/* </div>
                                         </div>
                                     </div>
-                                </div>
-                                </div> 
+                                </div> */}
                                 <div className="row">
-                            <div className="col-xl-8 col-lg-10 col-md-12">
-                                    <div className="inner-submit-lower-div">
-                                        <h4>Allocation Limits </h4>
-                                        <div class="row">
-                                       
-                                        
+                                    <div className="col-xl-8 col-lg-10 col-md-12">
+                                        <div className="inner-submit-lower-div">
+                                            <h4>Allocation Limits </h4>
+                                            <div class="row">
 
-                                        
-                                   
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="example">Min Allocation Per User(BNB)<span>*</span></label>
+                                                        <input type="number" value={minAllocationPerUser}
+                                                            onChange={(e) => setminAllocationPerUser(e.target.value)}
+                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter min allocation" />
 
-                                        <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="example">Min allocation per user<span>*</span></label>
-                                                    <input type="number" value={minAllocationPerUser}
-                                                        onChange={(e) => setminAllocationPerUser(e.target.value)}
-                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter min allocation" />
-                                                   
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="example">maxAllocationPerUser<span>*</span></label>
-                                                    <input type="number" value={maxAllocationPerUser}
-                                                        onChange={(e) => setmaxAllocationPerUser(e.target.value)}
-                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter max allocation" />
-                                                 
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="example">Max Allocation Per User(BNB)<span>*</span></label>
+                                                        <input type="number" value={maxAllocationPerUser}
+                                                            onChange={(e) => setmaxAllocationPerUser(e.target.value)}
+                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter max allocation" />
+
+                                                    </div>
                                                 </div>
+
+
                                             </div>
-                                            
-                                       
                                         </div>
                                     </div>
                                 </div>
-                                </div> 
-                                                        
+
                                 <div className="row">
                                     <div className="col-xl-8 col-lg-8 col-md-12">
                                         <div className="inner-submit-lower-div">

@@ -453,7 +453,7 @@ const SubmitProject = (props) => {
                                                         value={inputs.projectName}
                                                         name="projectName"
                                                         onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter your project name here" />
+                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter your project name here" readOnly />
                                                         {/* {Object.keys(projectNameError).map((key) => {
                                                            console.log("name",projectNameError);
                                                            console.log("key", key);
@@ -468,7 +468,7 @@ const SubmitProject = (props) => {
                                                         value={inputs.symbol}
                                                         name="symbol"
                                                         onChange={handleChange}
-                                                        className="form-control" id="exampleInputsymbol" placeholder="Enter your project symbol i.e $BNB" />
+                                                        className="form-control" id="exampleInputsymbol" placeholder="Enter your project symbol i.e $BNB"  readOnly/>
                                                         {/* {Object.keys(projectSymbolError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -484,7 +484,7 @@ const SubmitProject = (props) => {
                                                         value={inputs.projectDescription}
                                                         name="projectDescription"
                                                         onChange={handleChange}
-                                                        placeholder="What is your project about" rows="3" id="comment"></textarea>
+                                                        placeholder="What is your project about" rows="3" id="comment" readOnly></textarea>
                                                         {/* {Object.keys(projectDescriptionError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -502,7 +502,7 @@ const SubmitProject = (props) => {
                                                                 
                                                             </div>
                                                         </div>
-                                                            <p><span><input type="file" name="avatar" className="custom-file-inputt" accept="image/*" id="contained-button-file" /></span></p>
+                                                            <p><span><input type="file" name="avatar" className="custom-file-inputt" accept="image/*" id="contained-button-file" readOnly/></span></p>
                                                     </div>
                                                 </div>
 
@@ -536,7 +536,7 @@ const SubmitProject = (props) => {
                                                         value={inputs.websiteLink}
                                                         name="websiteLink"
                                                         onChange={handleChange}
-                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter website address of your project" />
+                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter website address of your project" readOnly/>
                                                         {/* {Object.keys(websiteLinkError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -551,7 +551,7 @@ const SubmitProject = (props) => {
                                                         value={inputs.twitterLink}
                                                         name="twitterLink"
                                                         onChange={handleChange}
-                                                            className="form-control" id="exampleInputsymbol" placeholder="Enter twitter link of your project" />
+                                                            className="form-control" id="exampleInputsymbol" placeholder="Enter twitter link of your project" readOnly/>
                                                         {/* {Object.keys(twitterLinkError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -567,7 +567,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.telegramlink}
                                                          name="telegramlink"
                                                          onChange={handleChange}
-                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter your project name here" />
+                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter your project name here" readOnly />
                                                         {/* {Object.keys(telegramLinkError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -582,7 +582,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.discrodLink}
                                                          name="discrodLink"
                                                          onChange={handleChange}
-                                                        className="form-control" id="exampleInputsymbol" placeholder="Enter telegram link of your project" />
+                                                        className="form-control" id="exampleInputsymbol" placeholder="Enter telegram link of your project" readOnly />
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-6">
@@ -592,7 +592,7 @@ const SubmitProject = (props) => {
                                                         value={inputs.mediumLink}
                                                         name="mediumLink"
                                                         onChange={handleChange}
-                                                        className="form-control" id="exampleInputsymbol" placeholder="Enter discord link of your project" />
+                                                        className="form-control" id="exampleInputsymbol" placeholder="Enter discord link of your project" readOnly />
                                                     </div>
                                                 </div>
                                             </div>
@@ -614,7 +614,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.contactPersonName}
                                                          name="contactPersonName"
                                                          onChange={handleChange}
-                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter Contact Person Name" />
+                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter Contact Person Name" readOnly />
                                                         {/* {Object.keys(personNameError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -629,7 +629,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.contactPersonEmail}
                                                          name="contactPersonEmail"
                                                          onChange={handleChange}
-                                                            className="form-control" id="exampleemail" placeholder="Enter twitter link of your project" />
+                                                            className="form-control" id="exampleemail" placeholder="Enter twitter link of your project" readOnly/>
                                                         {/* {Object.keys(emailError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -645,7 +645,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.contactPersonWalletAddress}
                                                          name="contactPersonWalletAddress"
                                                          onChange={handleChange}
-                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter Contact Person’s Wallet Address" />
+                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter Contact Person’s Wallet Address" readOnly/>
                                                         {/* {Object.keys(walletAddressError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -675,7 +675,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.totalSupplyOfToken}
                                                          name="totalSupplyOfToken"
                                                          onChange={handleChange}
-                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter total supply of your token" />
+                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter total supply of your token" readOnly/>
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-6">
@@ -685,7 +685,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.amountAllocatedForPresale}
                                                          name="amountAllocatedforPresale"
                                                          onChange={handleChange}
-                                                            className="form-control" id="exampleamount" placeholder="Enter total allocation for this presale" />
+                                                            className="form-control" id="exampleamount" placeholder="Enter total allocation for this presale" readOnly />
                          
                                                     </div>
                                                 </div>
@@ -696,7 +696,7 @@ const SubmitProject = (props) => {
                                                            value={inputs.tokenDecimals}
                                                            name="tokenDecimals"
                                                            onChange={handleChange}
-                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter Your Token Decimals" />
+                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter Your Token Decimals" readOnly/>
                                                    
                                                 </div>
                                             </div>
@@ -707,7 +707,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.tokenPriceInBNB}
                                                          name="tokenPriceInBNB"
                                                          onChange={handleChange}
-                                                        class="form-control" id="exampleamount" placeholder="Enter Your Token Price" />
+                                                        class="form-control" id="exampleamount" placeholder="Enter Your Token Price" readOnly />
                                                   
                                                 </div>
                                             </div>
@@ -722,7 +722,7 @@ const SubmitProject = (props) => {
                                                             
                                                              name="preSaleStartDateAndTime"
                                                              onChange={handleChange}
-                                                                id="party" type="datetime-local"  ></input>
+                                                                id="party" type="datetime-local"  readOnly></input>
                                                                   {/* <input className="sd" style={{color:'white'}}
                                                              value={inputs.preSaleStartDateAndTime}
                                                              name="preSaleStartDateAndTime"
@@ -745,7 +745,7 @@ const SubmitProject = (props) => {
                                                             
                                                              name="preSaleEndDateAndTime"
                                                              onChange={handleChange}
-                                                                id="party" type="datetime-local"  ></input>
+                                                                id="party" type="datetime-local" readOnly ></input>
                                                                   {/* <input className="sd" style={{color:'white'}}
                                                              value={inputs.preSaleStartDateAndTime}
                                                              name="preSaleStartDateAndTime"
@@ -763,7 +763,7 @@ const SubmitProject = (props) => {
                                                     <label for="exampleamount">Liquidity Percentage For Pancake <span>*</span></label>
                                                     <input type="number" value={inputs.liquidityPercentage}
                                                        
-                                                        class="form-control" id="exampleamount" placeholder="Enter Liquidity Percentage For Pancake" />
+                                                        class="form-control" id="exampleamount" placeholder="Enter Liquidity Percentage For Pancake" readOnly />
                                                 
                                                 </div>
                                             </div>
@@ -772,7 +772,7 @@ const SubmitProject = (props) => {
                                                     <label for="exampleamount">LaunchPad Fee Percentage<span>*</span></label>
                                                     <input type="number" value={inputs.launchPadFeePercentage}
                                                      
-                                                        class="form-control" id="exampleamount" placeholder="Enter LaunchPad Fee Percentage" />
+                                                        class="form-control" id="exampleamount" placeholder="Enter LaunchPad Fee Percentage" readOnly/>
                                                  
                                                 </div>
                                             </div>
@@ -827,7 +827,7 @@ const SubmitProject = (props) => {
                                                     <label for="example">Claim time</label>
                                                     <input type="datetime-local" name="firstClaimTime" value={inputs.firstClaimTime?.split('Z')[0]}
                                                         // onChange={(e) => setIteration1(e.target.value)}
-                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter your  claim time" />
+                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter your  claim time" readOnly />
                                                     {/* {Object.keys(iteration1Error).map((key) => {
                                                         // console.log("name",nameError);
                                                         console.log("key", key);
@@ -883,7 +883,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.minAllocationPerUser}
                                                          name="minAllocationPerUser"
                                                          onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter min allocation" />
+                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter min allocation" readOnly/>
                                                         {/* {Object.keys(tier1MinValueError).map((key) => {
                                                          console.log("name",tier1MinValueError);
                                                          console.log("key", key);
@@ -899,7 +899,7 @@ const SubmitProject = (props) => {
                                                            value={inputs.maxAllocationPerUser}
                                                            name="maxAllocationPerUser"
                                                            onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter max allocation" />
+                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter max allocation" readOnly/>
                                                          {/* {Object.keys(tier1MaxValueError).map((key) => {
                                                          console.log("name",tier1MaxValueError);
                                                          console.log("key", key);
@@ -908,20 +908,21 @@ const SubmitProject = (props) => {
                                                     </div>
                                                 </div>
                                             </div>
-
+                                             {/* className={inputs.statusOfApplication!=='Approved'?'button-reject':'disabled'} */}
+                                             {/* <ToastContainer style={{fontSize:20}}/> */}
+                                                        {/* <button type="button" className="button-edit">EDIT</button> */}
                                             <div className="row">
                                                 <div className="col-lg-12">
                                                     <div className="buttons-submit">
-                                                        <button type="button" 
+                                                        {/* <button type="button" 
                                                         className={inputs.statusOfApplication!=='Approved'?'button-approve':'disabled'}
                                                         onClick={getProjectDetail}>SAVE & APPROVE</button>
                                                         <button   type="button" 
-                                                        //  className={inputs.statusOfApplication!=='Approved'?'button-reject':'disabled'}
+                                                     
                                                         className="button-reject"
-                                                         onClick={getProjectRejected}>REJECT</button>
+                                                         onClick={getProjectRejected}>REJECT</button> */}
                                                          <Link to="/projects" className="back_btn">Back</Link>
-                                                        {/* <ToastContainer style={{fontSize:20}}/> */}
-                                                        {/* <button type="button" className="button-edit">EDIT</button> */}
+                                                       
                                                     </div>
                                                 </div>
                                             </div>

@@ -28,7 +28,7 @@ const Navbar=(props)=>{
             <div className="main-header">
                 <nav className="navbar navbar-expand-lg">
                     <div className="container-fluid">
-                        <Link className="navbar-brand" to="/"><img src={require("../../static/images/landing-leocorn/rc-launchpad-logo.png")} alt="" /></Link>
+                        <a className="navbar-brand" href="/"><img src={require("../../static/images/landing-leocorn/rc-launchpad-logo.png")} alt="" /></a>
                         <button className="navbar-toggler collapsed" type="button" data-toggle="collapse"
                             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                             aria-label="Toggle navigation">
@@ -48,11 +48,11 @@ const Navbar=(props)=>{
                                     {/* <Link className="nav-link  pr-lg-4" href="/poolss">Pool  <span className="sr-only">(current)</span></Link> */}
                                     {/* <Link className='nav-link pr-lg-3' to='/sign-in'>Sign In</Link> */}
                                 </li>
-                                {account==="0x7d5b329759254348D532dab6Aef36A9710157C2A" || account === "0xe0aCDC61b4A33FEFCD604b93CabA23E3f04C755D"?
+                                {/* {account==="0x7d5b329759254348D532dab6Aef36A9710157C2A" || account === "0xe0aCDC61b4A33FEFCD604b93CabA23E3f04C755D"? */}
                                 <li className="nav-item active">
                                 {/* <Link className="nav-link  pr-lg-4" href="/poolss">Pool  <span className="sr-only">(current)</span></Link> */}
-                                <NavLink activeClassName="nav-link" className='pr-lg-3' to='/projects'>Projects</NavLink>
-                            </li>:""}
+                                <NavLink activeClassName="nav-link" className='pr-lg-3' to='/projects'>My Projects</NavLink>
+                            </li>
                             </ul>
                             <div className="button-head">
                             {/* <button className="button-one" type="button" onClick={this.connectWallet}>Connect Wallet</button> */}

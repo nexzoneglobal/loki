@@ -271,7 +271,7 @@ const Pool = (props) => {
                                     </div>
                                     <div className="right-inner">
                                         <button className="button-one-one" type="button">LIVE</button>
-                                        <button className="button-two" type="button">Tier {tier}</button>
+                                        {/* <button className="button-two" type="button">Tier {tier}</button> */}
                                         {/* {whiteList?
                                         <button className="button-three" type="button">WhiteListed</button>:
                                         <button className="button-four" type="button">Not WhiteListed</button>} */}

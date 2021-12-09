@@ -239,7 +239,7 @@ const ClosePool = (props) => {
                                     </div>
                                     <div className="right-inner">
                                         <button className="button-one" type="button">CLOSED</button>
-                                        <button className="button-two" type="button">Tier {tier}</button>
+                                        {/* <button className="button-two" type="button">Tier {tier}</button> */}
                                      
                                     </div>
                                 </div>
