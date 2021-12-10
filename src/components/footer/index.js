@@ -33,7 +33,7 @@ const Footer = () => {
         <div className="auto-container">
           <div className="main-terms">
             <p className="main-termss">© 2021 RC LAUNCHPAD, All Right Reserved</p>
-            {/* <p className="main-term">Term & Conditions</p> */}
+            <p className="main-term">Term & Conditions</p>
           </div>
         </div>
       </div>

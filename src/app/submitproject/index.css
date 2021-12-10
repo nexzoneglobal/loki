@@ -518,7 +518,9 @@
       top: 0px;
   } */
 
-
+.MuiBackdrop-root{
+    z-index: 1!important;
+}
 
   .msindh{
       cursor: pointer;

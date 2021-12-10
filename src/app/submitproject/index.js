@@ -1,21 +1,27 @@
 import React, { useCallback, useState } from 'react';
 import './index.css';
+
 import Navbar from '../../components/navbar';
 import Footer from '../../components/footer';
 import { useWeb3React } from '@web3-react/core'
 import Getweb3 from '../../hooks/Getweb3';
 import Web3 from "web3";
 import axios from 'axios';
+import { Backdrop } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Environment from '../../utils/Environment';
 import DeployContact from '../../hooks/DeployContact'
 import ApproveContract, { BalanceOfContract } from '../../hooks/approve'
 import BigNumber from 'bignumber.js';
-import moment from 'moment';
-const SubmitProject = () => {
-    const { account } = useWeb3React();
 
+
+const SubmitProject=()=> {
+    
+    
+    const { account } = useWeb3React();
+    const [open, setOpen] = useState(false);
     const [projectName, setProjectName] = useState('');
     const [projectSymbol, setProjectSymbol] = useState('');
     const [projectDescription, setprojectDescription] = useState('');
@@ -34,7 +40,7 @@ const SubmitProject = () => {
     const [personName, setPersonName] = useState('');
     const [personEmail, setPersonEmail] = useState('');
     const [walletAddress, setWalletAddress] = useState('');
-
+   
     const [totalSupply, setTotalSupply] = useState('');
     const [amount, setAmount] = useState('');
     const [date, setDate] = useState('');
@@ -70,6 +76,9 @@ const SubmitProject = () => {
     const [emailError, setEmailError] = useState({});
     const [walletAddressError, setWalletAddressError] = useState({});
 
+    const [minallo, setMinTotalAllocationError] = useState({});
+    const [maxallo, setMaxTotalAllocationError] = useState({});
+
     const [totalSupplyError, setTotalSupplyError] = useState({});
     const [amountError, setAmountError] = useState({});
     const [dateError, setDateError] = useState({});
@@ -83,7 +92,7 @@ const SubmitProject = () => {
     const { deployprojectonlaunchpad } = DeployContact();
     const { Approvetoken } = ApproveContract(contractAddress);
     const { BalanceOfToken } = BalanceOfContract(contractAddress);
-
+   
     const handleImageChange = (e) => {
         setLogo(e.target.value);
         setSelectedImg([]);
@@ -147,12 +156,17 @@ const SubmitProject = () => {
         })
     }
 
+     
+    
     const result = Web3.utils.isAddress(contractAddress);
     const result1 = Web3.utils.isAddress(walletAddress);
 
     const SubmitForm = useCallback(async (e) => {
+       
+        setOpen(true)
         e.preventDefault();
         formValidation();
+       
         const epochStartTime = new Date(date).getTime() / 1000.0;
         const epochEndTime = new Date(dateend).getTime() / 1000.0;
         const tokenPriceInBNB = new BigNumber(price).multipliedBy(new BigNumber(10).pow(18));
@@ -174,6 +188,7 @@ const SubmitProject = () => {
         console.log("balvvvvvvvvvvvvvv", BalanceOfContract);
         if (BalanceOfContract >= totalTokensinWei) {
             let approve = await Approvetoken(Environment.DeployerAddress, totalTokensinWei)
+
             if (approve.status) {
 
 
@@ -190,7 +205,6 @@ const SubmitProject = () => {
                     maxAllocaPerUser: maxAllocationPerUsers.toNumber().toString(),
                     minAllocaPerUser: minAllocationPerUsers.toNumber().toString(),
                     liquidityPercentage: liquidityPercentage,
-
                 })
 
 
@@ -198,14 +212,14 @@ const SubmitProject = () => {
 
                 let deployer = await deployprojectonlaunchpad(leoCornArguments)
                 let contractAddressDeployed = deployer.events.OwnershipTransferred[0].address;
-               
+
                 try {
                     // && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
                     //     && price !== '' && iteration1 !== '' && iteration2 !== ''   totalSupplyOfToken: totalSupply, preSaleStartDateAndTime: '', amountAllocatedForPresale: amount,
                     //  tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: iteration1, secondIterationPercentage: iteration2
                     if (projectName !== '' && projectSymbol !== '' && projectDescription !== '' && logo64 !== ''
                         && websiteLink !== '' && twitterLink !== '' && telegramLink !== '' && personName !== '' && personEmail !== '' && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
-                        && walletAddress !== '' ) {
+                        && walletAddress !== '') {
                         await axios.post('http://54.191.140.38:4750/project/createProject', {
                             projectName: projectName, symbol: projectSymbol,
                             projectDescription: projectDescription, logoURL: logo64, contractAddress: contractAddress, websiteLink: websiteLink,
@@ -215,13 +229,16 @@ const SubmitProject = () => {
                             minAllocationPerUser: minAllocationPerUser, maxAllocationPerUser: maxAllocationPerUser, launchPadFeePercentage: '2', liquidityPercentage: liquidityPercentage, contractAddressDeployed: contractAddressDeployed, statusOfApplication: 'Approved'
                         })
                             .then((response) => {
+                                setOpen(false)
                                 toast.success('Project Submitted', {
                                     position: "top-right",
                                     autoClose: 2000,
                                 });
+                               
                             });
                     }
                     else {
+                        setOpen(false)
                         toast.error('Invalid Form Submission', {
                             position: "bottom-center",
                             autoClose: 2000,
@@ -229,6 +246,7 @@ const SubmitProject = () => {
                     }
                 }
                 catch (err) {
+                    setOpen(false)
                     return false
                 }
             }
@@ -254,7 +272,9 @@ const SubmitProject = () => {
         const priceError = {};
         const iteration1Error = {};
         const iteration2Error = {};
-        const liquidityPercentageError={};
+        const liquidityPercentageError = {};
+        const minallo = {};
+        const maxallo = {};
         let isValid = true;
         if (projectName === '') {
             projectNameError.nameError = "Project Name is Required";
@@ -319,6 +339,10 @@ const SubmitProject = () => {
             amountError.amountError = "Amount is Required";
             isValid = false;
         }
+        else if (amount > totalSupply) {
+            amountError.BigamountError = "Presale Amount is less than Total Supply.";
+            isValid = false;
+        }
         if (date === '') {
             dateError.dateError = "Date is Required";
             isValid = false;
@@ -340,8 +364,20 @@ const SubmitProject = () => {
             iteration2Error.iteration1Error = "Iteration 2 is Required";
             isValid = false;
         }
-        if (liquidityPercentage === '' && liquidityPercentage< 51) {
+        if (liquidityPercentage === '' && liquidityPercentage < 51) {
             liquidityPercentageError.liquidityPercentage = "Pancake Liquidity must be greater than 51 %";
+            isValid = false;
+        }
+        if (maxAllocationPerUser === '') {
+            maxallo.AmountError = "Amount is Required";
+            isValid = false;
+        }
+        if (minAllocationPerUser === '') {
+            minallo.AmountError = "Amount is Required";
+            isValid = false;
+        }
+        else if (minAllocationPerUser > maxAllocationPerUser) {
+            minallo.BigamountError = "Max Allocation must be greater than Min Allocation";
             isValid = false;
         }
         setProjectNameError(projectNameError);
@@ -360,6 +396,8 @@ const SubmitProject = () => {
         setAmountError(amountError);
         setDateError(dateError);
         //new
+        setMinTotalAllocationError(minallo);
+        setMaxTotalAllocationError(maxallo);
         setDecimalsError(decimalsError);
         setPriceError(priceError);
         setIteration1Error(iteration1Error);
@@ -368,62 +406,64 @@ const SubmitProject = () => {
         return isValid;
     }
     return (
-        <div className='landing-nft submit-project'>
-            <Navbar />
-            <section className="header-section submit-projects" >
-                <img src={require("../../static/images/landing-leocorn/back-ground-header.png")} className="main-heads-ones" alt="" />
-                <div className="auto-container">
-                    <div className="submit-project">
-                        <div className="inner-submit-upper-div">
-                            <h1>Submit Your Domain</h1>
-                            <p>* Required</p>
-                        </div>
-                        <div className="container">
-                            <form >
-                                <div className="row">
-                                    <div className="col-xl-8 col-lg-8 col-md-12">
-                                        <div className="inner-submit-lower-div">
-                                            <h4>Basic Details</h4>
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="example">Project Name<span>*</span></label>
-                                                        <input value={projectName} onChange={(e) => setProjectName(e.target.value)} type="text" class="form-control" id="example" aria-describedby="text" placeholder="Enter your project name" />
-                                                        {Object.keys(projectNameError).map((key) => {
-                                                            // console.log("name",nameError);
-                                                            console.log("key", key);
-                                                            return <p className="inputErrors">{projectNameError[key]}</p>
-                                                            // return <ToastContainer className="inputErrors">{projectNameError[key]}<ToastContainer/>
-                                                        })}
+        <>
+           <Backdrop className="loader" sx={{ color: '#fff' }} open={open}><CircularProgress color="inherit" /></Backdrop>
+            <div className='landing-nft submit-project'>
+                <Navbar />
+                <section className="header-section submit-projects" >
+                    <img src={require("../../static/images/landing-leocorn/back-ground-header.png")} className="main-heads-ones" alt="" />
+                    <div className="auto-container">
+                        <div className="submit-project">
+                            <div className="inner-submit-upper-div">
+                                <h1>Submit Your Domain</h1>
+                                <p>* Required</p>
+                            </div>
+                            <div className="container">
+                                <form >
+                                    <div className="row">
+                                        <div className="col-xl-8 col-lg-8 col-md-12">
+                                            <div className="inner-submit-lower-div">
+                                                <h4>Basic Details</h4>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">Project Name<span>*</span></label>
+                                                            <input value={projectName} onChange={(e) => setProjectName(e.target.value)} type="text" class="form-control" id="example" aria-describedby="text" placeholder="Enter your project name" />
+                                                            {Object.keys(projectNameError).map((key) => {
+                                                                // console.log("name",nameError);
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{projectNameError[key]}</p>
+                                                                // return <ToastContainer className="inputErrors">{projectNameError[key]}<ToastContainer/>
+                                                            })}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputsymbol">Symbol<span>*</span></label>
-                                                        <input value={projectSymbol} onChange={(e) => setProjectSymbol(e.target.value)} type="text" class="form-control" id="exampleInputsymbol" placeholder="Enter your project symbol" />
-                                                        {Object.keys(projectSymbolError).map((key) => {
-                                                            // console.log("name",nameError);
-                                                            console.log("key", key);
-                                                            return <p className="inputErrors">{projectSymbolError[key]}</p>
-                                                        })}
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="exampleInputsymbol">Symbol<span>*</span></label>
+                                                            <input value={projectSymbol} onChange={(e) => setProjectSymbol(e.target.value)} type="text" class="form-control" id="exampleInputsymbol" placeholder="Enter your project symbol" />
+                                                            {Object.keys(projectSymbolError).map((key) => {
+                                                                // console.log("name",nameError);
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{projectSymbolError[key]}</p>
+                                                            })}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputdescription">Project Description<span>*</span></label>
-                                                        <textarea value={projectDescription} onChange={(e) => setprojectDescription(e.target.value)} class="form-control" placeholder="What is your project about" rows="3" id="comment"></textarea>
-                                                        {Object.keys(projectDescriptionError).map((key) => {
-                                                            return <p className="inputErrors">{projectDescriptionError[key]}</p>
-                                                        })}
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label for="exampleInputdescription">Project Description<span>*</span></label>
+                                                            <textarea value={projectDescription} onChange={(e) => setprojectDescription(e.target.value)} class="form-control" placeholder="What is your project about" rows="3" id="comment"></textarea>
+                                                            {Object.keys(projectDescriptionError).map((key) => {
+                                                                return <p className="inputErrors">{projectDescriptionError[key]}</p>
+                                                            })}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                {/* <div class="col-lg-12">
+                                                    {/* <div class="col-lg-12">
                                                 <div class="form-group">
                                                     <label for="exampleInputsymbol">Upload Logo (500X500 pixels)<span>*</span></label>
                                                     <div className="dashed-border-new">
                                                         <div className="main-image-div"> */}
-                                                {/* <img src={logo?logo:require("../../static/images/submit-form/cloud.png")} alt="" /> */}
-                                                {/* {selectedImg ? renderPhotos(selectedImg) : null}
+                                                    {/* <img src={logo?logo:require("../../static/images/submit-form/cloud.png")} alt="" /> */}
+                                                    {/* {selectedImg ? renderPhotos(selectedImg) : null}
                                                         </div>
                                                     </div>
                                                     <p><span><input type="file"
@@ -435,25 +475,25 @@ const SubmitProject = () => {
                                                     })}
                                                 </div>
                                             </div> */}
-                                                <div class="col-lg-12">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputcontractaddress">Project Contract Address<span>*</span></label>
-                                                        <input type="text" value={contractAddress}
-                                                            onChange={(e) => setContractAddress(e.target.value)}
-                                                            class="form-control" id="exampleInputcontractaddress" placeholder="Enter Contract Address of your project" />
-                                                        {Object.keys(contractAddressError).map((key) => {
-                                                            console.log("key", key);
-                                                            return <p className="inputErrors">{contractAddressError[key]}</p>
-                                                        })}
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label for="exampleInputcontractaddress">Project Contract Address<span>*</span></label>
+                                                            <input type="text" value={contractAddress}
+                                                                onChange={(e) => setContractAddress(e.target.value)}
+                                                                class="form-control" id="exampleInputcontractaddress" placeholder="Enter Contract Address of your project" />
+                                                            {Object.keys(contractAddressError).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{contractAddressError[key]}</p>
+                                                            })}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                    </div>
-                                    <div className="col-lg-4 col-md-12 col-12 ">
-                                        <div className="right-side-main-image inner-submit-lower-div ">
-                                            {/* <div class="form-group">
+                                        </div>
+                                        <div className="col-lg-4 col-md-12 col-12 ">
+                                            <div className="right-side-main-image inner-submit-lower-div ">
+                                                {/* <div class="form-group">
                                                 <label for="example">Upload Logo<span>*</span></label>
                                                 <div className="inner-logo-upload-main">
                                                  <div>   <label for="fileb" className="p-0"><img src={require("../../static/images/submit-form/cloud.png")} alt="" /></label>
@@ -463,269 +503,268 @@ const SubmitProject = () => {
                                                     
                                                 </div>
                                             </div> */}
-                                            <div class="form-group">
-                                                <label for="exampleInputsymbol">Upload Logo (500X500 pixels)<span>*</span></label>
-                                                <div className="dashed-border-new">
-                                                    <div className="main-image-div main-bvc">
-                                                        <img src={logo ? logo : require("../../static/images/submit-form/cloud.png")} alt="" />
-                                                        {selectedImg ? renderPhotos(selectedImg) : null}
+                                                <div class="form-group">
+                                                    <label for="exampleInputsymbol">Upload Logo (500X500 pixels)<span>*</span></label>
+                                                    <div className="dashed-border-new">
+                                                        <div className="main-image-div main-bvc">
+                                                            <img src={logo ? logo : require("../../static/images/submit-form/cloud.png")} alt="" />
+                                                            {selectedImg ? renderPhotos(selectedImg) : null}
+                                                        </div>
+                                                        <p className="text-center"><span>
+                                                            <label for="files" className="msindh">Upload Image</label>
+                                                            <input type="file" id="files"
+                                                                value={logo}
+                                                                onChange={handleImageChange}
+                                                                name="avatar" className="d-none custom-file-inputt" accept="image/*" />
+                                                        </span></p>
+                                                        {Object.keys(logoError).map((key) => {
+                                                            return <p className="inputErrors">{logoError[key]}</p>
+                                                        })}
                                                     </div>
-                                                    <p className="text-center"><span>
-                                                        <label for="files" className="msindh">Upload Image</label>
-                                                        <input type="file" id="files"
-                                                            value={logo}
-                                                            onChange={handleImageChange}
-                                                            name="avatar" className="d-none custom-file-inputt" accept="image/*" />
-                                                    </span></p>
-                                                    {Object.keys(logoError).map((key) => {
-                                                        return <p className="inputErrors">{logoError[key]}</p>
-                                                    })}
-                                                </div>
 
+                                                </div>
                                             </div>
+
                                         </div>
 
                                     </div>
 
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-xl-8 col-lg-8 col-md-12">
-                                        <div className="inner-submit-lower-div">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="example">Contact Person Name<span>*</span></label>
-                                                        <input type="text" value={personName}
-                                                            onChange={(e) => setPersonName(e.target.value)}
-                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter Contact Person Name" />
-                                                        {Object.keys(personNameError).map((key) => {
-                                                            console.log("key", key);
-                                                            return <p className="inputErrors">{personNameError[key]}</p>
-                                                        })}
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleemail">Contact Person Email Address<span>*</span></label>
-                                                        <input type="email" value={personEmail}
-                                                            onChange={(e) => setPersonEmail(e.target.value)}
-                                                            class="form-control" id="exampleemail" placeholder="Enter twitter link" />
-                                                        {Object.keys(emailError).map((key) => {
-                                                            console.log("key", key);
-                                                            return <p className="inputErrors">{emailError[key]}</p>
-                                                        })}
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="form-group">
-                                                        <label for="example">Token Owner Wallet Address<span>*</span></label>
-                                                        <input type="text" value={walletAddress}
-                                                            onChange={(e) => setWalletAddress(e.target.value)}
-                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter Contact Person’s Wallet Address" />
-                                                        {Object.keys(walletAddressError).map((key) => {
-                                                            console.log("key", key);
-                                                            return <p className="inputErrors">{walletAddressError[key]}</p>
-                                                        })}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-xl-8 col-lg-8 col-md-12">
-                                        <div className="inner-submit-lower-div">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="example">Website Link<span>*</span></label>
-                                                        <input type="text" value={websiteLink}
-                                                            onChange={(e) => setWebsiteLink(e.target.value)}
-                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter website address " />
-                                                        {Object.keys(websiteLinkError).map((key) => {
-                                                            console.log("key", key);
-                                                            return <p className="inputErrors">{websiteLinkError[key]}</p>
-                                                        })}
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputsymbol">Twitter Link<span>*</span></label>
-                                                        <input type="text" value={twitterLink}
-                                                            onChange={(e) => setTwitterLinkt(e.target.value)}
-                                                            class="form-control" id="exampleInputsymbol" placeholder="Enter twitter link " />
-                                                        {Object.keys(twitterLinkError).map((key) => {
-                                                            console.log("key", key);
-                                                            return <p className="inputErrors">{twitterLinkError[key]}</p>
-                                                        })}
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="example">Telegram Link<span>*</span></label>
-                                                        <input type="text" value={telegramLink}
-                                                            onChange={(e) => setTelegramLink(e.target.value)}
-                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter Telegram link" />
-                                                        {Object.keys(telegramLinkError).map((key) => {
-                                                            console.log("key", key);
-                                                            return <p className="inputErrors">{telegramLinkError[key]}</p>
-                                                        })}
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputsymbol">Discord Link<span></span></label>
-                                                        <input type="text"
-                                                            value={discardLink}
-                                                            onChange={(e) => setDiscardLink(e.target.value)}
-                                                            class="form-control" id="exampleInputsymbol" placeholder="Enter Discord link " />
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputsymbol">Medium Link</label>
-                                                        <input type="text"
-                                                            value={mediumLink}
-                                                            onChange={(e) => setMediumLink(e.target.value)}
-                                                            class="form-control" id="exampleInputsymbol" placeholder="Enter Medium link " />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-xl-8 col-lg-10 col-md-12">
-                                        <div className="inner-submit-lower-div">
-                                            <h4>Presale Details</h4>
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="example">Total Supply of Token<span>*</span></label>
-                                                        <input type="number" value={totalSupply}
-                                                            onChange={(e) => setTotalSupply(e.target.value)}
-                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter total supply of your token" />
-                                                        {Object.keys(totalSupplyError).map((key) => {
-                                                            console.log("key", key);
-                                                            return <p className="inputErrors">{totalSupplyError[key]}</p>
-                                                        })}
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleamount">Amount Allocated for Presale <span>*</span></label>
-                                                        <input type="number" value={amount}
-                                                            onChange={(e) => setAmount(e.target.value)}
-                                                            class="form-control" id="exampleamount" placeholder="Enter total allocation for this presale" />
-                                                        {Object.keys(amountError).map((key) => {
-                                                            console.log("key", key);
-                                                            return <p className="inputErrors">{amountError[key]}</p>
-                                                        })}
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="example">Token Decimals<span>*</span></label>
-                                                        <input type="number" value={decimals}
-                                                            onChange={(e) => setDecimals(e.target.value)}
-                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter Your Token Decimals" />
-                                                        {Object.keys(decimalsError).map((key) => {
-                                                            console.log("key", key);
-                                                            return <p className="inputErrors">{decimalsError[key]}</p>
-                                                        })}
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleamount">Token Price in BNB<span>*</span></label>
-                                                        <input type="number" value={price}
-                                                            onChange={(e) => setPrice(e.target.value)}
-                                                            class="form-control" id="exampleamount" placeholder="Enter Your Token Price" />
-                                                        {Object.keys(priceError).map((key) => {
-                                                            console.log("key", key);
-                                                            return <p className="inputErrors">{priceError[key]}</p>
-                                                        })}
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="example">Presale Start Date & Time(UTC)<span>*</span></label>
-                                                        <br></br>
-                                                        <div class="sd-container">
-
-                                                            <input class="sd"
-                                                                type="date"
-                                                                value={date}
-                                                                onChange={handleChangeDate}
-                                                                id="party" type="datetime-local" name="partydate" minDate={moment().toDate()} ></input>
-                                                            <span class="open-button">
-                                                                <button type="button">📅</button>
-                                                            </span>
-                                                            {Object.keys(dateError).map((key) => {
+                                    <div className="row">
+                                        <div className="col-xl-8 col-lg-8 col-md-12">
+                                            <div className="inner-submit-lower-div">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">Contact Person Name<span>*</span></label>
+                                                            <input type="text" value={personName}
+                                                                onChange={(e) => setPersonName(e.target.value)}
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter Contact Person Name" />
+                                                            {Object.keys(personNameError).map((key) => {
                                                                 console.log("key", key);
-                                                                return <p className="inputErrors">{dateError[key]}</p>
+                                                                return <p className="inputErrors">{personNameError[key]}</p>
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="exampleemail">Contact Person Email Address<span>*</span></label>
+                                                            <input type="email" value={personEmail}
+                                                                onChange={(e) => setPersonEmail(e.target.value)}
+                                                                class="form-control" id="exampleemail" placeholder="Enter twitter link" />
+                                                            {Object.keys(emailError).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{emailError[key]}</p>
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label for="example">Token Owner Wallet Address<span>*</span></label>
+                                                            <input type="text" value={walletAddress}
+                                                                onChange={(e) => setWalletAddress(e.target.value)}
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter Contact Person’s Wallet Address" />
+                                                            {Object.keys(walletAddressError).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{walletAddressError[key]}</p>
                                                             })}
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="example">Presale End Date & Time(UTC)<span>*</span></label>
-                                                        <br></br>
-                                                        <div class="sd-container">
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                                            <input class="sd"
-                                                                type="date"
-                                                                value={dateend}
-                                                                onChange={handlePresaleEndDate}
-                                                                id="party" type="datetime-local" name="partydate" ></input>
-                                                            <span class="open-button">
-                                                                <button type="button">📅</button>
-                                                            </span>
-                                                            {Object.keys(dateError).map((key) => {
+                                    <div className="row">
+                                        <div className="col-xl-8 col-lg-8 col-md-12">
+                                            <div className="inner-submit-lower-div">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">Website Link<span>*</span></label>
+                                                            <input type="text" value={websiteLink}
+                                                                onChange={(e) => setWebsiteLink(e.target.value)}
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter website address " />
+                                                            {Object.keys(websiteLinkError).map((key) => {
                                                                 console.log("key", key);
-                                                                return <p className="inputErrors">{dateError[key]}</p>
+                                                                return <p className="inputErrors">{websiteLinkError[key]}</p>
                                                             })}
                                                         </div>
                                                     </div>
-                                                </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="exampleInputsymbol">Twitter Link<span>*</span></label>
+                                                            <input type="text" value={twitterLink}
+                                                                onChange={(e) => setTwitterLinkt(e.target.value)}
+                                                                class="form-control" id="exampleInputsymbol" placeholder="Enter twitter link " />
+                                                            {Object.keys(twitterLinkError).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{twitterLinkError[key]}</p>
+                                                            })}
+                                                        </div>
+                                                    </div>
 
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleamount">Liquidity Percentage For Pancake <span>*</span></label>
-                                                        <input type="number" value={liquidityPercentage}
-                                                            onChange={(e) => setliquidityPercentage(e.target.value)}
-                                                            class="form-control" id="exampleamount" placeholder="Enter Liquidity Percentage For Pancake" />
-                                                        {/* <p className="errormsg">Pancake Liquidity must be greater than 51 %</p> */}
-                                                        {Object.keys(liquidityPercentageError).map((key) => {
-                                                            console.log("key", key);
-                                                            return <p className="inputErrors">{liquidityPercentageError[key]}</p>
-                                                        })}
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">Telegram Link<span>*</span></label>
+                                                            <input type="text" value={telegramLink}
+                                                                onChange={(e) => setTelegramLink(e.target.value)}
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter Telegram link" />
+                                                            {Object.keys(telegramLinkError).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{telegramLinkError[key]}</p>
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="exampleInputsymbol">Discord Link<span></span></label>
+                                                            <input type="text"
+                                                                value={discardLink}
+                                                                onChange={(e) => setDiscardLink(e.target.value)}
+                                                                class="form-control" id="exampleInputsymbol" placeholder="Enter Discord link " />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="exampleInputsymbol">Medium Link</label>
+                                                            <input type="text"
+                                                                value={mediumLink}
+                                                                onChange={(e) => setMediumLink(e.target.value)}
+                                                                class="form-control" id="exampleInputsymbol" placeholder="Enter Medium link " />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleamount">LaunchPad Fee Percentage<span>*</span></label>
-                                                        <input type="number" value={2}
-                                                            onChange={(e) => setlaunchPadFeePercentage('2')}
-                                                            class="form-control" id="exampleamount" placeholder="Enter LaunchPad Fee Percentage" readOnly />
-                                                        {/* {Object.keys(amountError).map((key) => {
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-xl-8 col-lg-10 col-md-12">
+                                            <div className="inner-submit-lower-div">
+                                                <h4>Presale Details</h4>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">Total Supply of Token<span>*</span></label>
+                                                            <input type="number" value={totalSupply}
+                                                                onChange={(e) => setTotalSupply(e.target.value)}
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter total supply of your token" />
+                                                            {Object.keys(totalSupplyError).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{totalSupplyError[key]}</p>
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="exampleamount">Amount Allocated for Presale <span>*</span></label>
+                                                            <input type="number" value={amount}
+                                                                onChange={(e) => setAmount(e.target.value)}
+                                                                class="form-control" id="exampleamount" placeholder="Enter total allocation for this presale" />
+                                                            {Object.keys(amountError).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{amountError[key]}</p>
+                                                            })}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">Token Decimals<span>*</span></label>
+                                                            <input type="number" value={decimals}
+                                                                onChange={(e) => setDecimals(e.target.value)}
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter Your Token Decimals" />
+                                                            {Object.keys(decimalsError).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{decimalsError[key]}</p>
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="exampleamount">Token Price in BNB<span>*</span></label>
+                                                            <input type="number" value={price}
+                                                                onChange={(e) => setPrice(e.target.value)}
+                                                                class="form-control" id="exampleamount" placeholder="Enter Your Token Price" />
+                                                            {Object.keys(priceError).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{priceError[key]}</p>
+                                                            })}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">Presale Start Date & Time(UTC)<span>*</span></label>
+                                                            <br></br>
+                                                            <div class="sd-container">
+
+                                                                <input class="sd"
+                                                                    type="date"
+                                                                    value={date}
+                                                                    onChange={handleChangeDate}
+                                                                    id="party" type="datetime-local" name="partydate"  ></input>
+                                                                <span class="open-button">
+                                                                    <button type="button">📅</button>
+                                                                </span>
+                                                                {Object.keys(dateError).map((key) => {
+                                                                    console.log("key", key);
+                                                                    return <p className="inputErrors">{dateError[key]}</p>
+                                                                })}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">Presale End Date & Time(UTC)<span>*</span></label>
+                                                            <br></br>
+                                                            <div class="sd-container">
+                                                                <input class="sd"
+                                                                    type="date"
+                                                                    value={dateend}
+                                                                    onChange={handlePresaleEndDate}
+                                                                    id="party" type="datetime-local" name="partydate" ></input>
+                                                                <span class="open-button">
+                                                                    <button type="button">📅</button>
+                                                                </span>
+                                                                {Object.keys(dateError).map((key) => {
+                                                                    console.log("key", key);
+                                                                    return <p className="inputErrors">{dateError[key]}</p>
+                                                                })}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="exampleamount">Liquidity Percentage For Pancake <span>*</span></label>
+                                                            <input type="number" value={liquidityPercentage}
+                                                                onChange={(e) => setliquidityPercentage(e.target.value)}
+                                                                class="form-control" id="exampleamount" placeholder="Enter Liquidity Percentage For Pancake" />
+                                                            {/* <p className="errormsg">Pancake Liquidity must be greater than 51 %</p> */}
+                                                            {Object.keys(liquidityPercentageError).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{liquidityPercentageError[key]}</p>
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="exampleamount">LaunchPad Fee Percentage<span>*</span></label>
+                                                            <input type="number" value={2}
+                                                                onChange={(e) => setlaunchPadFeePercentage('2')}
+                                                                class="form-control" id="exampleamount" placeholder="Enter LaunchPad Fee Percentage" readOnly />
+                                                            {/* {Object.keys(amountError).map((key) => {
                                                             console.log("key", key);
                                                             return <p className="inputErrors">{amountError[key]}</p>
                                                         })} */}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* <div className="row">
+                                    {/* <div className="row">
                                 <div className="col-xl-8 col-lg-10 col-md-12">
                                     <div className="inner-submit-lower-div">
                                         <h4>Vesting Details</h4>
@@ -770,18 +809,17 @@ const SubmitProject = () => {
                                                     })}
                                                 </div>
                                             </div>
-                                        
                                         </div>
                                     </div>
                                 </div>
                             </div> */}
-                                {/* <div className="row">
+                                    {/* <div className="row">
                                     <div className="col-xl-8 col-lg-10 col-md-12">
                                         <div className="inner-submit-lower-div">
                                             <h4>Claim Time</h4>
                                             <div class="row"> */}
 
-                                                {/* <div class="col-lg-6">
+                                    {/* <div class="col-lg-6">
                                                     <div class="form-group">
                                                         <label for="example"> Claim Date & Time<span>*</span></label>
                                                         <br></br>
@@ -802,7 +840,7 @@ const SubmitProject = () => {
                                                         </div>
                                                     </div>
                                                 </div> */}
-                                                {/* <div class="col-lg-6">
+                                    {/* <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label for="example">Second Claim Start Date & Time<span>*</span></label>
                                                     <br></br>
@@ -824,7 +862,7 @@ const SubmitProject = () => {
                                                 </div>
                                             </div> */}
 
-                                                {/* <div class="col-lg-6">
+                                    {/* <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label for="example">Third Claim Start Date & Time<span>*</span></label>
                                                     <br></br>
@@ -845,77 +883,86 @@ const SubmitProject = () => {
                                                     </div>
                                                 </div>
                                             </div> */}
-                                            {/* </div>
+                                    {/* </div>
                                         </div>
                                     </div>
                                 </div> */}
-                                <div className="row">
-                                    <div className="col-xl-8 col-lg-10 col-md-12">
-                                        <div className="inner-submit-lower-div">
-                                            <h4>Allocation Limits </h4>
-                                            <div class="row">
+                                    <div className="row">
+                                        <div className="col-xl-8 col-lg-10 col-md-12">
+                                            <div className="inner-submit-lower-div">
+                                                <h4>Allocation Limits </h4>
+                                                <div class="row">
 
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="example">Min Allocation Per User(BNB)<span>*</span></label>
-                                                        <input type="number" value={minAllocationPerUser}
-                                                            onChange={(e) => setminAllocationPerUser(e.target.value)}
-                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter min allocation" />
-
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">Min Allocation Per User(BNB)<span>*</span></label>
+                                                            <input type="number" value={minAllocationPerUser}
+                                                                onChange={(e) => setminAllocationPerUser(e.target.value)}
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter min allocation" />
+                                                            {Object.keys(minallo).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{minallo[key]}</p>
+                                                            })}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="form-group">
-                                                        <label for="example">Max Allocation Per User(BNB)<span>*</span></label>
-                                                        <input type="number" value={maxAllocationPerUser}
-                                                            onChange={(e) => setmaxAllocationPerUser(e.target.value)}
-                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter max allocation" />
-
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">Max Allocation Per User(BNB)<span>*</span></label>
+                                                            <input type="number" value={maxAllocationPerUser}
+                                                                onChange={(e) => setmaxAllocationPerUser(e.target.value)}
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter max allocation" />
+                                                            {Object.keys(maxallo).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{maxallo[key]}</p>
+                                                            })}
+                                                        </div>
                                                     </div>
+
+
                                                 </div>
-
-
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className="row">
-                                    <div className="col-xl-8 col-lg-8 col-md-12">
-                                        <div className="inner-submit-lower-div">
-                                            <div class="row">
-                                            </div>
-                                            <div class="col-lg-6">
-                                                {!account ?
-                                                    <div className="" >
-                                                        <button type="button" className="disabled" disabled >Submit</button>
+                                    <div className="row">
+                                        <div className="col-xl-8 col-lg-8 col-md-12">
+                                            <div className="inner-submit-lower-div">
+                                                <div class="row">
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    {!account ?
+                                                        <div className="" >
+                                                            <button type="button" className="disabled" disabled >Submit</button>
 
-                                                    </div> : <div className="buttons-submit">
-                                                        <button type="button" className="button_button" onClick={SubmitForm}>Submit</button>
+                                                        </div> : <div className="buttons-submit">
+                                                            <button type="button" className="button_button" onClick={SubmitForm}>Submit</button>
 
-                                                    </div>
-                                                }
+                                                        </div>
+                                                    }
 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
 
-            <Footer />
+                <Footer />
 
 
 
 
-        </div>
+            </div>
+        </>
     );
 }
+
 // }
+
 export default SubmitProject;
 

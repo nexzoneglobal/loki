@@ -456,10 +456,12 @@ const Landing = () => {
               return (
 
                 <div className="col-xl-4 col-lg-4 col-md-6 col-12 mb-4" key={index}>
+                  <Link to={'/comingsoom/' + elem.id + '/' + 1} id={1} >
                   <ComingPoolCard {...elem} tier={1} allcation={elem.tier1Allocation} max={elem.maxAllocationPerUser}
                     min={elem.minAllocationPerUser}
                     preSaleStartDateAndTime={new Date(elem.preSaleStartDateAndTime)}
                   />
+                  </Link>
                 </div>
                 /* <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={index} >
                   <ComingPoolCard tier={2} {...elem} allcation={elem.tier2Allocation} max={elem.tier2MaxAmountPerUserInBNB}

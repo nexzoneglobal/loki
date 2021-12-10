@@ -367,7 +367,7 @@ const Pool = (props) => {
                                 <div className="pool-details">
                                     <div className="poor-detailss">
                                         <h6>Pool Details</h6>
-                                        <p>Price: {tokenPriceInBNB} BNB Per {symbol} </p>
+                                        <p>Price: {tokenPriceInBNB / 10** 18} BNB Per {symbol} </p>
                                         {/* <p>Price: {tokenSale} BNB = 100,000,000 ${symbol}</p> */}
                                         <p>For Sale:{amountAllocatedForPresale} {symbol}</p>
                                         <p>Max contribution: {tierMaxValue} BNB</p>
