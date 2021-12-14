@@ -18,10 +18,10 @@ const Footer = () => {
             </div>
             <div className="col-lg-6">
               <div className="socials">
-                <a className='linkss'  ><img src={require("../../static/images/landing-leocorn/telegram.svg")} alt="" /></a>
-                <a className='linkss' ><img src={require("../../static/images/landing-leocorn/twitter.svg")} alt="" /></a>
-                <a className='linkss' ><img src={require("../../static/images/landing-leocorn/discord.svg")} alt="" /></a>
-                <a className='linkss' ><img src={require("../../static/images/landing-leocorn/facebook.svg")} alt="" /></a>
+                <a className='linkss' href="https://t.me/rewardcycle"  ><img src={require("../../static/images/landing-leocorn/telegram.svg")} alt="" /></a>
+                <a className='linkss' href="https://twitter.com/rewardcycle"><img src={require("../../static/images/landing-leocorn/twitter.svg")} alt="" /></a>
+                <a className='linkss' href="https://www.reddit.com/r/RewardCycle/"><img src={require("../../static/images/landing-leocorn/discord.svg")} alt="" /></a>
+                {/* <a className='linkss' ><img src={require("../../static/images/landing-leocorn/facebook.svg")} alt="" /></a> */}
                 {/* <Link className='linkss' to='#'><img src={require("../../static/images/landing-leocorn/1-fot1.png")} alt="" /></Link> */}
                 {/* <Link className='linkss' to='#'><img src={require("../../static/images/landing-leocorn/5-fot-1.png")} alt="" /></Link> */}
               </div>
@@ -33,7 +33,7 @@ const Footer = () => {
         <div className="auto-container">
           <div className="main-terms">
             <p className="main-termss">© 2021 RC LAUNCHPAD, All Right Reserved</p>
-            {/* <p className="main-term">Term & Conditions</p> */}
+            <p className="main-term">Term & Conditions</p>
           </div>
         </div>
       </div>

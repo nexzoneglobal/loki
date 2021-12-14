@@ -21,7 +21,7 @@ const SubmitProject = (props) => {
              amountAllocatedforPresale:'',tier1Allocation:'',tier1MaxAmountPerUserInBNB:'',tier1MinAmountPerUserInBNB:'',
              tier2Allocation:'', tier2MaxAmountPerUserInBNB:'', tier2MinAmountPerUserInBNB:'', tier3Allocation:'', 
              tier3MaxAmountPerUserInBNB:'', tier3MinAmountPerUserInBNB:'', tier4Allocation:'', tier4MaxAmountPerUserInBNB:'',
-            tier4MinAmountPerUserInBNB:'',statusOfApplication:'Pending'
+            tier4MinAmountPerUserInBNB:'',statusOfApplication:'Pending',maxAllocationPerUser:'',minAllocationPerUser:'',firstClaimTime:'',secondClaimTime:'',thirdClaimTime:'',firstIterationPercentage:'',secondIterationPercentage:'',thirdIterationPercentage:'',preSaleEndDateAndTime:'',liquidityPercentage:'',launchPadFeePercentage:''
         })
         const [projectSymbol,setProjectSymbol]=useState('');
         const [projectDescription,setprojectDescription]=useState('');
@@ -51,22 +51,22 @@ const SubmitProject = (props) => {
         const getProjectDetail=async()=>{
             try {
         
-                  await axios.post("https://api.leocorn.in/project/editProject",{...inputs,id,statusOfApplication:'Approved'})
+                  await axios.post("http://54.191.140.38:4750/project/editProject",{...inputs,id,statusOfApplication:'Approved'})
                     .then((response) => {
                         console.log("response========edit>",response)
                         // getDate(response.data.msg)
-                        // toast.success('Project Approved Succesfully', {
-                        //     position: "top-right",
-                        //     autoClose: 2000,
-                        // });
+                        toast.success('Project Approved Succesfully', {
+                            position: "top-right",
+                            autoClose: 2000,
+                        });
                     });
           
               }
               catch (err) {
-                // toast.error('Project Not Approved', {
-                //     position: "bottom-center",
-                //     autoClose: 2000,
-                // });
+                toast.error('Project Not Approved', {
+                    position: "bottom-center",
+                    autoClose: 2000,
+                });
                 // eslint-disable-next-line no-console
                 // console.log(err);
                 // alert("Invalid Address")
@@ -77,12 +77,11 @@ const SubmitProject = (props) => {
         const getProjectRejected=async()=>{
             try {
         
-                  await axios.post("https://api.leocorn.in/project/editProject",{id,statusOfApplication:'Rejected'})
+                  await axios.post("http://54.191.140.38:4750/project/editProject",{id,statusOfApplication:'Rejected'})
                     .then((response) => {
                         console.log("response========edit>",response)
                         // getDate(response.data.msg)
                     });
-          
               }
               catch (err) {
                 // eslint-disable-next-line no-console
@@ -135,12 +134,16 @@ const SubmitProject = (props) => {
         const [totalSupplyError,setTotalSupplyError]=useState({});
         const [amountError,setAmountError]=useState({});
         const [dateError,setDateError]=useState({});
-    
+        
+
     
         const result = Web3.utils.isAddress(contractAddress);
         const result1 = Web3.utils.isAddress(walletAddress);
         console.log("result",result);
     
+        
+
+
         const formValidation=()=>{
            
             const projectNameError={};
@@ -264,7 +267,7 @@ const SubmitProject = (props) => {
      
         try {
     
-               axios.get("https://api.leocorn.in/project/"+id)
+               axios.get("http://54.191.140.38:4750/project/"+id)
                 .then((response) => {
                     console.log("response========>",response)
                     setInputs(response.data.msg)
@@ -341,57 +344,57 @@ const SubmitProject = (props) => {
    let isValid=true;
     
             
-   if(tier1===''){
-    tier1Error.tier1AllocationError="Tier1 Allocation is Required";
-      isValid=false;
-  }
-  if(tier2===''){
-    tier2Error.tier2AllocationError="Tier2 Allocation is Required";
-      isValid=false;
-  }
-  if(tier3===''){
-    tier3Error.tier3AllocationError="Tier3 Allocation is Required";
-      isValid=false;
-  }
-  if(tier4===''){
-    tier4Error.tier4AllocationError="Tier4 Allocation is Required";
-      isValid=false;
-  }
+//    if(tier1===''){
+//     tier1Error.tier1AllocationError="Tier1 Allocation is Required";
+//       isValid=false;
+//   }
+//   if(tier2===''){
+//     tier2Error.tier2AllocationError="Tier2 Allocation is Required";
+//       isValid=false;
+//   }
+//   if(tier3===''){
+//     tier3Error.tier3AllocationError="Tier3 Allocation is Required";
+//       isValid=false;
+//   }
+//   if(tier4===''){
+//     tier4Error.tier4AllocationError="Tier4 Allocation is Required";
+//       isValid=false;
+//   }
 
 
-  if(tier1MinValue===''){
-    tier1MinValueError.tier1MinError="Tier1 Min contribution is Required";
-      isValid=false;
-  }
-  if(tier2MinValue===''){
-    tier2MinValueError.tier2MinError="Tier2 Min contribution is Required";
-      isValid=false;
-  }
-  if(tier3MinValue===''){
-    tier3MinValueError.tier3MinError="Tier3 Min contribution is Required";
-      isValid=false;
-  }
-  if(tier4MinValue===''){
-    tier4MinValueError.tier4MinError="Tier4 Min contribution is Required";
-      isValid=false;
-  }
+//   if(tier1MinValue===''){
+//     tier1MinValueError.tier1MinError="Tier1 Min contribution is Required";
+//       isValid=false;
+//   }
+//   if(tier2MinValue===''){
+//     tier2MinValueError.tier2MinError="Tier2 Min contribution is Required";
+//       isValid=false;
+//   }
+//   if(tier3MinValue===''){
+//     tier3MinValueError.tier3MinError="Tier3 Min contribution is Required";
+//       isValid=false;
+//   }
+//   if(tier4MinValue===''){
+//     tier4MinValueError.tier4MinError="Tier4 Min contribution is Required";
+//       isValid=false;
+//   }
 
-  if(tier1MaxValue===''){
-    tier1MaxValueError.tier1MaxError="Tier1 Max contribution is Required";
-      isValid=false;
-  }
-  if(tier2MaxValue===''){
-    tier2MaxValueError.tier2MaxError="Tier2 Max Contribution is Required";
-      isValid=false;
-  }
-  if(tier3MaxValue===''){
-    tier3MaxValueError.tier3MaxError="Tier3 Max contribution is Required";
-      isValid=false;
-  }
-  if(tier3MaxValue===''){
-    tier4MaxValueError.tier4MaxError="Tier4 Max contribution is Required";
-      isValid=false;
-  }
+//   if(tier1MaxValue===''){
+//     tier1MaxValueError.tier1MaxError="Tier1 Max contribution is Required";
+//       isValid=false;
+//   }
+//   if(tier2MaxValue===''){
+//     tier2MaxValueError.tier2MaxError="Tier2 Max Contribution is Required";
+//       isValid=false;
+//   }
+//   if(tier3MaxValue===''){
+//     tier3MaxValueError.tier3MaxError="Tier3 Max contribution is Required";
+//       isValid=false;
+//   }
+//   if(tier3MaxValue===''){
+//     tier4MaxValueError.tier4MaxError="Tier4 Max contribution is Required";
+//       isValid=false;
+//   }
   setTier1Error(tier1Error);
   setTier2Error(tier2Error);
   setTier3Error(tier3Error);
@@ -450,7 +453,7 @@ const SubmitProject = (props) => {
                                                         value={inputs.projectName}
                                                         name="projectName"
                                                         onChange={handleChange}
-                                                        className="form-control white" id="example" aria-describedby="text" placeholder="Enter your project name here" />
+                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter your project name here" readOnly />
                                                         {/* {Object.keys(projectNameError).map((key) => {
                                                            console.log("name",projectNameError);
                                                            console.log("key", key);
@@ -465,7 +468,7 @@ const SubmitProject = (props) => {
                                                         value={inputs.symbol}
                                                         name="symbol"
                                                         onChange={handleChange}
-                                                        className="form-control" id="exampleInputsymbol" placeholder="Enter your project symbol i.e $BNB" />
+                                                        className="form-control" id="exampleInputsymbol" placeholder="Enter your project symbol i.e $BNB"  readOnly/>
                                                         {/* {Object.keys(projectSymbolError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -481,7 +484,7 @@ const SubmitProject = (props) => {
                                                         value={inputs.projectDescription}
                                                         name="projectDescription"
                                                         onChange={handleChange}
-                                                        placeholder="What is your project about" rows="3" id="comment"></textarea>
+                                                        placeholder="What is your project about" rows="3" id="comment" readOnly></textarea>
                                                         {/* {Object.keys(projectDescriptionError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -499,11 +502,11 @@ const SubmitProject = (props) => {
                                                                 
                                                             </div>
                                                         </div>
-                                                            <p><span><input type="file" name="avatar" className="custom-file-inputt" accept="image/*" id="contained-button-file" /></span></p>
+                                                            <p><span><input type="file" name="avatar" className="custom-file-inputt" accept="image/*" id="contained-button-file" readOnly/></span></p>
                                                     </div>
                                                 </div>
 
-                                                <div className="col-lg-12">
+                                                {/* <div className="col-lg-12">
                                                     <div className="form-group">
                                                         <label for="exampleInputcontractaddress">Project Contract Address<span>*</span></label>
                                                         <input type="text"
@@ -511,13 +514,9 @@ const SubmitProject = (props) => {
                                                                     name="contractAddress"
                                                                     onChange={handleChange}
                                                             className="form-control" id="exampleInputcontractaddress" placeholder="Enter Contract Address of your project" />
-                                                        {/* {Object.keys(contractAddressError).map((key) => {
-                                console.log("name",nameError);
-                                console.log("key", key);
-                                return <p className="inputErrors">{contractAddressError[key]}</p>
-                            })} */}
+                                                     
                                                     </div>
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </div>
                                     </div>
@@ -537,7 +536,7 @@ const SubmitProject = (props) => {
                                                         value={inputs.websiteLink}
                                                         name="websiteLink"
                                                         onChange={handleChange}
-                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter website address of your project" />
+                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter website address of your project" readOnly/>
                                                         {/* {Object.keys(websiteLinkError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -552,7 +551,7 @@ const SubmitProject = (props) => {
                                                         value={inputs.twitterLink}
                                                         name="twitterLink"
                                                         onChange={handleChange}
-                                                            className="form-control" id="exampleInputsymbol" placeholder="Enter twitter link of your project" />
+                                                            className="form-control" id="exampleInputsymbol" placeholder="Enter twitter link of your project" readOnly/>
                                                         {/* {Object.keys(twitterLinkError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -568,7 +567,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.telegramlink}
                                                          name="telegramlink"
                                                          onChange={handleChange}
-                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter your project name here" />
+                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter your project name here" readOnly />
                                                         {/* {Object.keys(telegramLinkError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -583,7 +582,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.discrodLink}
                                                          name="discrodLink"
                                                          onChange={handleChange}
-                                                        className="form-control" id="exampleInputsymbol" placeholder="Enter telegram link of your project" />
+                                                        className="form-control" id="exampleInputsymbol" placeholder="Enter telegram link of your project" readOnly />
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-6">
@@ -593,7 +592,7 @@ const SubmitProject = (props) => {
                                                         value={inputs.mediumLink}
                                                         name="mediumLink"
                                                         onChange={handleChange}
-                                                        className="form-control" id="exampleInputsymbol" placeholder="Enter discord link of your project" />
+                                                        className="form-control" id="exampleInputsymbol" placeholder="Enter discord link of your project" readOnly />
                                                     </div>
                                                 </div>
                                             </div>
@@ -615,7 +614,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.contactPersonName}
                                                          name="contactPersonName"
                                                          onChange={handleChange}
-                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter Contact Person Name" />
+                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter Contact Person Name" readOnly />
                                                         {/* {Object.keys(personNameError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -630,7 +629,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.contactPersonEmail}
                                                          name="contactPersonEmail"
                                                          onChange={handleChange}
-                                                            className="form-control" id="exampleemail" placeholder="Enter twitter link of your project" />
+                                                            className="form-control" id="exampleemail" placeholder="Enter twitter link of your project" readOnly/>
                                                         {/* {Object.keys(emailError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -646,7 +645,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.contactPersonWalletAddress}
                                                          name="contactPersonWalletAddress"
                                                          onChange={handleChange}
-                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter Contact Person’s Wallet Address" />
+                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter Contact Person’s Wallet Address" readOnly/>
                                                         {/* {Object.keys(walletAddressError).map((key) => {
                                 console.log("name",nameError);
                                 console.log("key", key);
@@ -676,7 +675,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.totalSupplyOfToken}
                                                          name="totalSupplyOfToken"
                                                          onChange={handleChange}
-                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter total supply of your token" />
+                                                            className="form-control" id="example" aria-describedby="text" placeholder="Enter total supply of your token" readOnly/>
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-6">
@@ -686,7 +685,7 @@ const SubmitProject = (props) => {
                                                          value={inputs.amountAllocatedForPresale}
                                                          name="amountAllocatedforPresale"
                                                          onChange={handleChange}
-                                                            className="form-control" id="exampleamount" placeholder="Enter total allocation for this presale" />
+                                                            className="form-control" id="exampleamount" placeholder="Enter total allocation for this presale" readOnly />
                          
                                                     </div>
                                                 </div>
@@ -697,7 +696,7 @@ const SubmitProject = (props) => {
                                                            value={inputs.tokenDecimals}
                                                            name="tokenDecimals"
                                                            onChange={handleChange}
-                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter Your Token Decimals" />
+                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter Your Token Decimals" readOnly/>
                                                    
                                                 </div>
                                             </div>
@@ -708,22 +707,22 @@ const SubmitProject = (props) => {
                                                          value={inputs.tokenPriceInBNB}
                                                          name="tokenPriceInBNB"
                                                          onChange={handleChange}
-                                                        class="form-control" id="exampleamount" placeholder="Enter Your Token Price" />
+                                                        class="form-control" id="exampleamount" placeholder="Enter Your Token Price" readOnly />
                                                   
                                                 </div>
                                             </div>
 
-                                                <div className="col-lg-12">
+                                                <div className="col-lg-6">
                                                     <div className="form-group">
                                                         <label for="example">Presale Start Date & Time<span>*</span></label>
                                                         <br></br>
                                                         <div className="sd-container">
                                                             <input className="sd"
-                                                             value={inputs.preSaleStartDateAndTime.split('Z')[0]}
+                                                            value={inputs.preSaleStartDateAndTime?.split('Z')[0]}
                                                             
                                                              name="preSaleStartDateAndTime"
                                                              onChange={handleChange}
-                                                                id="party" type="datetime-local"  ></input>
+                                                                id="party" type="datetime-local"  readOnly></input>
                                                                   {/* <input className="sd" style={{color:'white'}}
                                                              value={inputs.preSaleStartDateAndTime}
                                                              name="preSaleStartDateAndTime"
@@ -736,12 +735,53 @@ const SubmitProject = (props) => {
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div className="col-lg-6">
+                                                    <div className="form-group">
+                                                        <label for="example">Presale End Date & Time<span>*</span></label>
+                                                        <br></br>
+                                                        <div className="sd-container">
+                                                            <input className="sd"
+                                                            value={inputs.preSaleEndDateAndTime?.split('Z')[0]}
+                                                            
+                                                             name="preSaleEndDateAndTime"
+                                                             onChange={handleChange}
+                                                                id="party" type="datetime-local" readOnly ></input>
+                                                                  {/* <input className="sd" style={{color:'white'}}
+                                                             value={inputs.preSaleStartDateAndTime}
+                                                             name="preSaleStartDateAndTime"
+                                                             onChange={handleChange}
+                                                                /> */}
+                                                            <span className="open-button">
+                                                                <button type="button">📅</button>
+                                                            </span>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="exampleamount">Liquidity Percentage For Pancake <span>*</span></label>
+                                                    <input type="number" value={inputs.liquidityPercentage}
+                                                       
+                                                        class="form-control" id="exampleamount" placeholder="Enter Liquidity Percentage For Pancake" readOnly />
+                                                
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="exampleamount">LaunchPad Fee Percentage<span>*</span></label>
+                                                    <input type="number" value={inputs.launchPadFeePercentage}
+                                                     
+                                                        class="form-control" id="exampleamount" placeholder="Enter LaunchPad Fee Percentage" readOnly/>
+                                                 
+                                                </div>
+                                            </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="row">
+                                {/* <div className="row">
                                 <div className="col-xl-8 col-lg-10 col-md-12">
                                     <div className="inner-submit-lower-div">
                                         <h4>Vesting Details</h4>
@@ -749,9 +789,45 @@ const SubmitProject = (props) => {
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label for="example">Iteration 1 Percentage<span>*</span></label>
-                                                    <input type="number" 
-                                                        // onChange={(e) => setIteration1(e.target.value)}
+                                                    <input type="number" name="firstIterationPercentage" value={inputs.firstIterationPercentage}
+                                                 
                                                         class="form-control" id="example" aria-describedby="text" placeholder="Enter Your Iteration  1 Percentage" />
+                                                
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="exampleamount">Iteration 2 Percentage <span>*</span></label>
+                                                    <input type="number " name="secondIterationPercentage" value={inputs.secondIterationPercentage}
+                                                      
+                                                        class="form-control" id="exampleamount" placeholder="Enter Your Iteration 2 Percentage" />
+                                              
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="exampleamount">Iteration 3 Percentage <span>*</span></label>
+                                                    <input type="number " name="thirdIterationPercentage" value={inputs.thirdIterationPercentage}
+                                                       
+                                                        class="form-control" id="exampleamount" placeholder="Enter Your Iteration 3 Percentage" />
+                                             
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> */}
+                            <div className="row">
+                                <div className="col-xl-8 col-lg-10 col-md-12">
+                                    <div className="inner-submit-lower-div">
+                                        <h4>Claim Times</h4>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="example">Claim time</label>
+                                                    <input type="datetime-local" name="firstClaimTime" value={inputs.firstClaimTime?.split('Z')[0]}
+                                                        // onChange={(e) => setIteration1(e.target.value)}
+                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter your  claim time" readOnly />
                                                     {/* {Object.keys(iteration1Error).map((key) => {
                                                         // console.log("name",nameError);
                                                         console.log("key", key);
@@ -759,30 +835,34 @@ const SubmitProject = (props) => {
                                                     })} */}
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6">
+                                            {/* <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <label for="exampleamount">Iteration 2 Percentage <span>*</span></label>
-                                                    <input type="number " 
-                                                        // onChange={(e) => setIteration2(e.target.value)}
-                                                        class="form-control" id="exampleamount" placeholder="Enter Your Iteration 2 Percentage" />
-                                                    {/* {Object.keys(iteration2Error).map((key) => {
-                                                        // console.log("name",nameError);
-                                                        console.log("key", key);
-                                                        return <p className="inputErrors">{iteration2Error[key]}</p>
-                                                    })} */}
+                                                    <label for="exampleamount">Second claim time</label>
+                                                    <input type="datetime-local" name="secondClaimTime" value={inputs.secondClaimTime?.split('Z')[0]}
+                                                      
+                                                        class="form-control" id="exampleamount" placeholder="Enter Your Second claim time" />
+                                               
                                                 </div>
-                                            </div>
+                                            </div> */}
+                                            {/* <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="exampleamount">Third claim time</label>
+                                                    <input type="datetime-local" name="thirdClaimTime" value={inputs.thirdClaimTime?.split('Z')[0]}
+                                                       
+                                                        class="form-control" id="exampleamount" placeholder="Enter Your Third claim time" />
+                                                
+                                                </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
+                            </div>                   
                                 <div className="row">
                                     <div className="col-xl-8 col-lg-10 col-md-12">
                                         <div className="inner-submit-lower-div">
-                                            <h4>Tier Details</h4>
-                                            <h6>Tier 1</h6>
-                                            <div className="row">
+                                            <h4>Allocation Limits</h4>
+                                       
+                                            {/* <div className="row">
                                                 <div className="col-lg-6">
                                                     <div className="form-group">
                                                         <label for="example">Tier 1 Allocation (65% of presale allocation) <span>*</span></label>
@@ -791,23 +871,19 @@ const SubmitProject = (props) => {
                                                         name="tier1Allocation"
                                                         onChange={handleChange}
                                                         className="form-control" id="example" aria-describedby="text" placeholder="Enter Tier 1 allocation" />
-                                                        {/* {Object.keys(tier1Error).map((key) => {
-                                                         console.log("name",tier1Error);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier1Error[key]}</p>
-                                                       })}  */}
+                                                       
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                             <div className="row">
                                                 <div className="col-lg-6">
                                                     <div className="form-group">
-                                                        <label for="exampleamount">Min contribution in Tier 1 (in BNB) <span>*</span></label>
-                                                        <input type="text"
-                                                         value={inputs.tier1MinAmountPerUserInBNB}
-                                                         name="tier1MinAmountPerUserInBNB"
+                                                        <label for="exampleamount">Min allocation per user <span>*</span></label>
+                                                        <input type="text" 
+                                                         value={inputs.minAllocationPerUser}
+                                                         name="minAllocationPerUser"
                                                          onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter min contribution" />
+                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter min allocation" readOnly/>
                                                         {/* {Object.keys(tier1MinValueError).map((key) => {
                                                          console.log("name",tier1MinValueError);
                                                          console.log("key", key);
@@ -818,12 +894,12 @@ const SubmitProject = (props) => {
 
                                                 <div className="col-lg-6">
                                                     <div className="form-group">
-                                                        <label for="example">Max contribution in Tier 1 (in BNB)<span>*</span></label>
+                                                        <label for="example">Max allocation per user<span>*</span></label>
                                                         <input type="text" 
-                                                           value={inputs.tier1MaxAmountPerUserInBNB}
-                                                           name="tier1MaxAmountPerUserInBNB"
+                                                           value={inputs.maxAllocationPerUser}
+                                                           name="maxAllocationPerUser"
                                                            onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter max contribution" />
+                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter max allocation" readOnly/>
                                                          {/* {Object.keys(tier1MaxValueError).map((key) => {
                                                          console.log("name",tier1MaxValueError);
                                                          console.log("key", key);
@@ -832,179 +908,29 @@ const SubmitProject = (props) => {
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <h6>Tier 2</h6>
+                                             {/* className={inputs.statusOfApplication!=='Approved'?'button-reject':'disabled'} */}
+                                             {/* <ToastContainer style={{fontSize:20}}/> */}
+                                                        {/* <button type="button" className="button-edit">EDIT</button> */}
                                             <div className="row">
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="example">Tier 2 Allocation (20% of presale allocation) <span>*</span></label>
-                                                        <input type="text" 
-                                                        value={inputs.tier2Allocation}
-                                                        name="tier2Allocation"
-                                                        onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter tier 2 allocation" />
-                                                        {/* {Object.keys(tier2Error).map((key) => {
-                                                         console.log("name",tier2Error);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier2Error[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="exampleamount">Min contribution in Tier 2 (in BNB) <span>*</span></label>
-                                                        <input type="text" 
-                                                         value={inputs.tier2MinAmountPerUserInBNB}
-                                                         name="tier2MinAmountPerUserInBNB"
-                                                         onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter min contribution" />
-                                                        {/* {Object.keys(tier2MinValueError).map((key) => {
-                                                         console.log("name",tier2MinValueError);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier2MinValueError[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="example">Max contribution Tier 2 (in BNB)<span>*</span></label>
-                                                        <input type="text" 
-                                                        value={inputs.tier2MaxAmountPerUserInBNB}
-                                                        name="tier2MaxAmountPerUserInBNB"
-                                                        onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter max contribution" />
-                                                          {/* {Object.keys(tier2MaxValueError).map((key) => {
-                                                         console.log("name",tier2MaxValueError);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier2MaxValueError[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <h6>Tier 3</h6>
-                                            <div className="row">
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="example">Tier 3 Allocation (10% of presale allocation) <span>*</span></label>
-                                                        <input type="text"
-                                                            value={inputs.tier3Allocation}
-                                                            name="tier3Allocation"
-                                                            onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter tier 3 contribution" />
-                                                         {/* {Object.keys(tier3Error).map((key) => {
-                                                         console.log("name",tier3Error);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier3Error[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="exampleamount">Min contribution in Tier 3 (in BNB) <span>*</span></label>
-                                                        <input type="text" 
-                                                           value={inputs.tier3MinAmountPerUserInBNB}
-                                                           name="tier3MinAmountPerUserInBNB"
-                                                           onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter min contribution" />
-                                                        {/* {Object.keys(tier3MinValueError).map((key) => {
-                                                         console.log("name",tier3MinValueError);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier3MinValueError[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="example">Max contribution Tier 3 (in BNB)<span>*</span></label>
-                                                        <input type="text"
-                                                          value={inputs.tier3MaxAmountPerUserInBNB}
-                                                          name="tier3MaxAmountPerUserInBNB"
-                                                          onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter max contribution" />
-                                                          {/* {Object.keys(tier3MaxValueError).map((key) => {
-                                                         console.log("name",tier3MaxValueError);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier3MaxValueError[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <h6>Tier 4</h6>
-                                            <div className="row">
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="example">Tier 4 Allocation (5% of presale allocation)  <span>*</span></label>
-                                                        <input type="text" 
-                                                            value={inputs.tier4Allocation}
-                                                            name="tier4Allocation"
-                                                            onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter teir 4 allocation" />
-                                                         {/* {Object.keys(tier4Error).map((key) => {
-                                                         console.log("name",tier4Error);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier4Error[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="exampleamount">Min contribution in Tier 4 (in BNB) <span>*</span></label>
-                                                        <input type="text"
-                                                           value={inputs.tier4MinAmountPerUserInBNB}
-                                                           name="tier4MinAmountPerUserInBNB"
-                                                           onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter min contribution" />
-                                                           {/* {Object.keys(tier4MinValueError).map((key) => {
-                                                         console.log("name",tier4MinValueError);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier4MinValueError[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
-
-                                                <div className="col-lg-6">
-                                                    <div className="form-group">
-                                                        <label for="example">Max contribution Tier 4 (in BNB)<span>*</span></label>
-                                                        <input type="text" 
-                                                          value={inputs.tier4MaxAmountPerUserInBNB}
-                                                          name="tier4MaxAmountPerUserInBNB"
-                                                          onChange={handleChange}
-                                                        className="form-control" id="example" aria-describedby="text" placeholder="Enter max contribution" />
-                                                          {/* {Object.keys(tier4MaxValueError).map((key) => {
-                                                         console.log("name",tier4MaxValueError);
-                                                         console.log("key", key);
-                                                         return <p className="inputErrors">{tier4MaxValueError[key]}</p>
-                                                       })}  */}
-                                                    </div>
-                                                </div>
                                                 <div className="col-lg-12">
                                                     <div className="buttons-submit">
-                                                        <button type="button" 
+                                                        {/* <button type="button" 
                                                         className={inputs.statusOfApplication!=='Approved'?'button-approve':'disabled'}
                                                         onClick={getProjectDetail}>SAVE & APPROVE</button>
                                                         <button   type="button" 
-                                                        //  className={inputs.statusOfApplication!=='Approved'?'button-reject':'disabled'}
+                                                     
                                                         className="button-reject"
-                                                         onClick={getProjectRejected}>REJECT</button>
+                                                         onClick={getProjectRejected}>REJECT</button> */}
                                                          <Link to="/projects" className="back_btn">Back</Link>
-                                                        {/* <ToastContainer style={{fontSize:20}}/> */}
-                                                        {/* <button type="button" className="button-edit">EDIT</button> */}
+                                                       
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                           
+                               
                          </form>
                         </div>
 

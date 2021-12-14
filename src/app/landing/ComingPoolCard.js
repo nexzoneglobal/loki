@@ -35,7 +35,7 @@ const ComingPoolCard = (props) => {
       <div className="main-image">
         <img src={props.logoURL} alt="" />
         <h1 style={{ marginLeft: 20 }}>{props.projectName}</h1>
-        <button>{props.tier}</button>
+        {/* <button>{props.tier}</button> */}
       </div>
       <div className="calender">
         <h1>Opens In</h1>

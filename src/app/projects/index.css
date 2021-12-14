@@ -21,8 +21,14 @@
     padding-bottom: 86px;
     padding-right: 80px;
 }
-
-
+#gfngfmg{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    line-height: 0;
+    padding: 0;
+    border: 0;
+}
 .projects .header-section .submit-project .inner-submit-upper-div h1{
     font-family: 'poppins';
     font-style: normal;
@@ -31,8 +37,6 @@
     line-height: 28px;
     color: #ffffff;
 }
-
-
 
 .projects .header-section .submit-project .inner-submit-lower-div{
     padding-left: 80px;
@@ -65,10 +69,17 @@
     color: #1561FB;
   }
   .projects .header-section .submit-project .inner-submit-upper-div .searchbar .searchContainer{
-    border: 1.5px solid rgba(0, 209, 255, 0.3);
+    border: 1.5px solid #1561FB;
     width: 58%;
-    height: 55px;
     border-radius: 15px;
+    position: relative;
+  }
+  .fa, .fas{
+      font-weight: 900!important;
+  }
+  .main-search-ison{
+      position: absolute;
+      top: 0px;
   }
   .projects .header-section .submit-project .inner-submit-upper-div .searchbar .searchContainer i{
     color: #1561FB;
@@ -83,10 +94,56 @@
     border: none;
     outline: none;
     box-shadow: none;
-    width: 80%;
+    width: 100%;
+    padding-left: 60px;
     color: #ffffff;
+    padding-right: 20px;
     font-size: 20px;
   }
+  .button-details{
+      
+  }
+  .button-detailss .buttion-on{
+    background: #1561FB;
+    border-radius: 14px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: #FFFFFF;
+    width: 126px;
+    height: 55px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 30px;
+  }
+  
+  .main-image-dhgy{
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+  }
+  .button-detailss .button-rig{
+    background: #442129;
+    border-radius: 14px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: #DA3838;
+    width: 126px;
+    height: 55px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+ 
   .projects .header-section .submit-project .inner-submit-upper-div .searchbar p{
     font-family: 'poppins';
     font-style: normal;
@@ -245,6 +302,7 @@
     line-height: 21px;
     border: none;
     padding: 14px 40px;
+    margin-left: 10px;
     color: #ffffff;
     background: linear-gradient(92.21deg, #4176FD 0%, #1561FB 100%);
     border-radius: 14px;
@@ -259,6 +317,7 @@
     line-height: 21px;
     padding: 14px 40px;
     color: #ffffff;
+    margin-left: 10px;
     opacity: 0.5;
     border-radius: 14px;
     border: none;

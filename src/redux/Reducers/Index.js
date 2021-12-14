@@ -4,7 +4,6 @@ const initState = {
   ClosedData:[]
 };
 export const PoolActiveReducer = (state = initState, action) => {
-
   const { type, payload } = action; //object destructring
   switch (type) {
     case "ACTIVEPOOLDATA":

@@ -55,7 +55,7 @@
 }
 
 .submit-project .header-section .submit-project .inner-submit-lower-div{
-    padding-left: 80px;
+    padding-left: 0px;
     padding-top: 66px;
 }
 /* upload image changes start */
@@ -111,8 +111,8 @@
     line-height: 28px;
     color: #1561FB;
     padding-top: 36px;
-
 }
+
 .submit-project .header-section .submit-project .inner-submit-lower-div .form-group label span{
     color: #DA3838;
 }
@@ -169,8 +169,8 @@
 .submit-project .header-section .submit-project .inner-submit-lower-div .form-group .dashed-border-new{
     /* width: 236px;
     height: auto; */
-    width: 204px;
-    height: 204px;
+    width: 100%;
+    height: 250px;
     border: 2px dashed rgba(196, 196, 196, 0.5);
     box-sizing: border-box;
     border-radius: 9px;
@@ -196,8 +196,12 @@
 
 .submit-project .header-section .submit-project .inner-submit-lower-div .form-group .dashed-border-new .main-image-div{
     text-align: center;
-}
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+}
 
 .submit-project .header-section .submit-project .hr-submit-form{
     background: #0F0E13;
@@ -245,7 +249,8 @@
     cursor: pointer;
   }
   .submit-project .header-section .submit-project .inner-submit-lower-div .sd-container input{
-    color: rgba(255, 255, 255, 0.2);
+    /* color: rgba(255, 255, 255, 0.2); */
+    color: #fff;
     padding-right: 20px!important;
     cursor: pointer;
   }
@@ -367,7 +372,7 @@
         padding-left: 45px;
     }
     .submit-project .header-section .submit-project .inner-submit-lower-div{
-        padding-left: 45px;
+        padding-left: 0px;
     }
     .submit-project .header-section .submit-project{
         width: 100%;
@@ -387,8 +392,8 @@
         margin-top: 100px;
     }
     .submit-project .header-section .submit-project .inner-submit-lower-div{
-        padding-left: 45px;
-        padding-right: 45px;
+        padding-left: 0px;
+        padding-right: 0px;
     }
     .submit-project .header-section .submit-project .inner-submit-upper-div{
         padding-left: 42px;
@@ -413,8 +418,8 @@
         width: 100%;
     }
     .submit-project .header-section .submit-project .inner-submit-lower-div {
-        padding-left: 32px;
-        padding-right: 32px;
+        padding-left: 0px;
+        padding-right: 0px;
     }
     .submit-project .header-section .submit-project .inner-submit-upper-div {
         padding-left: 32px;
@@ -463,4 +468,84 @@
     .submit-project .header-section .submit-project {
         width: 100%;
     }
+}
+
+.right-side-main-image {
+    margin-top: 34px;
+}
+
+.inner-logo-upload-main{
+    background: #1E1C26;
+    border: 2px dashed rgba(196, 196, 196, 0.5);
+    box-sizing: border-box;
+    border-radius: 9px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.inner-logo-upload-main h4{
+    font-size: 18px!important;
+    color: rgb(105, 104, 104)!important;
+}
+
+.inner-logo-upload-main label{
+    cursor: pointer;
+}
+
+/* .projects .header-section .submit-project .inner-submit-upper-div .searchbar h1{
+    font-family: 'poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 28px;
+    color: #1561FB;
+  }
+  .projects .header-section .submit-project .inner-submit-upper-div .searchbar .searchContainer{
+    border: 1.5px solid #1561FB;
+    width: 58%;
+    border-radius: 15px;
+    position: relative;
+  }
+  .fa, .fas{
+      font-weight: 900!important;
+  }
+  .main-search-ison{
+      position: absolute;
+      top: 0px;
+  } */
+
+.MuiBackdrop-root{
+    z-index: 1!important;
+}
+
+  .msindh{
+      cursor: pointer;
+  }
+
+  .main-bvc img{
+      object-fit: cover;
+      border-radius: 10px;
+  }
+  .errormsg{
+      font-size: 11px;
+      color: crimson;
+  }
+
+  input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: #979797 !important;
+    color: #000 !important;
+    opacity: 1;
 }
