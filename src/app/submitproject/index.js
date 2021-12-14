@@ -923,6 +923,78 @@ const SubmitProject=()=> {
                                             </div>
                                         </div>
                                     </div>
+                                    <div className="row">
+                                        <div className="col-xl-8 col-lg-10 col-md-12">
+                                            <div className="inner-submit-lower-div">
+                                                <h4>KYC Details</h4>
+                                                <div class="row">
+
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">First name of project owner<span>*</span></label>
+                                                            <input type="number" 
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter First Name" />
+                                                            {/* {Object.keys(minallo).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{minallo[key]}</p>
+                                                            })} */}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">Last name of project owner<span>*</span></label>
+                                                            <input type="number" 
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter Last Name" />
+                                                            {/* {Object.keys(maxallo).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{maxallo[key]}</p>
+                                                            })} */}
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                    <div className="col-lg-4 col-md-12 col-12 ">
+                                            <div className="right-side-main-image inner-submit-lower-div pt-10">
+                                                {/* <div class="form-group">
+                                                <label for="example">Upload Logo<span>*</span></label>
+                                                <div className="inner-logo-upload-main">
+                                                 <div>   <label for="fileb" className="p-0"><img src={require("../../static/images/submit-form/cloud.png")} alt="" /></label>
+                                                    <input className="input-fields d-none" id="fileb" type="file" />
+                                                    <h4>Upload Image</h4>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div> */}
+                                                <div class="form-group">
+                                                    <label for="exampleInputsymbol">Upload id or passport<span>*</span></label>
+                                                    <div className="dashed-border-new">
+                                                        <div className="main-image-div main-bvc">
+                                                            <img src={logo ? logo : require("../../static/images/submit-form/cloud.png")} alt="" />
+                                                            {selectedImg ? renderPhotos(selectedImg) : null}
+                                                        </div>
+                                                        <p className="text-center"><span>
+                                                            <label for="files" className="msindh">Upload Image</label>
+                                                            <input type="file" id="files"
+                                                                value={logo}
+                                                                onChange={handleImageChange}
+                                                                name="avatar" className="d-none custom-file-inputt" accept="image/*" />
+                                                        </span></p>
+                                                        {Object.keys(logoError).map((key) => {
+                                                            return <p className="inputErrors">{logoError[key]}</p>
+                                                        })}
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
 
                                     <div className="row">
                                         <div className="col-xl-8 col-lg-8 col-md-12">
