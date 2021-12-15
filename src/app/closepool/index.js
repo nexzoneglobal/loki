@@ -8,8 +8,12 @@ import { ClaimTokens, ClaimVestedToken, VestedPeriod, Contribute,ClaimSecondVest
 import useAuth from '../../hooks/useAuth';
 import { useSelector } from "react-redux";
 import {WhiteListedAllTiers} from '../../hooks/PoolDataFetcher'
-
+import { Backdrop } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const ClosePool = (props) => {
+    const [open, setOpen] = useState(false);
     const closeingstore = useSelector((state) => state.PoolActiveReducer.ClosedData);
     const tier = props.match.params.tier;
     const id = props.match.params.id;
@@ -55,7 +59,7 @@ const ClosePool = (props) => {
            firstIterationPercentage = elem.firstIterationPercentage
            secondIterationPercentage = elem.secondIterationPercentage
            thirdIterationPercentage=elem.thirdIterationPercentage
-           firstClaimTime=elem.firstClaimTime
+           firstClaimTime=new Date(elem.firstClaimTime);
            secondClaimTime=elem.secondClaimTime
            thirdClaimTime=elem.thirdClaimTime
        }
@@ -139,12 +143,19 @@ const ClosePool = (props) => {
     }, [WhiteListTiers])
     
     const FirstClaimToken = useCallback(async (e) => {
+        setOpen(true)
         e.preventDefault();
         if (account) {
             try {
                 await claimToken();
+                setOpen(false)
+                toast.success('Claim Done', {
+                    position: "top-center",
+                    autoClose: 7000,
+                });
             }
             catch (err) {
+                setOpen(false)
                 return false;
             }
         }
@@ -153,12 +164,20 @@ const ClosePool = (props) => {
         }
     }, [claimToken])
     const VestedClaimToken = useCallback(async (e) => {
+        setOpen(true)
         e.preventDefault();
         if (account) {
             try {
                 await vestedClaim();
+                setOpen(false)
+                toast.success('Finalization Done', {
+                    position: "top-center",
+                    autoClose: 7000,
+                });
+
             }
             catch (err) {
+                setOpen(false)
                 return false;
             }
         }
@@ -209,6 +228,9 @@ const ClosePool = (props) => {
         CheckWhiteList();
     }, [account, tokenAddress])
     return (
+        <>
+        <Backdrop className="loader" xs={{ color: '#fff'}} open={open}><CircularProgress color="primary"  style={{width: "100px", height:'100px'}}/></Backdrop>
+       
         <div className='landing-nft main-pool'>
             <Navbar />
             <section className="header-section main-pool">
@@ -257,6 +279,7 @@ const ClosePool = (props) => {
                                             <img src={require("../../static/images/submit-form/coin-bnb.png")} alt="" />
                                             <h4>{TierContribute / (10 ** 18)} BNB</h4>
                                         </div>
+                                        <h6>Your Tokens</h6>
                                         <div className="image-text">
                                             <img src={logo} style={{ width: 30, height: 30, borderRadius: '50%', marginTop: 5 }} alt="" />
                                             <h4>{(TierContribute / (10 ** 18)) / (price)} {symbol}</h4>
@@ -275,7 +298,7 @@ const ClosePool = (props) => {
                                        
                                        <div style={{ fontSize: 16, textAlign: 'center', fontWeight: 600 }}>
                                        <p style={{ color: 'green' }}>Presale Ended!You can reedem {firstIterationPercentage}% of<br />
-                                           your tokens   on {firstClaimTime}
+                                           your tokens   after presale finalize.
                                        </p>
                                    </div>
                                     
@@ -352,6 +375,7 @@ const ClosePool = (props) => {
             </section>
             <Footer />
         </div>
+        </>
     );
 }
 export default ClosePool

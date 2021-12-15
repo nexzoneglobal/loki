@@ -11,7 +11,7 @@ export const DeployContact = () => {
     console.log("hereeeeeeeeeeee",contract);
     const DeployProjectOnLaunchpad= useCallback( (arg) => {
         
-        const deployer = contract.methods.deployProjectOnLaunchpad(arg).send({ from: account })
+        const deployer = contract.methods.deployProjectOnLaunchpad(arg).send({ from: account, value:'0' })
         .on('transactionHash', (tx) => { return tx.transactionHash });
         return deployer
     }, [ account,contract ])

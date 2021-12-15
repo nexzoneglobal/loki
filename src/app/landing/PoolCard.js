@@ -1,7 +1,7 @@
 import { element } from 'prop-types';
 import React, { useState } from 'react';
 import './index.css';
-
+import { MDBProgress } from 'mdbreact';
 const PoolCard = (props) => {
   const [day, setDay] = useState(0);
   const [hour, setHour] = useState(0);
@@ -10,11 +10,8 @@ const PoolCard = (props) => {
   // const now = Date.now();
  
  const nowTime = Math.floor(Date.now() / 1000)
-
- console.log(props.endTime)
-
   var time = new Date(props.preSaleEndDateAndTime  *1000)
-  console.log('timeeeeeeee', time)
+  
   function timer() {
    var now = new Date()
   var diff = time.getTime() - now.getTime();
@@ -37,7 +34,9 @@ const PoolCard = (props) => {
   setInterval(() => {
     timer()
   }, 1000);
-
+  //console.log(props.TotalBnbPerTier);
+  // let progressValue=(((((props.TotalBnbPerTier/( 10**18) / props.tokenPriceInBNB))/((props.amountAllocatedForPresale)))*100).toFixed(3));
+  // progressValue = progressValue > 100 ? 100 : progressValue;
   return (
       <>
       <div className="main-image">
@@ -47,7 +46,7 @@ const PoolCard = (props) => {
       </div>
       <div className="ksajdksj">
         <h6>Presale Address :</h6>
-        <p>{props.contractAddressDeployed}</p>
+        <p>{props.contractAddressDeployed} <i class="fas fa-copy"></i></p>
       </div>
       <div className="calender">
         {
@@ -62,8 +61,14 @@ const PoolCard = (props) => {
         </div>
         <p>{new Date(props.endTime * 1000).toUTCString()}</p>
       </div>
+
+
+
       <div className="progress-baar">
         {/* <p className="coming-soon-feature">ALLOCATION: {props.allcation} OF TOTAL AVAILABLE</p> */}
+        {/* <p className="one">Progress</p>
+          <p>{progressValue}%</p> */}
+        {/* <MDBProgress material  value={progressValue} /> */}
           { nowTime>props.startTime && nowTime < props.endTime ?
         <div className="min-max">
           <p className="one">Min: {props.min} BNB</p>

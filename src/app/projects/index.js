@@ -5,12 +5,16 @@ import Navbar from '../../components/navbar';
 import { Finalize } from "../../hooks/PoolDataFetcher";
 import axios from 'axios';
 import { useWeb3React } from '@web3-react/core'
-
+import { Backdrop } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
+import { toast } from 'react-toastify';
 const Projects = () => {
     const { account } = useWeb3React();
+    const [open, setOpen] = useState(false);
     const { Final } = Finalize()
     const [searchTerm, setSearchTerm] = useState('')
     const [data, getDate] = useState([]);
+
     const getAlldata = async () => {
         try {
 
@@ -29,22 +33,38 @@ const Projects = () => {
             // alert("Invalid Address")
         }
     }
-    const [currentAddress, setCurrentAddress] = useState({
-        id: '',
-        address: '',
-    });
-    // const FinalFun=()=>{
 
-    // }
-    useEffect(() => {
-        async function doFinal() {
-            const data = await Final(currentAddress)
-            console.log(data)
+    // const [currentAddress, setCurrentAddress] = useState({
+    //     id: '',
+    //     address: '',
+    // });
+    const FinalFun=async(currentAddress)=>{
+        setOpen(true)
+        const data = await Final(currentAddress)
+        console.log(data)
+        
+            setOpen(false)
+            toast.success('Finalization Done', {
+                position: "top-center",
+                autoClose: 7000,
+            });
+            getAlldata();
+        
+        // else {
+        //     setOpen(false)
+        //    // getAlldata();
+        // }
+    }
+    // useEffect(() => {
+    //     async function doFinal() {
+    //         //setOpen(true)
+         
+    //         console.log(data)
 
-        }
+    //     }
 
-        doFinal()
-    }, [currentAddress])
+    //     doFinal()
+    // }, [currentAddress])
 
     React.useEffect(() => {
         getAlldata();
@@ -52,6 +72,8 @@ const Projects = () => {
 
     // render() {
     return (
+        <>
+         <Backdrop className="loader" sx={{ color: '#fff' }} open={open}><CircularProgress color="primary"   style={{width: "100px", height:'100px'}}/></Backdrop>
         <div className='landing-nft projects'>
 
             <Navbar />
@@ -152,7 +174,7 @@ const Projects = () => {
                                                             <div className="">
                                                                 {/* <Link className='buttion-on' >Approve</Link>  {elem.statusOfApplication}*/}
                                                                 <td id="gfngfmg" className={elem.statusOfApplication == 'Pending' ? 'text-green-pending' : elem.statusOfApplication == 'Approved' ? 'text-green-approved' : 'text-green-rejected'}>   {
-                                                                elem.preSaleEndDateAndTime && new Date(elem.preSaleEndDateAndTime) < new Date() && elem.statusOfApplication === 'Approved' ? <button className={elem.finalizeSaleDone === true ? 'green1' : 'disabled1'} onClick={() => setCurrentAddress({ id: elem.id, address: elem.contractAddressDeployed })}>Finalize</button> : <button className='disabled2' >Finalize</button>
+                                                                elem.preSaleEndDateAndTime && new Date(elem.preSaleEndDateAndTime) < new Date() && elem.statusOfApplication === 'Approved' ? <button className={elem.finalizeSaleDone === true ? 'green1' : 'disabled1'} onClick={() => FinalFun({ id: elem.id, address: elem.contractAddressDeployed })}>Finalize</button> : <button className='disabled2' >Finalize</button>
                                                             } <Link to={"/project-details/" + id} className='disabled1 ml-2 text-white' >Detail</Link></td>
                                                                
                                                               
@@ -193,6 +215,7 @@ const Projects = () => {
                 </div>
             </section>
         </div>
+        </>
     );
 }
 

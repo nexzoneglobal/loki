@@ -6,7 +6,9 @@ const ComingPoolCard = (props) => {
   const [hour, setHour] = useState(0);
   const [min, setMin] = useState(0);
   const [sec, setSec] = useState(0);
+  // alert(props.preSaleStartDateAndTime)
   var time = new Date(props.preSaleStartDateAndTime)
+
   function timer() {
     var now = new Date()
     var diff = time.getTime() - now.getTime()
@@ -36,6 +38,11 @@ const ComingPoolCard = (props) => {
         <img src={props.logoURL} alt="" />
         <h1 style={{ marginLeft: 20 }}>{props.projectName}</h1>
         {/* <button>{props.tier}</button> */}
+        
+      </div>
+      <div className="ksajdksj">
+        <h6>Presale Address :</h6>
+        <p>{props.contractAddressDeployed} <i class="fas fa-copy"></i></p>
       </div>
       <div className="calender">
         <h1>Opens In</h1>
@@ -45,15 +52,20 @@ const ComingPoolCard = (props) => {
           <h1>{min} <br></br><span>MIN</span></h1>
           <h1>{sec} <br></br><span>SEC</span></h1>
         </div>
-        <p>{props.preSaleStartDateAndTime.toUTCString()}</p>
+        {/* <p>{props.endTime.toUTCString()}</p> */}
       </div>
       <div className="progress-baar">
         {/* <p className="coming-soon-feature">ALLOCATION: {props.allcation} OF TOTAL AVAILABLE</p> */}
-        {/* <div className="min-max">
+        <div className="min-max">
           <p className="one">Min: {props.min} BNB</p>
           <p>Max: {props.max} BNB</p>
-        </div> */}
+        </div>
+        <div className="min-max">
+          <p className="one">SoftCap: {props.softcap/(10 ** 18)} BNB</p>
+          <p>HardCap: {props.hardcap/(10 ** 18)} BNB</p>
+        </div>
       </div>
+      
     </div>
   );
 }

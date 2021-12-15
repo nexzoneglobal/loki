@@ -13,7 +13,56 @@ import { useSelector } from "react-redux";
 // import { Eligible } from '../../hooks/PoolDataFetcher'
 const Landing = () => {
 
-  const [alltoken, setallTokens] = useState([]);
+  const [data, setData] = useState([]);
+  const date = new Date();
+  date.setDate(date.getDate() - 2);
+  // console.log("data in hotbar==================================",data)
+  const d = new Date()
+  d.setDate(d.getDate() - 2);
+  const getDataQuery =
+   `{
+    ethereum(network: bsc) {
+      transfers(
+        options: {desc: count", limit: 10, offset: 0}
+        amount: {gt: 0}
+        date: {since: "${date.toISOString()}", till: "${d.toISOString()}"}
+        currency: {notIn: ["BNB", "WBNB", "BTCB", "ETH", "BUSD", "USDT", "USDC", "DAI"]}
+      ) {
+        currency {
+          symbol
+          address
+          name
+        }
+        count
+        senders: count(uniq: senders)
+        receivers: count(uniq: receivers)
+        days: count(uniq: dates)
+        from_date: minimum(of: date)
+        till_date: maximum(of: date)
+        amount
+      }
+    }
+  }`
+  const handleClick = useCallback(async() => {
+    // setLoader(true);
+    try {
+      const queryResult = await axios.post('https://graphql.bitquery.io/', { query: getDataQuery },{ headers: { "X-API-KEY": `BQYpTG9Ap6qjtXbdRAiK3tQqtj0cgf0Z` } });
+    // setData(queryResult);
+    if (queryResult.data.data){
+    setData(queryResult.data.data.ethereum.transfers)
+
+    } 
+    } catch (error) {
+      console.log(error);
+    }
+   
+});
+   
+   React.useEffect(()=>{
+   // handleClick()
+ 
+  },[])
+
   // const toptrending = () => {
   //   axios.get('https://api.coingecko.com/api/v3/search/trending')
   //     .then((response) => {
@@ -38,7 +87,7 @@ const Landing = () => {
   //   toptrending()
   // }, )
   
-  console.log("hereeeeeeeeeeeee", alltoken);
+  
   const store = useSelector((state) => state.PoolActiveReducer.AllActivePoolData);
   const pesndingstore = useSelector((state) => state.PoolActiveReducer.PendingData)
   const closestore = useSelector((state) => state.PoolActiveReducer.ClosedData)
@@ -207,7 +256,7 @@ const Landing = () => {
           <Link to={'/pools/' + id + '/' + t1} id={1} >
             <PoolCard {...elem} tier={1} allcation={elem.tier1Allocation} max={elem.maxAllocationPerUser}
               startTime={startTimeTier1} endTime={endTimeTier1}
-              min={elem.minAllocationPerUser}
+              min={elem.minAllocationPerUser} 
               preSaleStartDateAndTime={new Date(elem.preSaleStartDateAndTime).setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 8)} />
           </Link>
         </div>
@@ -448,8 +497,8 @@ const Landing = () => {
           <div className="row main-pool-featured">
             {pesndingstore.map((elem, index) => {
               let tier3Date = new Date(elem.preSaleStartDateAndTime);
-              tier3Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 23)
-              tier3Date.setMinutes(new Date(elem.preSaleStartDateAndTime).getMinutes() + 10)
+              // tier3Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 23)
+              // tier3Date.setMinutes(new Date(elem.preSaleStartDateAndTime).getMinutes() + 10)
 
               let tier2Date = new Date(elem.preSaleStartDateAndTime);
               tier2Date.setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 20);

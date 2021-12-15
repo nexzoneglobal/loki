@@ -40,7 +40,7 @@ useEagerConnect()
       <div>
         <ToastContainer
           closeOnClick
-          position="bottom-left"
+          position="top-center"
         />
         <Router history={hist}>
           <Switch>

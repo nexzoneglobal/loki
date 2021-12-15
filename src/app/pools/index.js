@@ -13,11 +13,13 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
 import { MDBProgress } from 'mdbreact';
-
+import { Backdrop } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 const Pool = (props) => { 
     const store = useSelector((state) => state.PoolActiveReducer.AllActivePoolData);
     const id = props.match.params.id;
     const tier = props.match.params.tier;
+    const [open, setOpen] = useState(false);
     let tierMinValue = '';
     let tierMaxValue = '';
     let tier1Allocation='';
@@ -167,37 +169,52 @@ const Pool = (props) => {
             return 0;
         }
     }, [tier1Con])
-    console.log('hereeeeeeeee', TierContribute)
+   
     const JoinPool = useCallback(async (e) => {
+        setOpen(true)
         e.preventDefault();
         if (account) {
             try {            
                 if (tier == 1 && amount <= tierMaxValue && amount >= tierMinValue) {
-                    const pay = await onTransfer();              
+                    const pay = await onTransfer(); 
+                    if(pay.status){
+                        contribute();
+                        setOpen(false)
+                        toast.success('Contributed Successfully', {
+                            position: "top-center",
+                            autoClose: 6000,
+                        });
+                    }
+                    else{
+                        setOpen(false)
+                    }             
                 }
-                else if (tier == 2 && amount <= tierMaxValue && amount >= tierMinValue) {
-                    const pay = await onTransfer();  
-                }
-                else if (tier == 3 && amount <= tierMaxValue && amount >= tierMinValue) {
-                    const pay = await onTransfer();
-                }
-                else if (tier == 4 && amount <= tierMaxValue && amount >= tierMinValue) {
-                    const pay = await onTransfer();
-                }
+                // else if (tier == 2 && amount <= tierMaxValue && amount >= tierMinValue) {
+                //     const pay = await onTransfer();  
+                // }
+                // else if (tier == 3 && amount <= tierMaxValue && amount >= tierMinValue) {
+                //     const pay = await onTransfer();
+                // }
+                // else if (tier == 4 && amount <= tierMaxValue && amount >= tierMinValue) {
+                //     const pay = await onTransfer();
+                // }
                 else {
                     toast.error('Invalid Value', {
                         position: "top-right",
                         autoClose: 2000,
+                        
                     });
+                    setOpen(false)
                 }
             }
             catch (err) {
                 return false;
+                
             }
         }
-        // else {
-        //     login("injected")
-        // }
+        else {
+            setOpen(false)
+        }
 
     }, [onTransfer])
 
@@ -240,6 +257,8 @@ const Pool = (props) => {
     }, [account, tokenAddress])
 
     return (
+        <>
+        <Backdrop className="loader" sx={{ color: '#fff' }} open={open}><CircularProgress color="inherit" /></Backdrop>
         <div className='landing-nft main-pool'>
             <Navbar />
             <section className="header-section main-pool">
@@ -297,6 +316,7 @@ const Pool = (props) => {
                                             <img src={require("../../static/images/submit-form/coin-bnb.png")} alt="" />
                                             <h4>{TierContribute / (10 ** 18)} BNB</h4>
                                         </div>
+                                        <h6>Your Tokens</h6>
                                         <div className="image-text">
                                             <img src={logo} style={{ width: 30, height: 30, borderRadius: '50%', marginTop: 5 }} alt="" />
                                             <h4>{(TierContribute ) / (tokenPriceInBNB)} {symbol}</h4>
@@ -316,7 +336,7 @@ const Pool = (props) => {
                                                         <div className="drop-down-single-line">
                                                             <div class="dropdown show">
                                                                 <a class=" " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    <span className="image"><img src={require("../../static/images/submit-form/coin-bnb.png")} alt="" /></span>BNB<span className="main-carret"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+                                                                    <span className="image"><img src={require("../../static/images/submit-form/coin-bnb.png")} alt="" /></span>BNB<span className="main-carret"></span>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -391,6 +411,7 @@ const Pool = (props) => {
             </section>
             <Footer />
         </div>
+        </>
     );
 }
 export default Pool

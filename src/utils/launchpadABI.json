@@ -45,6 +45,11 @@
           },
           {
             "internalType": "uint256",
+            "name": "_tokenListingPriceInBNB",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "maxAllocaPerUser",
             "type": "uint256"
           },
@@ -413,6 +418,19 @@
         "internalType": "contract IERC20",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tokenListingPriceInBNB",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",

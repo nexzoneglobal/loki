@@ -15,11 +15,10 @@ import Environment from '../../utils/Environment';
 import DeployContact from '../../hooks/DeployContact'
 import ApproveContract, { BalanceOfContract } from '../../hooks/approve'
 import BigNumber from 'bignumber.js';
-
-
+import { useHistory } from "react-router-dom";
 const SubmitProject=()=> {
-    
-    
+   
+    let history = useHistory();
     const { account } = useWeb3React();
     const [open, setOpen] = useState(false);
     const [projectName, setProjectName] = useState('');
@@ -54,7 +53,7 @@ const SubmitProject=()=> {
     const [iteration1, setIteration1] = useState('');
     const [iteration2, setIteration2] = useState('');
     const [iteration3, setIteration3] = useState('');
-
+    const [getToken, setTotalToken]=useState('');
     const [minAllocationPerUser, setminAllocationPerUser] = useState('');
     const [maxAllocationPerUser, setmaxAllocationPerUser] = useState('');
 
@@ -75,7 +74,8 @@ const SubmitProject=()=> {
     const [personNameError, setpersonNameError] = useState({});
     const [emailError, setEmailError] = useState({});
     const [walletAddressError, setWalletAddressError] = useState({});
-
+    const [tokenListingPriceInBNB, setlistingPrice] = useState('');
+    
     const [minallo, setMinTotalAllocationError] = useState({});
     const [maxallo, setMaxTotalAllocationError] = useState({});
 
@@ -163,55 +163,9 @@ const SubmitProject=()=> {
 
     const SubmitForm = useCallback(async (e) => {
        
-        setOpen(true)
         e.preventDefault();
         formValidation();
        
-        const epochStartTime = new Date(date).getTime() / 1000.0;
-        const epochEndTime = new Date(dateend).getTime() / 1000.0;
-        const tokenPriceInBNB = new BigNumber(price).multipliedBy(new BigNumber(10).pow(18));
-        const maxAllocationPerUsers = new BigNumber(maxAllocationPerUser).multipliedBy(new BigNumber(10).pow(18));
-        const minAllocationPerUsers = new BigNumber(minAllocationPerUser).multipliedBy(new BigNumber(10).pow(18));
-        const amountAllocatedForPresale = new BigNumber(amount);
-
-        const maxCap = (amountAllocatedForPresale).multipliedBy(tokenPriceInBNB);
-
-        const _liquidityPercentage = new BigNumber(liquidityPercentage);
-        const launchPadFeePercentage = new BigNumber(2);
-        const participationBalanceTokens = (maxCap).dividedBy(tokenPriceInBNB).multipliedBy(new BigNumber(10).pow(decimals));
-        const liquidityBalanceTokens = participationBalanceTokens.multipliedBy(_liquidityPercentage).dividedBy(new BigNumber(100));
-        const launchPadBalanceTokens = participationBalanceTokens.multipliedBy(launchPadFeePercentage).dividedBy(new BigNumber(100));
-        const totalTokens = participationBalanceTokens.plus(liquidityBalanceTokens).plus(launchPadBalanceTokens).dividedBy(new BigNumber(10).pow(18));
-        const totalTokensinWei = participationBalanceTokens.plus(liquidityBalanceTokens).plus(launchPadBalanceTokens);
-        console.log("hereeeeeeeee", totalTokens.toNumber().toString());
-        let BalanceOfContract = await BalanceOfToken();
-        console.log("balvvvvvvvvvvvvvv", BalanceOfContract);
-        if (BalanceOfContract >= totalTokensinWei) {
-            let approve = await Approvetoken(Environment.DeployerAddress, totalTokensinWei)
-
-            if (approve.status) {
-
-
-
-                const leoCornArguments = ({
-                    nameOfProject: projectName,
-                    _saleStartTime: epochStartTime,
-                    _saleEndTime: epochEndTime,
-                    _projectOwner: walletAddress,
-                    tokenToIDO: contractAddress,
-                    tokenDecimals: decimals,
-                    _numberOfIdoTokensToSell: amountAllocatedForPresale.toNumber().toString(),
-                    _tokenPriceInBNB: tokenPriceInBNB.toNumber().toString(),
-                    maxAllocaPerUser: maxAllocationPerUsers.toNumber().toString(),
-                    minAllocaPerUser: minAllocationPerUsers.toNumber().toString(),
-                    liquidityPercentage: liquidityPercentage,
-                })
-
-
-
-
-                let deployer = await deployprojectonlaunchpad(leoCornArguments)
-                let contractAddressDeployed = deployer.events.OwnershipTransferred[0].address;
 
                 try {
                     // && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
@@ -219,22 +173,74 @@ const SubmitProject=()=> {
                     //  tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: iteration1, secondIterationPercentage: iteration2
                     if (projectName !== '' && projectSymbol !== '' && projectDescription !== '' && logo64 !== ''
                         && websiteLink !== '' && twitterLink !== '' && telegramLink !== '' && personName !== '' && personEmail !== '' && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
-                        && walletAddress !== '') {
+                        && walletAddress !== '' && tokenListingPriceInBNB!=='') {
+
+                            const epochStartTime = new Date(date).getTime() / 1000.0;
+                            const epochEndTime = new Date(dateend).getTime() / 1000.0;
+                            const tokenPriceInBNB = new BigNumber(price).multipliedBy(new BigNumber(10).pow(18));
+                            const PancaketokenListingPriceInBNB= new BigNumber(tokenListingPriceInBNB).multipliedBy(new BigNumber(10).pow(18)); 
+                            const maxAllocationPerUsers = new BigNumber(maxAllocationPerUser).multipliedBy(new BigNumber(10).pow(18));
+                            const minAllocationPerUsers = new BigNumber(minAllocationPerUser).multipliedBy(new BigNumber(10).pow(18));
+                            const amountAllocatedForPresale = new BigNumber(amount);
+                    
+                            const maxCap = (amountAllocatedForPresale).multipliedBy(tokenPriceInBNB);
+                    
+                            const _liquidityPercentage = new BigNumber(liquidityPercentage);
+                            const launchPadFeePercentage = new BigNumber(2);
+                            const participationBalanceTokens = (maxCap).dividedBy(tokenPriceInBNB).multipliedBy(new BigNumber(10).pow(decimals));
+                            const liquidityBalanceTokens = participationBalanceTokens.multipliedBy(_liquidityPercentage).dividedBy(new BigNumber(100));
+                            const launchPadBalanceTokens = participationBalanceTokens.multipliedBy(launchPadFeePercentage).dividedBy(new BigNumber(100));
+                            const totalTokens = participationBalanceTokens.plus(liquidityBalanceTokens).plus(launchPadBalanceTokens).dividedBy(new BigNumber(10).pow(18));
+                          
+                            const totalTokensinWei = participationBalanceTokens.plus(liquidityBalanceTokens).plus(launchPadBalanceTokens);
+                            setOpen(true)
+                            console.log("hereeeeeeeee", totalTokens.toNumber().toString());
+                            let BalanceOfContract = await BalanceOfToken();
+                            console.log("balvvvvvvvvvvvvvv", BalanceOfContract);
+                            if (BalanceOfContract >= totalTokensinWei) {
+                                let approve = await Approvetoken(Environment.DeployerAddress, totalTokensinWei)
+                              
+                                if (approve.status) {
+                    
+                    
+                    
+                                    const leoCornArguments = ({
+                                        nameOfProject: projectName,
+                                        _saleStartTime: epochStartTime,
+                                        _saleEndTime: epochEndTime,
+                                        _projectOwner: walletAddress,
+                                        tokenToIDO: contractAddress,
+                                        tokenDecimals: decimals,
+                                        _numberOfIdoTokensToSell: amountAllocatedForPresale.toNumber().toString(),
+                                        _tokenPriceInBNB: tokenPriceInBNB.toNumber().toString(),
+                                        _tokenListingPriceInBNB:PancaketokenListingPriceInBNB.toNumber().toString(),
+                                        maxAllocaPerUser: maxAllocationPerUsers.toNumber().toString(),
+                                        minAllocaPerUser: minAllocationPerUsers.toNumber().toString(),
+                                        liquidityPercentage: liquidityPercentage,
+                                      
+
+                                    })
+                    
+                    console.log("argssssssssssssssssssssssssssssssssssssssssssss",leoCornArguments);
+                                    let deployer = await deployprojectonlaunchpad(leoCornArguments)
+                                    let contractAddressDeployed = deployer.events.OwnershipTransferred[0].address;
+
+
                         await axios.post('http://54.191.140.38:4750/project/createProject', {
                             projectName: projectName, symbol: projectSymbol,
                             projectDescription: projectDescription, logoURL: logo64, contractAddress: contractAddress, websiteLink: websiteLink,
                             twitterLink: twitterLink, telegramlink: telegramLink, discrodLink: discardLink, mediumLink: mediumLink,
                             contactPersonName: personName, contactPersonEmail: personEmail, contactPersonWalletAddress: walletAddress, totalSupplyOfToken: totalSupply, preSaleStartDateAndTime: date, amountAllocatedForPresale: amount, preSaleEndDateAndTime: dateend,
                             tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: '100', secondIterationPercentage: '0', thirdIterationPercentage: '0', firstClaimTime: dateend, secondClaimTime: dateend, thirdClaimTime: dateend,
-                            minAllocationPerUser: minAllocationPerUser, maxAllocationPerUser: maxAllocationPerUser, launchPadFeePercentage: '2', liquidityPercentage: liquidityPercentage, contractAddressDeployed: contractAddressDeployed, statusOfApplication: 'Approved'
+                            minAllocationPerUser: minAllocationPerUser, maxAllocationPerUser: maxAllocationPerUser, launchPadFeePercentage: '2', liquidityPercentage: liquidityPercentage, contractAddressDeployed: contractAddressDeployed, statusOfApplication: 'Approved',tokenListingPriceInBNB:tokenListingPriceInBNB
                         })
                             .then((response) => {
                                 setOpen(false)
                                 toast.success('Project Submitted', {
-                                    position: "top-right",
-                                    autoClose: 2000,
+                                    position: "top-center",
+                                    autoClose: 7000,
                                 });
-                               
+                              history.push("/projects");
                             });
                     }
                     else {
@@ -245,13 +251,15 @@ const SubmitProject=()=> {
                         });
                     }
                 }
+            }
+        }
+    
                 catch (err) {
                     setOpen(false)
                     return false
                 }
-            }
-        }
-    })
+      
+            })
     const formValidation = () => {
         const projectNameError = {};
         const projectSymbolError = {};
@@ -376,6 +384,10 @@ const SubmitProject=()=> {
             minallo.AmountError = "Amount is Required";
             isValid = false;
         }
+        if (tokenListingPriceInBNB === '') {
+            minallo.AmountError = "Amount is Required";
+            isValid = false;
+        }
         else if (minAllocationPerUser > maxAllocationPerUser) {
             minallo.BigamountError = "Max Allocation must be greater than Min Allocation";
             isValid = false;
@@ -407,7 +419,7 @@ const SubmitProject=()=> {
     }
     return (
         <>
-           <Backdrop className="loader" sx={{ color: '#fff' }} open={open}><CircularProgress color="inherit" /></Backdrop>
+           <Backdrop className="loader" xs={{ color: '#fff'}} open={open}><CircularProgress color="primary"  style={{width: "100px", height:'100px'}}/></Backdrop>
             <div className='landing-nft submit-project'>
                 <Navbar />
                 <section className="header-section submit-projects" >
@@ -681,7 +693,7 @@ const SubmitProject=()=> {
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
-                                                            <label for="exampleamount">Token Price in BNB<span>*</span></label>
+                                                            <label for="exampleamount">Presale Price in BNB<span>*</span></label>
                                                             <input type="number" value={price}
                                                                 onChange={(e) => setPrice(e.target.value)}
                                                                 class="form-control" id="exampleamount" placeholder="Enter Your Token Price" />
@@ -691,7 +703,18 @@ const SubmitProject=()=> {
                                                             })}
                                                         </div>
                                                     </div>
-
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="exampleamount">Listing Price in BNB<span>*</span></label>
+                                                            <input type="number" value={tokenListingPriceInBNB}
+                                                                onChange={(e) => setlistingPrice(e.target.value)}
+                                                                class="form-control" id="exampleamount" placeholder="Enter Pancake Listing Price" />
+                                                            {Object.keys(priceError).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{priceError[key]}</p>
+                                                            })}
+                                                        </div>
+                                                    </div>       
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
                                                             <label for="example">Presale Start Date & Time(UTC)<span>*</span></label>
@@ -928,6 +951,7 @@ const SubmitProject=()=> {
                                         <div className="col-xl-8 col-lg-8 col-md-12">
                                             <div className="inner-submit-lower-div">
                                                 <div class="row">
+                                                {/* <p> Total Token for Approval and Presale : {getToken}</p> */}
                                                 </div>
                                                 <div class="col-lg-6">
                                                     {!account ?
