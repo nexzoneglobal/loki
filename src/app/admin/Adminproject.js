@@ -289,7 +289,32 @@ const AdminProject = () => {
                                                             <h6>FAN</h6>
                                                         </td>
                                                         <td className='text-left-normal'>
-                                                            <button className='publish-sdmin'>Publish</button>
+                                                            <button className='publish-sdmin' data-toggle="modal" data-target="#exampleModal12">Publish</button>
+                                                            <div class="modal fade" id="exampleModal12" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel12" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+
+                                                                        <div class="modal-body">
+                                                                            <div className="row ptb">
+                                                                                <div className="col-sm-12">
+                                                                                    <div className="inner-side-content text-center pt-40">
+                                                                                        <h4>Confirmation</h4>
+                                                                                        <h5>Are you shore to publish this project?</h5>
+                                                                                        <ul className="list-inline pt-20">
+                                                                                            <li className="list-inline-item">
+                                                                                                <button type="button" class="buttion-on">Approve</button>
+                                                                                            </li>
+                                                                                            <li className="list-inline-item">
+                                                                                                <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </td>
                                                         <td className="button-detailss">
                                                             <div className="d-flex">
@@ -299,7 +324,32 @@ const AdminProject = () => {
                                                         </td>
                                                         <td className="button-detailss">
                                                             <div className="d-flex">
-                                                                <button className='deleteadmin'>Delete</button>
+                                                                <button className='deleteadmin' data-toggle="modal" data-target="#exampleModal14">Delete</button>
+                                                                <div class="modal fade" id="exampleModal14" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel14" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+
+                                                                        <div class="modal-body">
+                                                                            <div className="row ptb">
+                                                                                <div className="col-sm-12">
+                                                                                    <div className="inner-side-content text-center pt-40">
+                                                                                        <h4>Confirmation</h4>
+                                                                                        <h5>Are you shore to delete this project?</h5>
+                                                                                        <ul className="list-inline pt-20">
+                                                                                            <li className="list-inline-item">
+                                                                                                <button type="button" class="buttion-on">Approve</button>
+                                                                                            </li>
+                                                                                            <li className="list-inline-item">
+                                                                                                <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
                                                                 {/* <Link className='button-rig' to='/project-details'>Reject</Link> */}
                                                             </div>
                                                         </td>
@@ -337,7 +387,32 @@ const AdminProject = () => {
                                                             <h6>FAN</h6>
                                                         </td>
                                                         <td className='text-left-normal'>
-                                                            <button className='unpublish-sdmin'>UnPublished</button>
+                                                            <button className='unpublish-sdmin' data-toggle="modal" data-target="#exampleModal13">UnPublished</button>
+                                                            <div class="modal fade" id="exampleModal13" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel13" aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+
+                                                                        <div class="modal-body">
+                                                                            <div className="row ptb">
+                                                                                <div className="col-sm-12">
+                                                                                    <div className="inner-side-content text-center pt-40">
+                                                                                        <h4>Confirmation</h4>
+                                                                                        <h5>Are you shore to Unpublish this project?</h5>
+                                                                                        <ul className="list-inline pt-20">
+                                                                                            <li className="list-inline-item">
+                                                                                                <button type="button" class="buttion-on">Approve</button>
+                                                                                            </li>
+                                                                                            <li className="list-inline-item">
+                                                                                                <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </td>
                                                         <td className="button-detailss">
                                                             <div className="d-flex">
@@ -423,8 +498,8 @@ const AdminProject = () => {
 
                                         </div>
                                         <div className="col-sm-2">
-                                        <button className="add-btn" data-toggle="modal" data-target="#exampleModal3">Add</button>
-                                        <div class="modal fade dfhdkh" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                                            <button className="add-btn" data-toggle="modal" data-target="#exampleModal3">Add</button>
+                                            <div class="modal fade dfhdkh" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-body dkfjdkfj">

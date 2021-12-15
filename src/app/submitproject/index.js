@@ -17,9 +17,9 @@ import ApproveContract, { BalanceOfContract } from '../../hooks/approve'
 import BigNumber from 'bignumber.js';
 
 
-const SubmitProject=()=> {
-    
-    
+const SubmitProject = () => {
+
+
     const { account } = useWeb3React();
     const [open, setOpen] = useState(false);
     const [projectName, setProjectName] = useState('');
@@ -40,7 +40,7 @@ const SubmitProject=()=> {
     const [personName, setPersonName] = useState('');
     const [personEmail, setPersonEmail] = useState('');
     const [walletAddress, setWalletAddress] = useState('');
-   
+
     const [totalSupply, setTotalSupply] = useState('');
     const [amount, setAmount] = useState('');
     const [date, setDate] = useState('');
@@ -92,7 +92,7 @@ const SubmitProject=()=> {
     const { deployprojectonlaunchpad } = DeployContact();
     const { Approvetoken } = ApproveContract(contractAddress);
     const { BalanceOfToken } = BalanceOfContract(contractAddress);
-   
+
     const handleImageChange = (e) => {
         setLogo(e.target.value);
         setSelectedImg([]);
@@ -156,17 +156,17 @@ const SubmitProject=()=> {
         })
     }
 
-     
-    
+
+
     const result = Web3.utils.isAddress(contractAddress);
     const result1 = Web3.utils.isAddress(walletAddress);
 
     const SubmitForm = useCallback(async (e) => {
-       
+
         setOpen(true)
         e.preventDefault();
         formValidation();
-       
+
         const epochStartTime = new Date(date).getTime() / 1000.0;
         const epochEndTime = new Date(dateend).getTime() / 1000.0;
         const tokenPriceInBNB = new BigNumber(price).multipliedBy(new BigNumber(10).pow(18));
@@ -234,7 +234,7 @@ const SubmitProject=()=> {
                                     position: "top-right",
                                     autoClose: 2000,
                                 });
-                               
+
                             });
                     }
                     else {
@@ -407,7 +407,7 @@ const SubmitProject=()=> {
     }
     return (
         <>
-           <Backdrop className="loader" sx={{ color: '#fff' }} open={open}><CircularProgress color="inherit" /></Backdrop>
+            <Backdrop className="loader" sx={{ color: '#fff' }} open={open}><CircularProgress color="inherit" /></Backdrop>
             <div className='landing-nft submit-project'>
                 <Navbar />
                 <section className="header-section submit-projects" >
@@ -932,7 +932,7 @@ const SubmitProject=()=> {
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
                                                             <label for="example">First name of project owner<span>*</span></label>
-                                                            <input type="number" 
+                                                            <input type="number"
                                                                 class="form-control" id="example" aria-describedby="text" placeholder="Enter First Name" />
                                                             {/* {Object.keys(minallo).map((key) => {
                                                                 console.log("key", key);
@@ -943,7 +943,7 @@ const SubmitProject=()=> {
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
                                                             <label for="example">Last name of project owner<span>*</span></label>
-                                                            <input type="number" 
+                                                            <input type="number"
                                                                 class="form-control" id="example" aria-describedby="text" placeholder="Enter Last Name" />
                                                             {/* {Object.keys(maxallo).map((key) => {
                                                                 console.log("key", key);
@@ -959,7 +959,7 @@ const SubmitProject=()=> {
                                     </div>
 
                                     <div className="row">
-                                    <div className="col-lg-4 col-md-12 col-12 ">
+                                        <div className="col-lg-4 col-md-12 col-12 ">
                                             <div className="right-side-main-image inner-submit-lower-div pt-10">
                                                 {/* <div class="form-group">
                                                 <label for="example">Upload Logo<span>*</span></label>
@@ -968,7 +968,6 @@ const SubmitProject=()=> {
                                                     <input className="input-fields d-none" id="fileb" type="file" />
                                                     <h4>Upload Image</h4>
                                                     </div>
-                                                    
                                                 </div>
                                             </div> */}
                                                 <div class="form-group">
@@ -992,7 +991,6 @@ const SubmitProject=()=> {
 
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
 

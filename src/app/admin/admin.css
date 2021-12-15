@@ -11,6 +11,10 @@
     padding: 20px 0;
 }
 
+.text-left-normal h6 {
+    margin-top: 15px;
+}
+
 .nav-pills .nav-link.active {
     color: #fff !important;
     background-color: transparent !important;
