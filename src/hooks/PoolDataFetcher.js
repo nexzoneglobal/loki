@@ -74,7 +74,7 @@ export const Finalize = () => {
             const contract = getBep20Contract(idr.address, web3)
             try{
                 const finalizeSale = await contract.methods.finalizeSale().send({ from: account.toString() });
-                const {data} = await axios.post('http://54.191.140.38:4750/project/finalizeSale', { id :idr.id });
+                const {data} = await axios.post('http://192.168.18.40:4750/project/finalizeSale', { id :idr.id });
                 if(data.status){
                     return true;
                 }

@@ -125,7 +125,7 @@ const Pool = (props) => {
     // http://ec2-34-215-106-249.us-west-2.compute.amazonaws.com:4750/
     const timerdata = async () => {
         try {
-            axios.get("http://54.191.140.38:4750/project/" + id)
+            axios.get("http://192.168.18.40:4750/project/" + id)
                 .then((response) => {
                     var time = new Date(response.data.msg.preSaleStartDateAndTime);
                     if (tier == 1) {

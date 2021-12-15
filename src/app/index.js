@@ -9,6 +9,7 @@ import Landing from './landing';
 import Pool from './pools';
 import SubmitProject from './submitproject';
 import ProjectDetails from './project-details';
+import AdminProject from './admin/Adminproject';
 import Projects from './projects';
 import '../static/css/style.css';
 import ClosePool from "./closepool";
@@ -46,6 +47,7 @@ useEagerConnect()
           <Switch>
             <Route exact path='/' component={props => <Landing {...props} />} />
             <Route exact path='/landing' component={props => <Landing {...props} />} />
+            
             <Route exact path='/pools/:id/:tier' component={props => <Pool {...props} />} />
             <Route exact path='/closepool/:id/:tier' component={props => <ClosePool {...props} />} />
             <Route exact path='/submit-project' component={props => <SubmitProject {...props} />} />
@@ -53,6 +55,8 @@ useEagerConnect()
             <Route exact path='/project-details/:id' component={props => <ProjectDetails {...props} />} />
             <Route exact path='/projects' component={props => <Projects {...props} />} />
             <Route exact path='/comingsoom/:id/:tier' component={props => <ComingsoonPool {...props} />} />
+            {/* admin routes */}
+            <Route exact path='/adminproject' component={props => <AdminProject {...props} />} />
           </Switch>
         </Router>
       </div>

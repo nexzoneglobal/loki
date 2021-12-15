@@ -18,7 +18,7 @@ const Projects = () => {
     const getAlldata = async () => {
         try {
 
-            await axios.post("http://54.191.140.38:4750/project/getAllProjectsOfUser", {account:account})
+            await axios.post("http://192.168.18.40:4750/project/getAllProjectsOfUser", {account:account})
                 .then((response) => {
 
                     if (response.data.status) {

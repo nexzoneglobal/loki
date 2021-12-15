@@ -16,8 +16,8 @@ import DeployContact from '../../hooks/DeployContact'
 import ApproveContract, { BalanceOfContract } from '../../hooks/approve'
 import BigNumber from 'bignumber.js';
 import { useHistory } from "react-router-dom";
-const SubmitProject=()=> {
-   
+const SubmitProject = () => {
+
     let history = useHistory();
     const { account } = useWeb3React();
     const [open, setOpen] = useState(false);
@@ -25,8 +25,12 @@ const SubmitProject=()=> {
     const [projectSymbol, setProjectSymbol] = useState('');
     const [projectDescription, setprojectDescription] = useState('');
     const [logo, setLogo] = useState('');
+    const [logokyc, setLogoKyc] = useState('');
     const [logo64, setLogo64] = useState('');
+    const [logo64kyc, setLogo64kyc] = useState('');
     const [selectedImg, setSelectedImg] = useState([]);
+    const [selectedImgkyc, setSelectedImgkyc] = useState([]);
+    const [logoUrlkyc, setLogoUrlkyc] = useState([]);
     const [logoUrl, setLogoUrl] = useState([]);
     const [contractAddress, setContractAddress] = useState('');
     const [websiteLink, setWebsiteLink] = useState('');
@@ -39,7 +43,7 @@ const SubmitProject=()=> {
     const [personName, setPersonName] = useState('');
     const [personEmail, setPersonEmail] = useState('');
     const [walletAddress, setWalletAddress] = useState('');
-   
+
     const [totalSupply, setTotalSupply] = useState('');
     const [amount, setAmount] = useState('');
     const [date, setDate] = useState('');
@@ -53,7 +57,7 @@ const SubmitProject=()=> {
     const [iteration1, setIteration1] = useState('');
     const [iteration2, setIteration2] = useState('');
     const [iteration3, setIteration3] = useState('');
-    const [getToken, setTotalToken]=useState('');
+    const [getToken, setTotalToken] = useState('');
     const [minAllocationPerUser, setminAllocationPerUser] = useState('');
     const [maxAllocationPerUser, setmaxAllocationPerUser] = useState('');
 
@@ -75,7 +79,7 @@ const SubmitProject=()=> {
     const [emailError, setEmailError] = useState({});
     const [walletAddressError, setWalletAddressError] = useState({});
     const [tokenListingPriceInBNB, setlistingPrice] = useState('');
-    
+
     const [minallo, setMinTotalAllocationError] = useState({});
     const [maxallo, setMaxTotalAllocationError] = useState({});
 
@@ -92,8 +96,9 @@ const SubmitProject=()=> {
     const { deployprojectonlaunchpad } = DeployContact();
     const { Approvetoken } = ApproveContract(contractAddress);
     const { BalanceOfToken } = BalanceOfContract(contractAddress);
-   
+
     const handleImageChange = (e) => {
+
         setLogo(e.target.value);
         setSelectedImg([]);
         if (e.target.files) {
@@ -110,6 +115,29 @@ const SubmitProject=()=> {
             var reader = new FileReader();
 
             reader.onload = _handleReaderLoaded.bind(this);
+
+            reader.readAsBinaryString(file);
+        }
+    }
+
+    const handlekycImageChange = (e) => {
+        alert("i m hset")
+        setLogoKyc(e.target.value);
+        setSelectedImgkyc([]);
+        if (e.target.files) {
+            const filesarray = Array.from(e.target.files).map((file) => URL.createObjectURL(file));
+
+            setSelectedImgkyc((preImage) => preImage.concat(filesarray));
+            Array.from(e.target.files).map((file) => URL.createObjectURL(file))
+            setLogoUrlkyc(filesarray)
+        }
+        var files = e.target.files;
+        var file = files[0];
+
+        if (files && file) {
+            var reader = new FileReader();
+
+            reader.onload = _handleReaderLoadedkyc.bind(this);
 
             reader.readAsBinaryString(file);
         }
@@ -149,90 +177,103 @@ const SubmitProject=()=> {
 
     }
 
+    const _handleReaderLoadedkyc = (readerEvt) => {
+        var binaryString = readerEvt.target.result;
+        var base64textString = btoa(binaryString);
+        var base64 = base64textString
+        setLogo64kyc(base64)
+
+    }
+
 
     const renderPhotos = (source) => {
         return source.map((photo) => {
             return <img src={photo} alt="" width="200" height="200" key={photo} />
         })
     }
+    const renderPhotoskyc = (source) => {
+        return source.map((photo) => {
+            return <img src={photo} alt="" width="200" height="200" key={photo} />
+        })
+    }
 
-     
-    
+
+
     const result = Web3.utils.isAddress(contractAddress);
     const result1 = Web3.utils.isAddress(walletAddress);
 
     const SubmitForm = useCallback(async (e) => {
-       
+
         e.preventDefault();
         formValidation();
-       
-
-                try {
-                    // && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
-                    //     && price !== '' && iteration1 !== '' && iteration2 !== ''   totalSupplyOfToken: totalSupply, preSaleStartDateAndTime: '', amountAllocatedForPresale: amount,
-                    //  tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: iteration1, secondIterationPercentage: iteration2
-                    if (projectName !== '' && projectSymbol !== '' && projectDescription !== '' && logo64 !== ''
-                        && websiteLink !== '' && twitterLink !== '' && telegramLink !== '' && personName !== '' && personEmail !== '' && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
-                        && walletAddress !== '' && tokenListingPriceInBNB!=='') {
-
-                            const epochStartTime = new Date(date).getTime() / 1000.0;
-                            const epochEndTime = new Date(dateend).getTime() / 1000.0;
-                            const tokenPriceInBNB = new BigNumber(price).multipliedBy(new BigNumber(10).pow(18));
-                            const PancaketokenListingPriceInBNB= new BigNumber(tokenListingPriceInBNB).multipliedBy(new BigNumber(10).pow(18)); 
-                            const maxAllocationPerUsers = new BigNumber(maxAllocationPerUser).multipliedBy(new BigNumber(10).pow(18));
-                            const minAllocationPerUsers = new BigNumber(minAllocationPerUser).multipliedBy(new BigNumber(10).pow(18));
-                            const amountAllocatedForPresale = new BigNumber(amount);
-                    
-                            const maxCap = (amountAllocatedForPresale).multipliedBy(tokenPriceInBNB);
-                    
-                            const _liquidityPercentage = new BigNumber(liquidityPercentage);
-                            const launchPadFeePercentage = new BigNumber(2);
-                            const participationBalanceTokens = (maxCap).dividedBy(tokenPriceInBNB).multipliedBy(new BigNumber(10).pow(decimals));
-                            const liquidityBalanceTokens = participationBalanceTokens.multipliedBy(_liquidityPercentage).dividedBy(new BigNumber(100));
-                            const launchPadBalanceTokens = participationBalanceTokens.multipliedBy(launchPadFeePercentage).dividedBy(new BigNumber(100));
-                            const totalTokens = participationBalanceTokens.plus(liquidityBalanceTokens).plus(launchPadBalanceTokens).dividedBy(new BigNumber(10).pow(18));
-                          
-                            const totalTokensinWei = participationBalanceTokens.plus(liquidityBalanceTokens).plus(launchPadBalanceTokens);
-                            setOpen(true)
-                            console.log("hereeeeeeeee", totalTokens.toNumber().toString());
-                            let BalanceOfContract = await BalanceOfToken();
-                            console.log("balvvvvvvvvvvvvvv", BalanceOfContract);
-                            if (BalanceOfContract >= totalTokensinWei) {
-                                let approve = await Approvetoken(Environment.DeployerAddress, totalTokensinWei)
-                              
-                                if (approve.status) {
-                    
-                    
-                    
-                                    const leoCornArguments = ({
-                                        nameOfProject: projectName,
-                                        _saleStartTime: epochStartTime,
-                                        _saleEndTime: epochEndTime,
-                                        _projectOwner: walletAddress,
-                                        tokenToIDO: contractAddress,
-                                        tokenDecimals: decimals,
-                                        _numberOfIdoTokensToSell: amountAllocatedForPresale.toNumber().toString(),
-                                        _tokenPriceInBNB: tokenPriceInBNB.toNumber().toString(),
-                                        _tokenListingPriceInBNB:PancaketokenListingPriceInBNB.toNumber().toString(),
-                                        maxAllocaPerUser: maxAllocationPerUsers.toNumber().toString(),
-                                        minAllocaPerUser: minAllocationPerUsers.toNumber().toString(),
-                                        liquidityPercentage: liquidityPercentage,
-                                      
-
-                                    })
-                    
-                    console.log("argssssssssssssssssssssssssssssssssssssssssssss",leoCornArguments);
-                                    let deployer = await deployprojectonlaunchpad(leoCornArguments)
-                                    let contractAddressDeployed = deployer.events.OwnershipTransferred[0].address;
 
 
-                        await axios.post('http://54.191.140.38:4750/project/createProject', {
+        try {
+            // && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
+            //     && price !== '' && iteration1 !== '' && iteration2 !== ''   totalSupplyOfToken: totalSupply, preSaleStartDateAndTime: '', amountAllocatedForPresale: amount,
+            //  tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: iteration1, secondIterationPercentage: iteration2
+            if (projectName !== '' && projectSymbol !== '' && projectDescription !== '' && logo64 !== ''
+                && websiteLink !== '' && twitterLink !== '' && telegramLink !== '' && personName !== '' && personEmail !== '' && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
+                && walletAddress !== '' && tokenListingPriceInBNB !== '') {
+
+                const epochStartTime = new Date(date).getTime() / 1000.0;
+                const epochEndTime = new Date(dateend).getTime() / 1000.0;
+                const tokenPriceInBNB = new BigNumber(price).multipliedBy(new BigNumber(10).pow(18));
+                const PancaketokenListingPriceInBNB = new BigNumber(tokenListingPriceInBNB).multipliedBy(new BigNumber(10).pow(18));
+                const maxAllocationPerUsers = new BigNumber(maxAllocationPerUser).multipliedBy(new BigNumber(10).pow(18));
+                const minAllocationPerUsers = new BigNumber(minAllocationPerUser).multipliedBy(new BigNumber(10).pow(18));
+                const amountAllocatedForPresale = new BigNumber(amount);
+
+                const maxCap = (amountAllocatedForPresale).multipliedBy(tokenPriceInBNB);
+
+                const _liquidityPercentage = new BigNumber(liquidityPercentage);
+                const launchPadFeePercentage = new BigNumber(2);
+                const participationBalanceTokens = (maxCap).dividedBy(tokenPriceInBNB).multipliedBy(new BigNumber(10).pow(decimals));
+                const liquidityBalanceTokens = participationBalanceTokens.multipliedBy(_liquidityPercentage).dividedBy(new BigNumber(100));
+                const launchPadBalanceTokens = participationBalanceTokens.multipliedBy(launchPadFeePercentage).dividedBy(new BigNumber(100));
+                const totalTokens = participationBalanceTokens.plus(liquidityBalanceTokens).plus(launchPadBalanceTokens).dividedBy(new BigNumber(10).pow(18));
+
+                const totalTokensinWei = participationBalanceTokens.plus(liquidityBalanceTokens).plus(launchPadBalanceTokens);
+                setOpen(true)
+                console.log("hereeeeeeeee", totalTokens.toNumber().toString());
+                let BalanceOfContract = await BalanceOfToken();
+                console.log("balvvvvvvvvvvvvvv", BalanceOfContract);
+                if (BalanceOfContract >= totalTokensinWei) {
+                    let approve = await Approvetoken(Environment.DeployerAddress, totalTokensinWei)
+
+                    if (approve.status) {
+
+
+
+                        const leoCornArguments = ({
+                            nameOfProject: projectName,
+                            _saleStartTime: epochStartTime,
+                            _saleEndTime: epochEndTime,
+                            _projectOwner: walletAddress,
+                            tokenToIDO: contractAddress,
+                            tokenDecimals: decimals,
+                            _numberOfIdoTokensToSell: amountAllocatedForPresale.toNumber().toString(),
+                            _tokenPriceInBNB: tokenPriceInBNB.toNumber().toString(),
+                            _tokenListingPriceInBNB: PancaketokenListingPriceInBNB.toNumber().toString(),
+                            maxAllocaPerUser: maxAllocationPerUsers.toNumber().toString(),
+                            minAllocaPerUser: minAllocationPerUsers.toNumber().toString(),
+                            liquidityPercentage: liquidityPercentage,
+
+
+                        })
+
+                        console.log("argssssssssssssssssssssssssssssssssssssssssssss", leoCornArguments);
+                        let deployer = await deployprojectonlaunchpad(leoCornArguments)
+                        let contractAddressDeployed = deployer.events.OwnershipTransferred[0].address;
+
+
+                        await axios.post('http://192.168.18.40:4750/project/createProject', {
                             projectName: projectName, symbol: projectSymbol,
                             projectDescription: projectDescription, logoURL: logo64, contractAddress: contractAddress, websiteLink: websiteLink,
                             twitterLink: twitterLink, telegramlink: telegramLink, discrodLink: discardLink, mediumLink: mediumLink,
                             contactPersonName: personName, contactPersonEmail: personEmail, contactPersonWalletAddress: walletAddress, totalSupplyOfToken: totalSupply, preSaleStartDateAndTime: date, amountAllocatedForPresale: amount, preSaleEndDateAndTime: dateend,
                             tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: '100', secondIterationPercentage: '0', thirdIterationPercentage: '0', firstClaimTime: dateend, secondClaimTime: dateend, thirdClaimTime: dateend,
-                            minAllocationPerUser: minAllocationPerUser, maxAllocationPerUser: maxAllocationPerUser, launchPadFeePercentage: '2', liquidityPercentage: liquidityPercentage, contractAddressDeployed: contractAddressDeployed, statusOfApplication: 'Approved',tokenListingPriceInBNB:tokenListingPriceInBNB
+                            minAllocationPerUser: minAllocationPerUser, maxAllocationPerUser: maxAllocationPerUser, launchPadFeePercentage: '2', liquidityPercentage: liquidityPercentage, contractAddressDeployed: contractAddressDeployed, statusOfApplication: 'Approved', tokenListingPriceInBNB: tokenListingPriceInBNB
                         })
                             .then((response) => {
                                 setOpen(false)
@@ -240,7 +281,7 @@ const SubmitProject=()=> {
                                     position: "top-center",
                                     autoClose: 7000,
                                 });
-                              history.push("/projects");
+                                history.push("/projects");
                             });
                     }
                     else {
@@ -253,13 +294,13 @@ const SubmitProject=()=> {
                 }
             }
         }
-    
-                catch (err) {
-                    setOpen(false)
-                    return false
-                }
-      
-            })
+
+        catch (err) {
+            setOpen(false)
+            return false
+        }
+
+    })
     const formValidation = () => {
         const projectNameError = {};
         const projectSymbolError = {};
@@ -419,7 +460,7 @@ const SubmitProject=()=> {
     }
     return (
         <>
-           <Backdrop className="loader" xs={{ color: '#fff'}} open={open}><CircularProgress color="primary"  style={{width: "100px", height:'100px'}}/></Backdrop>
+            <Backdrop className="loader" xs={{ color: '#fff' }} open={open}><CircularProgress color="primary" style={{ width: "100px", height: '100px' }} /></Backdrop>
             <div className='landing-nft submit-project'>
                 <Navbar />
                 <section className="header-section submit-projects" >
@@ -505,16 +546,7 @@ const SubmitProject=()=> {
                                         </div>
                                         <div className="col-lg-4 col-md-12 col-12 ">
                                             <div className="right-side-main-image inner-submit-lower-div ">
-                                                {/* <div class="form-group">
-                                                <label for="example">Upload Logo<span>*</span></label>
-                                                <div className="inner-logo-upload-main">
-                                                 <div>   <label for="fileb" className="p-0"><img src={require("../../static/images/submit-form/cloud.png")} alt="" /></label>
-                                                    <input className="input-fields d-none" id="fileb" type="file" />
-                                                    <h4>Upload Image</h4>
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div> */}
+
                                                 <div class="form-group">
                                                     <label for="exampleInputsymbol">Upload Logo (500X500 pixels)<span>*</span></label>
                                                     <div className="dashed-border-new">
@@ -523,8 +555,8 @@ const SubmitProject=()=> {
                                                             {selectedImg ? renderPhotos(selectedImg) : null}
                                                         </div>
                                                         <p className="text-center"><span>
-                                                            <label for="files" className="msindh">Upload Image</label>
-                                                            <input type="file" id="files"
+                                                            <label for="filess" className="msindh">Upload Image</label>
+                                                            <input type="file" id="filess"
                                                                 value={logo}
                                                                 onChange={handleImageChange}
                                                                 name="avatar" className="d-none custom-file-inputt" accept="image/*" />
@@ -536,6 +568,8 @@ const SubmitProject=()=> {
 
                                                 </div>
                                             </div>
+
+
 
                                         </div>
 
@@ -714,7 +748,7 @@ const SubmitProject=()=> {
                                                                 return <p className="inputErrors">{priceError[key]}</p>
                                                             })}
                                                         </div>
-                                                    </div>       
+                                                    </div>
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
                                                             <label for="example">Presale Start Date & Time(UTC)<span>*</span></label>
@@ -946,12 +980,76 @@ const SubmitProject=()=> {
                                             </div>
                                         </div>
                                     </div>
+                                    <div className="row">
+                                        <div className="col-xl-8 col-lg-10 col-md-12">
+                                            <div className="inner-submit-lower-div">
+                                                <h4>KYC Details</h4>
+                                                <div class="row">
+
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">First name of project owner<span>*</span></label>
+                                                            <input type="text"
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter First Name" />
+                                                            {/* {Object.keys(minallo).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{minallo[key]}</p>
+                                                            })} */}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">Last name of project owner<span>*</span></label>
+                                                            <input type="text"
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter Last Name" />
+                                                            {/* {Object.keys(maxallo).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{maxallo[key]}</p>
+                                                            })} */}
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-lg-4 col-md-12 col-12 ">
+                                            <div className="right-side-main-image inner-submit-lower-div ">
+
+                                                <div class="form-group">
+                                                    <label for="exampleInputsymbol">Upload id or passport<span>*</span></label>
+                                                    <div className="dashed-border-new">
+                                                        <div className="main-image-div main-bvc">
+                                                            <img src={logokyc ? logokyc : require("../../static/images/submit-form/cloud.png")} alt="" />
+                                                            {selectedImgkyc ? renderPhotoskyc(selectedImgkyc) : null}
+                                                        </div>
+                                                        <p className="text-center"><span>
+                                                            <label for="filees" className="mnjhks">Upload Image</label>
+                                                            <input type="file" id="filees"
+                                                                value={logokyc}
+                                                                onChange={handlekycImageChange}
+                                                                name="avatar" className="d-none custom-file-inputt" accept="image/*" />
+                                                        </span></p>
+                                                        {/* {Object.keys(logoError).map((key) => {
+                                                            return <p className="inputErrors">{logoError[key]}</p>
+                                                        })} */}
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
 
                                     <div className="row">
                                         <div className="col-xl-8 col-lg-8 col-md-12">
                                             <div className="inner-submit-lower-div">
                                                 <div class="row">
-                                                {/* <p> Total Token for Approval and Presale : {getToken}</p> */}
+                                                    {/* <p> Total Token for Approval and Presale : {getToken}</p> */}
                                                 </div>
                                                 <div class="col-lg-6">
                                                     {!account ?

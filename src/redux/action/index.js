@@ -3,7 +3,7 @@ import Getweb3 from '../../hooks/Getweb3';
 import { getBep20Contract } from '../../utils/contractHelpers'
 export const useContarctAction = () => async (dispatch) => {
   const web3 = Getweb3();
-  await axios.get("http://54.191.140.38:4750/project/all/active")
+  await axios.get("http://192.168.18.40:4750/project/all/active")
   .then(async (res) => {
      try{
        for (let elem of res.data.msg) {
@@ -51,7 +51,7 @@ export const useContarctAction = () => async (dispatch) => {
 
 export const usePendingContarctAction = () => async (dispatch) => {
   const web3 = Getweb3();
-  await axios.get("http://54.191.140.38:4750/project/all/pending")
+  await axios.get("http://192.168.18.40:4750/project/all/pending")
     .then(async (res) => {
       try{
         for (let elem of res.data.msg) {
@@ -98,7 +98,7 @@ export const usePendingContarctAction = () => async (dispatch) => {
 
 export const useClosingContarctAction = () => async (dispatch) => {
   const web3 = Getweb3();
-  await axios.get("http://54.191.140.38:4750/project/all/finished")
+  await axios.get("http://192.168.18.40:4750/project/all/finished")
     .then(async (res) => {
       try{
         for (let elem of res.data.msg) {
