@@ -51,7 +51,7 @@ const SubmitProject = (props) => {
         const getProjectDetail=async()=>{
             try {
         
-                  await axios.post("http://192.168.18.40:4750/project/editProject",{...inputs,id,statusOfApplication:'Approved'})
+                  await axios.post("https://app.rcsale.app/project/editProject",{...inputs,id,statusOfApplication:'Approved'})
                     .then((response) => {
                         console.log("response========edit>",response)
                         // getDate(response.data.msg)
@@ -77,7 +77,7 @@ const SubmitProject = (props) => {
         const getProjectRejected=async()=>{
             try {
         
-                  await axios.post("http://192.168.18.40:4750/project/editProject",{id,statusOfApplication:'Rejected'})
+                  await axios.post("https://app.rcsale.app/project/editProject",{id,statusOfApplication:'Rejected'})
                     .then((response) => {
                         console.log("response========edit>",response)
                         // getDate(response.data.msg)
@@ -135,7 +135,8 @@ const SubmitProject = (props) => {
         const [amountError,setAmountError]=useState({});
         const [dateError,setDateError]=useState({});
         
-
+        const [kycFirstName, setkycFirstName] = useState('');
+        const [kycSecondName, setkycSecondName] = useState('');
     
         const result = Web3.utils.isAddress(contractAddress);
         const result1 = Web3.utils.isAddress(walletAddress);
@@ -267,7 +268,7 @@ const SubmitProject = (props) => {
      
         try {
     
-               axios.get("http://192.168.18.40:4750/project/"+id)
+               axios.get("https://app.rcsale.app/project/"+id)
                 .then((response) => {
                     console.log("response========>",response)
                     setInputs(response.data.msg)
@@ -929,6 +930,67 @@ const SubmitProject = (props) => {
                                         </div>
                                     </div>
                                 </div>
+                                <div className="row">
+                                        <div className="col-xl-8 col-lg-10 col-md-12">
+                                            <div className="inner-submit-lower-div">
+                                                <h4>KYC Details</h4>
+                                                <div class="row">
+
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">First name of project owner</label>
+                                                            <input type="text"
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter First Name" value={inputs.kycFirstName} onChange={(e) => setkycFirstName(e.target.value)} readOnly/>
+                                                            {/* {Object.keys(minallo).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{minallo[key]}</p>
+                                                            })} */}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="example">Last name of project owner</label>
+                                                            <input type="text"
+                                                                class="form-control" id="example" aria-describedby="text" value={inputs.kycSecondName} placeholder="Enter Last Name" onChange={(e) => setkycSecondName(e.target.value)} readOnly />
+                                                            {/* {Object.keys(maxallo).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{maxallo[key]}</p>
+                                                            })} */}
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 
+                                    <div className="row">
+                                        <div className="col-lg-4 col-md-12 col-12 ">
+                                            <div className="right-side-main-image inner-submit-lower-div ">
+
+                                                <div class="form-group">
+                                                    <label for="exampleInputsymbol">Upload id or passport</label>
+                                                    <div className="dashed-border-new">
+                                                        <div className="main-image-div main-bvc">
+                                                        <img src={inputs.kycPassportPicture} style={{width:200}} alt="" />
+                                                        </div>
+                                                        <p className="text-center"><span>
+                                                            <label for="filees" className="mnjhks">Upload Image</label>
+                                                            <input type="file" id="filees"
+                                                               
+                                                              
+                                                                name="avatar" className="d-none custom-file-inputt" accept="image/*" readOnly />
+                                                        </span></p>
+                                                      
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
                            
                                
                          </form>

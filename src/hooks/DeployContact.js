@@ -9,9 +9,9 @@ export const DeployContact = () => {
     const web3 = Getweb3();
     const contract = GetDeployerAddress(environment.DeployerAddress, web3)
     console.log("hereeeeeeeeeeee",contract);
-    const DeployProjectOnLaunchpad= useCallback( (arg) => {
+    const DeployProjectOnLaunchpad= useCallback( (arg, vals) => {
         
-        const deployer = contract.methods.deployProjectOnLaunchpad(arg).send({ from: account, value:'0' })
+        const deployer = contract.methods.deployProjectOnLaunchpad(arg).send({ from: account, value:  web3.utils.toWei(JSON.stringify((vals)), 'ether') })
         .on('transactionHash', (tx) => { return tx.transactionHash });
         return deployer
     }, [ account,contract ])

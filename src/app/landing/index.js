@@ -13,79 +13,46 @@ import { useSelector } from "react-redux";
 // import { Eligible } from '../../hooks/PoolDataFetcher'
 const Landing = () => {
 
-  const [data, setData] = useState([]);
-  const date = new Date();
-  date.setDate(date.getDate() - 2);
-  // console.log("data in hotbar==================================",data)
-  const d = new Date()
-  d.setDate(d.getDate() - 2);
-  const getDataQuery =
-   `{
-    ethereum(network: bsc) {
-      transfers(
-        options: {desc: count", limit: 10, offset: 0}
-        amount: {gt: 0}
-        date: {since: "${date.toISOString()}", till: "${d.toISOString()}"}
-        currency: {notIn: ["BNB", "WBNB", "BTCB", "ETH", "BUSD", "USDT", "USDC", "DAI"]}
-      ) {
-        currency {
-          symbol
-          address
-          name
-        }
-        count
-        senders: count(uniq: senders)
-        receivers: count(uniq: receivers)
-        days: count(uniq: dates)
-        from_date: minimum(of: date)
-        till_date: maximum(of: date)
-        amount
-      }
-    }
-  }`
-  const handleClick = useCallback(async() => {
-    // setLoader(true);
+  const [allfeatured,setallfeatured]=useState([]);
+  const [alladd,setalladd]=useState([]);
+
+  const toptrending = async () => {
     try {
-      const queryResult = await axios.post('https://graphql.bitquery.io/', { query: getDataQuery },{ headers: { "X-API-KEY": `BQYpTG9Ap6qjtXbdRAiK3tQqtj0cgf0Z` } });
-    // setData(queryResult);
-    if (queryResult.data.data){
-    setData(queryResult.data.data.ethereum.transfers)
 
-    } 
-    } catch (error) {
-      console.log(error);
-    }
-   
-});
-   
-   React.useEffect(()=>{
-   // handleClick()
- 
-  },[])
+      await axios.get("https://app.rcsale.app/featured/getAllFeaturedPublished")
+          .then((response) => {
+              if (response.status) {
 
-  // const toptrending = () => {
-  //   axios.get('https://api.coingecko.com/api/v3/search/trending')
-  //     .then((response) => {
+                 setallfeatured(response.data.data)
+              }
+          });
 
-  //       // setOpen(true)
-  //       setallTokens(response.data.coins)
-  //     //   toast.success("Login Succssfully", {
-  //     //     position: "top-center",
-  //     //     autoClose: 3000,
-  //     //   });
-  //     //   localStorage.setItem('mytoken', token)
-  //     //   history.push("admin/dashboard");
+  }
+  catch (err) {
+    
+  }
+  }
 
-  //     // }).catch((err) => {
-  //     //   toast.error(err.response?.data.msg, {
-  //     //     position: "top-center",
-  //     //     autoClose: 2000,
-  //     //   });
-  //     })
-  // }
-  // useEffect(() => {
-  //   toptrending()
-  // }, )
+  const adds = async () => {
+    try {
+
+      await axios.get("https://app.rcsale.app/featured/getAllAdvertisementPublished")
+          .then((response) => {
+              if (response.status) {
+
+                setalladd(response.data.data)
+              }
+          });
+
+  }
+  catch (err) {
+    
+  }
+  }
+  useEffect(() => {
+    toptrending();
+    adds();
+  }, [])
   
   
   const store = useSelector((state) => state.PoolActiveReducer.AllActivePoolData);
@@ -95,7 +62,7 @@ const Landing = () => {
     nav: false,
     dots: false,
     dotsEach: false,
-    loop: true,
+    loop: false,
     autoplay: true,
     autoplayTimeout: 3000,
     // navText: ["<i class='fa fa-long-arrow-left'></i>", "<i class='fa fa-long-arrow-right'></i>"],
@@ -221,7 +188,30 @@ const Landing = () => {
 
   // }, [eligible])
 
-
+  const   topT=allfeatured.map((elems, key) => {
+    return(
+    <a index={key}>
+    <div className="item mt-2">
+      <div className="main-card text-center">
+        <div className="iconxerc">
+          <img src={elems.image} alt="" className="img-fluid main-imgd" />
+        </div>
+        <div className="text-down ml-4">
+          <h4>
+            {elems.name} <br></br>
+            <span>{elems.symbol}
+            </span>
+          </h4>
+          {/* <h6>64.48%</h6> */}
+          <p></p>
+        </div>
+  
+      </div>
+    </div>
+  </a>
+    )
+    
+  })
 
   const display = store.map((elem, ind) => {
 
@@ -322,6 +312,9 @@ const Landing = () => {
 // })
 
 
+
+
+
   return (
     <div className='landing-nft'>
       <Navbar />
@@ -340,7 +333,7 @@ const Landing = () => {
         </div>
       </section>
 
-
+    
       <div className="banner-mju">
         <div className="container">
           <div className="row">
@@ -369,25 +362,7 @@ const Landing = () => {
         <div className="first-second">
 
           <OwlCarousel className="slider-items owl-carousel ltf-owl" autoplaySpeed={3000}  {...owl_option}>
-            <Link to="sellerleaderboard">
-              <div className="item mt-2">
-                <div className="main-card text-center">
-                  <div className="iconxerc">
-                    <img src={require("../../static/images/landing-leocorn/img12.png")} alt="" className="img-fluid main-imgd" />
-                  </div>
-                  <div className="text-down ml-4">
-                    <h4>
-                      ShibX <br></br>
-                      <span>ShibX
-                      </span>
-                    </h4>
-                    <h6>64.48%</h6>
-                    <p></p>
-                  </div>
-
-                </div>
-              </div>
-            </Link>
+        {topT}
             {/* <Link to="sellerleaderboard">
               <div className="item mt-2">
                 <div className="main-card text-center">

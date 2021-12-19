@@ -52,7 +52,7 @@
     font-size: 22px;
     line-height: 28px;
     color: #DA3838;
-    padding-top: 15px;
+    /* padding-top: 15px; */
 }
 
 .landing-nft.submit-project .main-footer{
@@ -556,8 +556,12 @@ input[type=number] {
 }
 
 .mnjhks{
-    color: red!important;
+    /* color: red!important; */
     cursor: pointer;
     padding: 0px!important;
     height: 55px!important;
+}
+
+.valide{
+    font-size: 12px !important;
 }

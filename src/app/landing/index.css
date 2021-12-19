@@ -227,7 +227,7 @@ color: #7c7c7c;
 }
 
 .owl-carousel .owl-item img{
- width: unset!important;
+ /* width: unset!important; */
 }
 
 .iconxerc{

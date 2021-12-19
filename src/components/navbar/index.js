@@ -20,6 +20,15 @@ const Navbar=(props)=>{
         }
         setshow(false);
     }
+    const trustWallet = async () => {
+        localStorage.setItem("connectorId", "walletconnect")
+        if (account) {
+          logout()
+        } else {
+          login("walletconnect")
+        }
+        // window.$("#exampleModal").modal('hide');
+      }
     const disconnectWallet=()=>{
         logout(); 
     }
@@ -72,11 +81,11 @@ const Navbar=(props)=>{
                                         <div className="meta-mask" onClick={connectMetamask}>
                                             <Link className="main-link-meta" href="#"><img src={require("../../static/images/landing-leocorn/Group 16.png")} alt="" /></Link>
                                         </div>
-                                        {/* <div className="scan-wallet" onClick={connectTrust}>
+                                        <div className="scan-wallet" onClick={trustWallet}>
                                             <Link className="main-link-meta" href="#"><img src={require("../../static/images/landing-leocorn/sacn-wallet.png")} alt="" /></Link>
                                             <h1>WalletConnect</h1>
                                             <Link className="link-scan" href="#"><p>Scan with WalletConnect to Connect</p></Link>
-                                        </div> */}
+                                        </div>
                                         <p className="main-term">By connecting, I accept LEOCORN's   <Link className="link-scan" >Terms of Service</Link></p>
                                     </div>
                                 </ModalBody>

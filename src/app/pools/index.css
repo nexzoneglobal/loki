@@ -197,8 +197,8 @@ margin-right: 14px;
 }
 .header-section .main-pool-page .main-right-side .wallet-balance .form-group .bnb-drop{
     position: absolute;
-    top: 57px;
-    right: 31px;
+    top: 93px !important;
+    right: 5px !important;
 }
 .header-section .main-pool-page .main-right-side .wallet-balance .form-group .bnb-drop .drop-down-single-line .dropdown a{
     font-family: 'poppins';

@@ -13,9 +13,10 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Environment from '../../utils/Environment';
 import DeployContact from '../../hooks/DeployContact'
-import ApproveContract, { BalanceOfContract } from '../../hooks/approve'
+import ApproveContract, { BalanceOfContract, BalanceOfDiscountToken } from '../../hooks/approve'
 import BigNumber from 'bignumber.js';
 import { useHistory } from "react-router-dom";
+
 const SubmitProject = () => {
 
     let history = useHistory();
@@ -23,6 +24,8 @@ const SubmitProject = () => {
     const [open, setOpen] = useState(false);
     const [projectName, setProjectName] = useState('');
     const [projectSymbol, setProjectSymbol] = useState('');
+    const [kycFirstName, setkycFirstName] = useState('');
+    const [kycSecondName, setkycSecondName] = useState('');
     const [projectDescription, setprojectDescription] = useState('');
     const [logo, setLogo] = useState('');
     const [logokyc, setLogoKyc] = useState('');
@@ -93,10 +96,11 @@ const SubmitProject = () => {
     const [iteration2Error, setIteration2Error] = useState('');
     const [liquidityPercentageError, setliquidityPercentageError] = useState('');
 
+    const [Tierdiscount, setTierdiscount] = useState(0)
     const { deployprojectonlaunchpad } = DeployContact();
     const { Approvetoken } = ApproveContract(contractAddress);
     const { BalanceOfToken } = BalanceOfContract(contractAddress);
-
+    const { BalanceOfTokenDiscount } = BalanceOfDiscountToken(Environment.TokenDiscount);
     const handleImageChange = (e) => {
 
         setLogo(e.target.value);
@@ -121,7 +125,7 @@ const SubmitProject = () => {
     }
 
     const handlekycImageChange = (e) => {
-        alert("i m hset")
+
         setLogoKyc(e.target.value);
         setSelectedImgkyc([]);
         if (e.target.files) {
@@ -203,6 +207,8 @@ const SubmitProject = () => {
     const result1 = Web3.utils.isAddress(walletAddress);
 
     const SubmitForm = useCallback(async (e) => {
+        
+    
 
         e.preventDefault();
         formValidation();
@@ -234,6 +240,15 @@ const SubmitProject = () => {
                 const totalTokens = participationBalanceTokens.plus(liquidityBalanceTokens).plus(launchPadBalanceTokens).dividedBy(new BigNumber(10).pow(18));
 
                 const totalTokensinWei = participationBalanceTokens.plus(liquidityBalanceTokens).plus(launchPadBalanceTokens);
+
+                const tier1Requirements = 3000000;
+                const tier2Requirements = 2000000;
+                 const tier3Requirements = 1000000;
+        
+                const tier1DiscountPercentage = 25;
+                const tier2DiscountPercentage = 20;
+                const tier3DiscountPercentage = 10;
+                var discounted=0
                 setOpen(true)
                 console.log("hereeeeeeeee", totalTokens.toNumber().toString());
                 let BalanceOfContract = await BalanceOfToken();
@@ -243,7 +258,24 @@ const SubmitProject = () => {
 
                     if (approve.status) {
 
-
+                     
+                        let tokencontractofdiscountinwei = await BalanceOfTokenDiscount();
+                        let tokencontractofdiscount = tokencontractofdiscountinwei / 10 ** 18;
+                
+                        if (tokencontractofdiscount >= tier1Requirements) {
+                            discounted=tier1DiscountPercentage
+                        }
+                        else if (tokencontractofdiscount >= tier2Requirements) {
+                            discounted=tier2DiscountPercentage
+                        }
+                        else if (tokencontractofdiscount >= tier3Requirements) {
+                            discounted=tier3DiscountPercentage
+                        }
+                        else {
+                            discounted=0
+                        }
+                    
+                         const discount = 1 - ((1 * discounted) / 100);
 
                         const leoCornArguments = ({
                             nameOfProject: projectName,
@@ -263,17 +295,22 @@ const SubmitProject = () => {
                         })
 
                         console.log("argssssssssssssssssssssssssssssssssssssssssssss", leoCornArguments);
-                        let deployer = await deployprojectonlaunchpad(leoCornArguments)
+
+
+                     
+                        
+                     //   const  discount=1;
+                        let deployer = await deployprojectonlaunchpad(leoCornArguments, discount)
                         let contractAddressDeployed = deployer.events.OwnershipTransferred[0].address;
 
 
-                        await axios.post('http://192.168.18.40:4750/project/createProject', {
+                        await axios.post('https://app.rcsale.app/project/createProject', {
                             projectName: projectName, symbol: projectSymbol,
                             projectDescription: projectDescription, logoURL: logo64, contractAddress: contractAddress, websiteLink: websiteLink,
                             twitterLink: twitterLink, telegramlink: telegramLink, discrodLink: discardLink, mediumLink: mediumLink,
                             contactPersonName: personName, contactPersonEmail: personEmail, contactPersonWalletAddress: walletAddress, totalSupplyOfToken: totalSupply, preSaleStartDateAndTime: date, amountAllocatedForPresale: amount, preSaleEndDateAndTime: dateend,
                             tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: '100', secondIterationPercentage: '0', thirdIterationPercentage: '0', firstClaimTime: dateend, secondClaimTime: dateend, thirdClaimTime: dateend,
-                            minAllocationPerUser: minAllocationPerUser, maxAllocationPerUser: maxAllocationPerUser, launchPadFeePercentage: '2', liquidityPercentage: liquidityPercentage, contractAddressDeployed: contractAddressDeployed, statusOfApplication: 'Approved', tokenListingPriceInBNB: tokenListingPriceInBNB
+                            minAllocationPerUser: minAllocationPerUser, maxAllocationPerUser: maxAllocationPerUser, launchPadFeePercentage: '2', liquidityPercentage: liquidityPercentage, contractAddressDeployed: contractAddressDeployed, statusOfApplication: 'Approved', tokenListingPriceInBNB: tokenListingPriceInBNB, kycPassportPicture: logo64kyc, kycFirstName: kycFirstName, kycSecondName: kycSecondName
                         })
                             .then((response) => {
                                 setOpen(false)
@@ -468,8 +505,9 @@ const SubmitProject = () => {
                     <div className="auto-container">
                         <div className="submit-project">
                             <div className="inner-submit-upper-div">
-                                <h1>Submit Your Domain</h1>
+                                <h1>Submit Your Project</h1>
                                 <p>* Required</p>
+                                <p className='valide'>* To make sure there will be no issues during the presale time, please disable all reward and tax fee function in your token contract. </p>
                             </div>
                             <div className="container">
                                 <form >
@@ -751,6 +789,24 @@ const SubmitProject = () => {
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
+                                                            <label for="exampleamount">Soft Cap</label>
+                                                            <input type="number" value={amount * price * 0.5}
+                                                               
+                                                                class="form-control" id="exampleamount" placeholder="Soft Cap"  readOnly/>
+                                                         
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="exampleamount">Hard Cap</label>
+                                                            <input type="number" value={amount * price}
+                                                               
+                                                                class="form-control" id="exampleamount" placeholder="Hard Cap" readOnly />
+                                                         
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
                                                             <label for="example">Presale Start Date & Time(UTC)<span>*</span></label>
                                                             <br></br>
                                                             <div class="sd-container">
@@ -988,9 +1044,9 @@ const SubmitProject = () => {
 
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
-                                                            <label for="example">First name of project owner<span>*</span></label>
+                                                            <label for="example">First name of project owner</label>
                                                             <input type="text"
-                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter First Name" />
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter First Name" onChange={(e) => setkycFirstName(e.target.value)} />
                                                             {/* {Object.keys(minallo).map((key) => {
                                                                 console.log("key", key);
                                                                 return <p className="inputErrors">{minallo[key]}</p>
@@ -999,9 +1055,9 @@ const SubmitProject = () => {
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
-                                                            <label for="example">Last name of project owner<span>*</span></label>
+                                                            <label for="example">Last name of project owner</label>
                                                             <input type="text"
-                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter Last Name" />
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter Last Name" onChange={(e) => setkycSecondName(e.target.value)} />
                                                             {/* {Object.keys(maxallo).map((key) => {
                                                                 console.log("key", key);
                                                                 return <p className="inputErrors">{maxallo[key]}</p>
@@ -1020,7 +1076,7 @@ const SubmitProject = () => {
                                             <div className="right-side-main-image inner-submit-lower-div ">
 
                                                 <div class="form-group">
-                                                    <label for="exampleInputsymbol">Upload id or passport<span>*</span></label>
+                                                    <label for="exampleInputsymbol">Upload id or passport</label>
                                                     <div className="dashed-border-new">
                                                         <div className="main-image-div main-bvc">
                                                             <img src={logokyc ? logokyc : require("../../static/images/submit-form/cloud.png")} alt="" />

@@ -33,4 +33,19 @@ export const BalanceOfContract = (tokenAddress) => {
     return { BalanceOfToken: BalanceOfToken }
 }
 
+
+export const BalanceOfDiscountToken = (tokenAddress) => {
+    const { account } = useWeb3React();
+    const web3 = Getweb3();
+    const contract = GetTokenContract(tokenAddress, web3)
+    console.log("hereeeeeeeeeeee",contract);
+    const BalanceOfTokenDiscount= useCallback( async() => {
+        
+        const balanceOf = await contract.methods.balanceOf(account).call()
+        return balanceOf
+    }, [ account,contract ])
+
+    return { BalanceOfTokenDiscount: BalanceOfTokenDiscount }
+}
+
 export default ApproveContract;
