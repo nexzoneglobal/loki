@@ -1,4 +1,4 @@
-import React, { useState, useCallback,useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Navbar from '../../components/navbar';
@@ -13,48 +13,64 @@ import { useSelector } from "react-redux";
 // import { Eligible } from '../../hooks/PoolDataFetcher'
 const Landing = () => {
 
-  const [allfeatured,setallfeatured]=useState([]);
-  const [alladd,setalladd]=useState([]);
+  const [allfeatured, setallfeatured] = useState([]);
+  const [alladd, setalladd] = useState([]);
 
   const toptrending = async () => {
     try {
 
       await axios.get("https://app.rcsale.app/featured/getAllFeaturedPublished")
-          .then((response) => {
-              if (response.status) {
+        .then((response) => {
+          // if (response.status) {
 
-                 setallfeatured(response.data.data)
-              }
-          });
+          setallfeatured(response.data.data)
+          //}
+        });
 
-  }
-  catch (err) {
-    
-  }
+    }
+    catch (err) {
+
+    }
   }
 
+
+  console.log("allfeatured", allfeatured);
   const adds = async () => {
     try {
 
-      await axios.get("https://app.rcsale.app/featured/getAllAdvertisementPublished")
-          .then((response) => {
-              if (response.status) {
+      await axios.get("https://app.rcsale.app/advertisement/getAllAdvertisementPublished")
+        .then((response) => {
+          if (response.status) {
 
-                setalladd(response.data.data)
-              }
-          });
+            setalladd(response.data.data)
+          }
+        });
 
+    }
+    catch (err) {
+
+    }
   }
-  catch (err) {
-    
-  }
-  }
+
+
   useEffect(() => {
     toptrending();
     adds();
   }, [])
-  
-  
+  const topTTT = alladd.map((elems, key) => {
+    return (
+      <a index={key}>
+        <div className="imgds">
+          <img src={elems.image} alt="" className="img-fluid main-imgd  dddd" />
+        </div>
+        <div className="textsd">
+          <h4 className="dfgh">{elems.name} </h4>
+        </div>
+      </a>
+    )
+
+  })
+
   const store = useSelector((state) => state.PoolActiveReducer.AllActivePoolData);
   const pesndingstore = useSelector((state) => state.PoolActiveReducer.PendingData)
   const closestore = useSelector((state) => state.PoolActiveReducer.ClosedData)
@@ -188,29 +204,30 @@ const Landing = () => {
 
   // }, [eligible])
 
-  const   topT=allfeatured.map((elems, key) => {
-    return(
-    <a index={key}>
-    <div className="item mt-2">
-      <div className="main-card text-center">
-        <div className="iconxerc">
-          <img src={elems.image} alt="" className="img-fluid main-imgd" />
+  const topT = allfeatured.map((elems, key) => {
+    return (
+      <a index={key}>
+        <div className="item mt-2">
+          <div className="main-card text-center">
+            <div className="iconxerc">
+              <img src={elems?.image} alt="" className="img-fluid main-imgd" />
+            </div>
+            <div className="text-down ml-4">
+              <h4>
+                {elems?.name} <br></br>
+                <span>{elems?.symbol}
+
+                </span>
+              </h4>
+              {/* <h6>64.48%</h6> */}
+              <p></p>
+            </div>
+
+          </div>
         </div>
-        <div className="text-down ml-4">
-          <h4>
-            {elems.name} <br></br>
-            <span>{elems.symbol}
-            </span>
-          </h4>
-          {/* <h6>64.48%</h6> */}
-          <p></p>
-        </div>
-  
-      </div>
-    </div>
-  </a>
+      </a>
     )
-    
+
   })
 
   const display = store.map((elem, ind) => {
@@ -246,7 +263,7 @@ const Landing = () => {
           <Link to={'/pools/' + id + '/' + t1} id={1} >
             <PoolCard {...elem} tier={1} allcation={elem.tier1Allocation} max={elem.maxAllocationPerUser}
               startTime={startTimeTier1} endTime={endTimeTier1}
-              min={elem.minAllocationPerUser} 
+              min={elem.minAllocationPerUser}
               preSaleStartDateAndTime={new Date(elem.preSaleStartDateAndTime).setHours(new Date(elem.preSaleStartDateAndTime).getHours() + 8)} />
           </Link>
         </div>
@@ -284,32 +301,32 @@ const Landing = () => {
 
     )
   })
-  
- 
- 
-//   const data = alltoken.map((elem) => {
-//     return(
-//       <Link to="sellerleaderboard">
-//       <div className="item mt-2">
-//         <div className="main-card text-center">
-//           <div className="iconxerc">
-//             <img src={require("../../static/images/landing-leocorn/img12.png")} alt="" className="img-fluid main-imgd" />
-//           </div>
-//           <div className="text-down ml-4">
-//             <h4>
-//               ShibX <br></br>
-//               <span>ShibX
-//               </span>
-//             </h4>
-//             <h6>64.48%</h6>
-//             <p></p>
-//           </div>
-  
-//         </div>
-//       </div>
-//     </Link>
-//     )
-// })
+
+
+
+  //   const data = alltoken.map((elem) => {
+  //     return(
+  //       <Link to="sellerleaderboard">
+  //       <div className="item mt-2">
+  //         <div className="main-card text-center">
+  //           <div className="iconxerc">
+  //             <img src={require("../../static/images/landing-leocorn/img12.png")} alt="" className="img-fluid main-imgd" />
+  //           </div>
+  //           <div className="text-down ml-4">
+  //             <h4>
+  //               ShibX <br></br>
+  //               <span>ShibX
+  //               </span>
+  //             </h4>
+  //             <h6>64.48%</h6>
+  //             <p></p>
+  //           </div>
+
+  //         </div>
+  //       </div>
+  //     </Link>
+  //     )
+  // })
 
 
 
@@ -325,7 +342,7 @@ const Landing = () => {
             <h1>RC LAUNCHPAD Pools</h1>
             <p>RC LAUNCHPAD is a blockchain platform designed to provide an easy to use launchpad that aims to help new quality blockchain projects to raise capital and easily distribute their tokens at the same time. RC LAUNCHPAD currently operates on the Binance Smart Chain and helps launch the new IDO coins via a Decentralized liquidity Exchange(DEX) such as PancakeSwap.</p>
             <button>
-              <a href="https://bscscan.com/token/0x229a54fb9de889c271380452c0483ce89b8c1e0d" target="_blankl">
+              <a href="https://pancakeswap.finance/swap?outputCurrency=0x229a54Fb9De889C271380452C0483ce89b8C1e0D" target="_blankl">
                 <img src={require("../../static/images/landing-leocorn/button-mamin-head.png")} alt="" />Buy on PancakeSwap
               </a>
             </button>
@@ -333,21 +350,22 @@ const Landing = () => {
         </div>
       </section>
 
-    
+
       <div className="banner-mju">
         <div className="container">
           <div className="row">
             <div className="col-md-9 m-auto">
               <div className="inner-banners-x">
-                <div className="imgds">
+                {topTTT}
+                {/* <div className="imgds">
                   <img src={require("../../static/images/landing-leocorn/ing12.png")} alt="" className="img-fluid main-imgd" />
                 </div>
                 <div className="textsd">
                   <h4 className="dfgh">MISSED DOGE? BUY <span>FLOKI</span></h4>
-                </div>
-                <div className="imgds">
+                </div> */}
+                {/* <div className="imgds">
                   <img src={require("../../static/images/landing-leocorn/ing12.png")} alt="" className="img-fluid main-imgd" />
-                </div>
+                </div> */}
               </div>
 
             </div>
@@ -360,10 +378,10 @@ const Landing = () => {
           <h1>Top Trending Token</h1>
         </div>
         <div className="first-second">
-
-          <OwlCarousel className="slider-items owl-carousel ltf-owl" autoplaySpeed={3000}  {...owl_option}>
-        {topT}
-            {/* <Link to="sellerleaderboard">
+          {topT.length > 0 &&
+            <OwlCarousel className="slider-items owl-carousel ltf-owl" autoplaySpeed={3000}  {...owl_option}>
+              {topT}
+              {/* <Link to="sellerleaderboard">
               <div className="item mt-2">
                 <div className="main-card text-center">
                   <div className="iconxerc">
@@ -441,8 +459,8 @@ const Landing = () => {
                 </div>
               </div>
             </Link> */}
-          </OwlCarousel>
-
+            </OwlCarousel>
+          }
 
         </div>
       </section>
@@ -481,10 +499,10 @@ const Landing = () => {
 
                 <div className="col-xl-4 col-lg-4 col-md-6 col-12 mb-4" key={index}>
                   <Link to={'/comingsoom/' + elem.id + '/' + 1} id={1} >
-                  <ComingPoolCard {...elem} tier={1} allcation={elem.tier1Allocation} max={elem.maxAllocationPerUser}
-                    min={elem.minAllocationPerUser}
-                    preSaleStartDateAndTime={new Date(elem.preSaleStartDateAndTime)}
-                  />
+                    <ComingPoolCard {...elem} tier={1} allcation={elem.tier1Allocation} max={elem.maxAllocationPerUser}
+                      min={elem.minAllocationPerUser}
+                      preSaleStartDateAndTime={new Date(elem.preSaleStartDateAndTime)}
+                    />
                   </Link>
                 </div>
                 /* <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={index} >

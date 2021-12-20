@@ -211,7 +211,7 @@ const SubmitProject = () => {
     
 
         e.preventDefault();
-        formValidation();
+     //   formValidation();
 
 
         try {
@@ -248,14 +248,18 @@ const SubmitProject = () => {
                 const tier1DiscountPercentage = 25;
                 const tier2DiscountPercentage = 20;
                 const tier3DiscountPercentage = 10;
+          
+               
                 var discounted=0
                 setOpen(true)
-                console.log("hereeeeeeeee", totalTokens.toNumber().toString());
-                let BalanceOfContract = await BalanceOfToken();
+                console.log("hereeeeeeeee", totalTokens);
+             //  let BalanceOfContract = await BalanceOfToken();
                 console.log("balvvvvvvvvvvvvvv", BalanceOfContract);
-                if (BalanceOfContract >= totalTokensinWei) {
-                    let approve = await Approvetoken(Environment.DeployerAddress, totalTokensinWei)
-
+              
+             //   console.log("consile",BalanceOfContract >= totalTokensinWei.toNumber().toString())
+                //   if (BalanceOfContract >= totalTokensinWei.toNumber().toString()) {
+                    let approve = await Approvetoken(Environment.DeployerAddress, totalTokensinWei.toNumber().toString())
+                 //   debugger
                     if (approve.status) {
 
                      
@@ -329,10 +333,15 @@ const SubmitProject = () => {
                         });
                     }
                 }
-            }
+            
+            //     else{
+            //         setOpen(false)
+            //     }
+            // }
         }
 
         catch (err) {
+            console.log("catcj",err);
             setOpen(false)
             return false
         }

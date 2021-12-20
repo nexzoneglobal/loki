@@ -8,7 +8,7 @@ export const ApproveContract = (tokenAddress) => {
     const { account } = useWeb3React();
     const web3 = Getweb3();
     const contract = GetTokenContract(tokenAddress, web3)
-    console.log("hereeeeeeeeeeee",contract);
+    
     const Approvetoken= useCallback( (address, totaltoken) => {
         
         const deployer = contract.methods.approve(address,totaltoken).send({ from: account })
@@ -24,9 +24,9 @@ export const BalanceOfContract = (tokenAddress) => {
     const web3 = Getweb3();
     const contract = GetTokenContract(tokenAddress, web3)
     console.log("hereeeeeeeeeeee",contract);
-    const BalanceOfToken= useCallback( async() => {
+    const BalanceOfToken= useCallback( () => {
         
-        const balanceOf = await contract.methods.balanceOf(account).call()
+        const balanceOf = contract.methods.balanceOf(account).call()
         return balanceOf
     }, [ account,contract ])
 

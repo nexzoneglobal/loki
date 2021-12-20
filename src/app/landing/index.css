@@ -278,6 +278,11 @@ color: #7c7c7c;
   height: 60px;
   border-radius: 50%;
 }
+
+.dddd{
+  width:83px;
+  height:83px
+}
 .featured-pool .card-main{
   background: linear-gradient(#1F1D26 0%, #0F0E13 100%);
   border-radius: 15px;
