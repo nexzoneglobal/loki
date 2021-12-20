@@ -57,9 +57,10 @@ const AdminProject = () => {
                     }
                     setOpen(false)
                 });
-
+             
         }
         catch (err) {
+            setOpen(false)
             // eslint-disable-next-line no-console
             // console.log(err);
             // alert("Invalid Address")
@@ -123,6 +124,7 @@ const AdminProject = () => {
 
         }
         catch (err) {
+            setOpen(false)
             // eslint-disable-next-line no-console
             // console.log(err);
             // alert("Invalid Address")
@@ -147,6 +149,7 @@ const AdminProject = () => {
 
         }
         catch (err) {
+            setOpen(false)
             // eslint-disable-next-line no-console
             // console.log(err);
             // alert("Invalid Address")
@@ -246,6 +249,7 @@ const AdminProject = () => {
 
         }
         catch (err) {
+            setOpen(false)
             // eslint-disable-next-line no-console
             // console.log(err);
             // alert("Invalid Address")
@@ -265,6 +269,7 @@ const AdminProject = () => {
 
         }
         catch (err) {
+            setOpen(false)
             // eslint-disable-next-line no-console
             // console.log(err);
             // alert("Invalid Address")
@@ -323,6 +328,7 @@ const AdminProject = () => {
 
         }
         catch (err) {
+            setOpen(false)
             // eslint-disable-next-line no-console
             // console.log(err);
             // alert("Invalid Address")
@@ -341,6 +347,7 @@ const AdminProject = () => {
 
         }
         catch (err) {
+            setOpen(false)
             // eslint-disable-next-line no-console
             // console.log(err);
             // alert("Invalid Address")
@@ -365,6 +372,7 @@ const AdminProject = () => {
 
         }
         catch (err) {
+            setOpen(false)
             // eslint-disable-next-line no-console
             // console.log(err);
             // alert("Invalid Address")
@@ -394,6 +402,7 @@ const AdminProject = () => {
 
         }
         catch (err) {
+            setOpen(false)
             // eslint-disable-next-line no-console
             // console.log(err);
             // alert("Invalid Address")
