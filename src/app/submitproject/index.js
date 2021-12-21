@@ -249,9 +249,9 @@ const SubmitProject = () => {
                
                 var discounted=0
                 setOpen(true)
-                console.log("hereeeeeeeee", totalTokens);
+           //     console.log("hereeeeeeeee", totalTokens);
              //  let BalanceOfContract = await BalanceOfToken();
-                console.log("balvvvvvvvvvvvvvv", BalanceOfContract);
+          //      console.log("balvvvvvvvvvvvvvv", BalanceOfContract);
               
              //   console.log("consile",BalanceOfContract >= totalTokensinWei.toNumber().toString())
                 //   if (BalanceOfContract >= totalTokensinWei.toNumber().toString()) {
