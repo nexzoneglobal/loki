@@ -208,11 +208,8 @@ const SubmitProject = () => {
 
     const SubmitForm = useCallback(async (e) => {
         
-    
-
         e.preventDefault();
-     //   formValidation();
-
+        formValidation();
 
         try {
             // && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
@@ -220,7 +217,7 @@ const SubmitProject = () => {
             //  tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: iteration1, secondIterationPercentage: iteration2
             if (projectName !== '' && projectSymbol !== '' && projectDescription !== '' && logo64 !== ''
                 && websiteLink !== '' && twitterLink !== '' && telegramLink !== '' && personName !== '' && personEmail !== '' && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
-                && walletAddress !== '' && tokenListingPriceInBNB !== '') {
+                && walletAddress !== '' && tokenListingPriceInBNB !== '' && liquidityPercentage!=='') {
 
                 const epochStartTime = new Date(date).getTime() / 1000.0;
                 const epochEndTime = new Date(dateend).getTime() / 1000.0;
@@ -258,7 +255,7 @@ const SubmitProject = () => {
               
              //   console.log("consile",BalanceOfContract >= totalTokensinWei.toNumber().toString())
                 //   if (BalanceOfContract >= totalTokensinWei.toNumber().toString()) {
-                    let approve = await Approvetoken(Environment.DeployerAddress, totalTokensinWei.toNumber().toString())
+                    let approve = await Approvetoken(Environment.DeployerAddress, totalTokensinWei)
                  //   debugger
                     if (approve.status) {
 
@@ -342,6 +339,10 @@ const SubmitProject = () => {
 
         catch (err) {
             console.log("catcj",err);
+            toast.error('Invalid Form Submission', {
+                position: "bottom-center",
+                autoClose: 2000,
+            });
             setOpen(false)
             return false
         }
@@ -434,10 +435,10 @@ const SubmitProject = () => {
             amountError.amountError = "Amount is Required";
             isValid = false;
         }
-        else if (amount > totalSupply) {
-            amountError.BigamountError = "Presale Amount is less than Total Supply.";
-            isValid = false;
-        }
+        // else if (amount < totalSupply) {
+        //     amountError.BigamountError = "Presale Amount is less than Total Supply.";
+        //     isValid = false;
+        // }
         if (date === '') {
             dateError.dateError = "Date is Required";
             isValid = false;
