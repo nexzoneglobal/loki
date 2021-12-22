@@ -18,7 +18,7 @@ const Projects = () => {
     const getAlldata = async () => {
         try {
 
-            await axios.post("https://app.rcsale.app/project/all", {account:account})
+            await axios.post("https://app.rcsale.app/project/getAllProjectsOfUser", {account:account})
                 .then((response) => {
 
                     if (response.data.status) {
