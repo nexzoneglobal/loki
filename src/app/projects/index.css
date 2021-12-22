@@ -14,6 +14,17 @@
     width: 84.5%;
 
 }
+
+.warning{
+    color: crimson;
+}
+
+.exlude{
+    font-size: 22px;
+}
+.setpad{
+    padding: 20px 0 0 0; 
+}
 .projects .header-section .submit-project .inner-submit-upper-div{
     height: 120px;
     padding-left: 80px;

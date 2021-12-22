@@ -78,23 +78,23 @@ const Landing = () => {
     nav: false,
     dots: false,
     dotsEach: false,
-    loop: false,
+    loop: true,
     autoplay: true,
     autoplayTimeout: 3000,
     // navText: ["<i class='fa fa-long-arrow-left'></i>", "<i class='fa fa-long-arrow-right'></i>"],
     responsive: {
       0: {
-        items: 2,
+        items: 1,
         stagePadding: -100,
         margin: 10,
       },
       400: {
-        items: 2,
+        items: 1,
         stagePadding: -100,
         margin: 15,
       },
       600: {
-        items: 2,
+        items: 1,
         stagePadding: -100,
         margin: 10,
       },

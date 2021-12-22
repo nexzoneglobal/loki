@@ -245,8 +245,7 @@ const SubmitProject = () => {
                 const tier1DiscountPercentage = 25;
                 const tier2DiscountPercentage = 20;
                 const tier3DiscountPercentage = 10;
-          
-               
+        
                 var discounted=0
                 setOpen(true)
            //     console.log("hereeeeeeeee", totalTokens);
@@ -255,7 +254,7 @@ const SubmitProject = () => {
               
              //   console.log("consile",BalanceOfContract >= totalTokensinWei.toNumber().toString())
                 //   if (BalanceOfContract >= totalTokensinWei.toNumber().toString()) {
-                    let approve = await Approvetoken(Environment.DeployerAddress, totalTokensinWei)
+                    let approve = await Approvetoken(Environment.DeployerAddress, totalTokens);
                  //   debugger
                     if (approve.status) {
 

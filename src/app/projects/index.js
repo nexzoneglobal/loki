@@ -18,7 +18,7 @@ const Projects = () => {
     const getAlldata = async () => {
         try {
 
-            await axios.post("https://app.rcsale.app/project/getAllProjectsOfUser", {account:account})
+            await axios.post("https://app.rcsale.app/project/all", {account:account})
                 .then((response) => {
 
                     if (response.data.status) {
@@ -114,6 +114,9 @@ const Projects = () => {
                                         </div> */}
                                 </div>
                             </div>
+                            <div className="row  setpad">
+                            <h2> <span className='warning'>Warning !</span> <span className='exlude'>Please exclude your Presale address from any fees and dividents !!</span>   </h2>
+                            </div>
                         </div>
                         <div className="inner-lower-div">
                             <div class="projects-table-main">
@@ -122,9 +125,9 @@ const Projects = () => {
                                         <thead>
                                             <tr>
                                                 <th scope="col"> PROJECT NAME </th>
-                                                {/* <th scope="col"> Finalize </th> */}
+                                                <th scope="col"> Presale ContractAddress </th>
                                                 <th scope="col"> WEBSITE </th>
-                                                <th scope="col"> CONTACT PERSON</th>
+                                                {/* <th scope="col"> CONTACT PERSON</th> */}
                                                 <th scope="col">CONTRACT ADDRESS</th>
                                                 <th scope="col"> APPROVE/REJECT </th>
 
@@ -158,7 +161,7 @@ const Projects = () => {
                                                 return (
                                                     <tr index={key}>
                                                         <td className='text-left'><img className='balance-table-img' src={elem.logoURL} style={{ width: 40 }} alt="" /> {elem.projectName}</td>
-                                                     
+                                                        <td className='text-left-2nd'><a>{elem.contractAddressDeployed} </a></td>
                                                         <td className='text-left-2nd'><a href={elem.websiteLink} target="_blank">{elem.websiteLink} </a></td>
                                                         <td className='text-left-normal'>{elem.contactPersonName}</td>
                                                         <td className='text-left-normal'> <p>{elem.contactPersonWalletAddress == "" ? "" : `${elem.contactPersonWalletAddress.substring(0, 6)}...${elem.contactPersonWalletAddress.substring(
