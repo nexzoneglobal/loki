@@ -175,9 +175,11 @@ const Projects = () => {
                                                         </td> */}
                                                         <td className="button-detailss">
                                                             <div className="">
+
+                                                            {/* elem.preSaleEndDateAndTime && new Date(elem.preSaleEndDateAndTime) < new Date() &&  */}
                                                                 {/* <Link className='buttion-on' >Approve</Link>  {elem.statusOfApplication}*/}
                                                                 <td id="gfngfmg" className={elem.statusOfApplication == 'Pending' ? 'text-green-pending' : elem.statusOfApplication == 'Approved' ? 'text-green-approved' : 'text-green-rejected'}>   {
-                                                                elem.preSaleEndDateAndTime && new Date(elem.preSaleEndDateAndTime) < new Date() && elem.statusOfApplication === 'Approved' ? <button className={elem.finalizeSaleDone === true ? 'green1' : 'disabled1'} onClick={() => FinalFun({ id: elem.id, address: elem.contractAddressDeployed })}>Finalize</button> : <button className='disabled2' >Finalize</button>
+                                                               elem.statusOfApplication === 'Approved' ? <button className={elem.finalizeSaleDone === true ? 'green1' : 'disabled1'} onClick={() => FinalFun({ id: elem.id, address: elem.contractAddressDeployed })}>Finalize</button> : <button className='disabled2' >Finalize</button>
                                                             } <Link to={"/project-details/" + id} className='disabled1 ml-2 text-white' >Detail</Link></td>
                                                                
                                                               
