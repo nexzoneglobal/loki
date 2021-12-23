@@ -61,7 +61,7 @@ const Landing = () => {
     return (
       <a index={key}>
         <div className="imgds">
-          <img src={elems.image} alt="" className="img-fluid main-imgd  dddd" />
+          <img src={elems.image} alt="" className="img-fluid main-imgd jhghjg" />
         </div>
         <div className="textsd">
           <h4 className="dfgh">{elems.name} </h4>
@@ -74,6 +74,57 @@ const Landing = () => {
   const store = useSelector((state) => state.PoolActiveReducer.AllActivePoolData);
   const pesndingstore = useSelector((state) => state.PoolActiveReducer.PendingData)
   const closestore = useSelector((state) => state.PoolActiveReducer.ClosedData)
+  const owl_optionn = {
+    nav: false,
+    dots: false,
+    dotsEach: false,
+    loop: true,
+    autoplay: true,
+    autoplayTimeout: 3000,
+    // navText: ["<i class='fa fa-long-arrow-left'></i>", "<i class='fa fa-long-arrow-right'></i>"],
+    responsive: {
+      0: {
+        items: 1,
+        stagePadding: -100,
+        margin: 10,
+      },
+      400: {
+        items: 1,
+        stagePadding: -100,
+        margin: 15,
+      },
+      600: {
+        items: 1,
+        stagePadding: -100,
+        margin: 10,
+      },
+      700: {
+        items: 1,
+        stagePadding: -100,
+        margin: 10,
+
+      },
+      1000: {
+        items: 1,
+        stagePadding: -100,
+        margin: 10,
+
+      },
+      1200: {
+        items: 1,
+        stagePadding: 60,
+        margin: 10,
+
+      },
+      1600: {
+        items: 1,
+        stagePadding: 60,
+        margin: 10,
+
+      },
+    },
+  };
+
   const owl_option = {
     nav: false,
     dots: false,
@@ -304,33 +355,6 @@ const Landing = () => {
 
 
 
-  //   const data = alltoken.map((elem) => {
-  //     return(
-  //       <Link to="sellerleaderboard">
-  //       <div className="item mt-2">
-  //         <div className="main-card text-center">
-  //           <div className="iconxerc">
-  //             <img src={require("../../static/images/landing-leocorn/img12.png")} alt="" className="img-fluid main-imgd" />
-  //           </div>
-  //           <div className="text-down ml-4">
-  //             <h4>
-  //               ShibX <br></br>
-  //               <span>ShibX
-  //               </span>
-  //             </h4>
-  //             <h6>64.48%</h6>
-  //             <p></p>
-  //           </div>
-
-  //         </div>
-  //       </div>
-  //     </Link>
-  //     )
-  // })
-
-
-
-
 
   return (
     <div className='landing-nft'>
@@ -349,14 +373,18 @@ const Landing = () => {
           </div>
         </div>
       </section>
-
-
       <div className="banner-mju">
         <div className="container">
           <div className="row">
             <div className="col-md-9 m-auto">
               <div className="inner-banners-x">
-                {topTTT}
+                
+
+                {topTTT.length > 0 &&
+            <OwlCarousel className="slider-items owl-carousel ltf-owl" autoplaySpeed={3000}  {...owl_optionn}>
+              {topTTT}
+            </OwlCarousel>
+          }
                 {/* <div className="imgds">
                   <img src={require("../../static/images/landing-leocorn/ing12.png")} alt="" className="img-fluid main-imgd" />
                 </div>
@@ -381,84 +409,6 @@ const Landing = () => {
           {topT.length > 0 &&
             <OwlCarousel className="slider-items owl-carousel ltf-owl" autoplaySpeed={3000}  {...owl_option}>
               {topT}
-              {/* <Link to="sellerleaderboard">
-              <div className="item mt-2">
-                <div className="main-card text-center">
-                  <div className="iconxerc">
-                    <img src={require("../../static/images/landing-leocorn/img14.png")} alt="" className="img-fluid main-imgd" />
-                  </div>
-                  <div className="text-down ml-4">
-                    <h4>
-                      CumStar <br></br>
-                      <span>CumStar
-                      </span>
-                    </h4>
-                    <h6>64.48%</h6>
-                    <p></p>
-                  </div>
-
-                </div>
-              </div>
-            </Link>
-            <Link to="sellerleaderboard">
-              <div className="item mt-2">
-                <div className="main-card text-center">
-                  <div className="iconxerc">
-                    <img src={require("../../static/images/landing-leocorn/img15.png")} alt="" className="img-fluid main-imgd" />
-                  </div>
-                  <div className="text-down ml-4">
-                    <h4>
-                      FREEMOON
-                      <br></br>
-                      <span>FREEMOON
-
-                      </span>
-                    </h4>
-                    <h6>64.48%</h6>
-                    <p></p>
-                  </div>
-
-                </div>
-              </div>
-            </Link>
-            <Link to="sellerleaderboard">
-              <div className="item mt-2">
-                <div className="main-card text-center">
-                  <div className="iconxerc">
-                    <img src={require("../../static/images/landing-leocorn/img12.png")} alt="" className="img-fluid main-imgd" />
-                  </div>
-                  <div className="text-down ml-4">
-                    <h4>
-                      MarsRise<br></br>
-                      <span>MarsRise
-                      </span>
-                    </h4>
-                    <h6>64.48%</h6>
-                    <p></p>
-                  </div>
-
-                </div>
-              </div>
-            </Link>
-            <Link to="sellerleaderboard">
-              <div className="item mt-2">
-                <div className="main-card text-center">
-                  <div className="iconxerc">
-                    <img src={require("../../static/images/landing-leocorn/img14.png")} alt="" className="img-fluid main-imgd" />
-                  </div>
-                  <div className="text-down ml-4">
-                    <h4>
-                      CumStar <br></br>
-                      <span>CumStar
-                      </span>
-                    </h4>
-                    <h6>64.48%</h6>
-                    <p></p>
-                  </div>
-
-                </div>
-              </div>
-            </Link> */}
             </OwlCarousel>
           }
 
