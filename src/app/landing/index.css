@@ -182,13 +182,13 @@ color: #7c7c7c;
 }
 
 .inner-banners-x{
-  display: flex;
+  /* display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   background: #8010B9;
   padding: 9px 50px;
-  text-align: center;
+  text-align: center; */
 }
 .first-second .main-card .text-down span{
  text-transform: uppercase;

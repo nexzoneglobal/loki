@@ -63,9 +63,9 @@ const Landing = () => {
         <div className="imgds">
           <img src={elems.image} alt="" className="img-fluid main-imgd jhghjg" />
         </div>
-        <div className="textsd">
+        {/* <div className="textsd">
           <h4 className="dfgh">{elems.name} </h4>
-        </div>
+        </div> */}
       </a>
     )
 

@@ -98,7 +98,7 @@ const AdminProject = () => {
     }
 
     const handleaddPublish = async (de) => {
-   
+       
         if (de.published == false) {
             setaddstatus(true);
             setaddId(de.id);
@@ -354,22 +354,22 @@ const AdminProject = () => {
         }
     }
 
-    const publishAdd= async ()=>{
-        setLogo(true)
+    const publishAdd= ()=>{
+        setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/advertisement/publishAdvertisement", { id: addId, publish: addstatus })
+            axios.post("https://app.rcsale.app/advertisement/publishAdvertisement", { id: addId, publish: addstatus })
                 .then((response) => {
-                    setLogo(false)
+                 setOpen(false)
                     toast.success('Updated Successfully', {
                         position: "top-center",
                         autoClose: 7000,
                     });
-                    alladds();
+                   alladds();
                     
-                    window.$("#exampleModal21").modal('hide');
+                //  window.$("#exampleModal21").modal('hide');
                 });
-
+            
         }
         catch (err) {
             setOpen(false)
@@ -837,7 +837,7 @@ const AdminProject = () => {
                                                                                         <h5>Are you sure to publish this project?</h5>
                                                                                         <ul className="list-inline pt-20">
                                                                                             <li className="list-inline-item">
-                                                                                                <button type="button" class="buttion-on" onClick={publishAdd} data-toggle="modal" data-target="#exampleModal21">Approve</button>
+                                                                                                <button type="button" class="buttion-on" onClick={publishAdd} data-dismiss="modal" >Approve</button>
                                                                                             </li>
                                                                                             <li className="list-inline-item">
                                                                                                 <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
