@@ -6,7 +6,7 @@ import Footer from '../../components/footer';
 import { Modal, ModalHeader, ModalBody } from "reactstrap";
 import PoolDataFetcher from '../../hooks/PoolDataFetcher';
 import { Contribute } from '../../hooks/PoolDataFetcher';
-import {WhiteListedAllTiers} from '../../hooks/PoolDataFetcher'
+import { WhiteListedAllTiers } from '../../hooks/PoolDataFetcher'
 import useAuth from '../../hooks/useAuth';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -15,21 +15,21 @@ import { useSelector } from "react-redux";
 import { MDBProgress } from 'mdbreact';
 import { Backdrop } from '@material-ui/core';
 import { CircularProgress } from '@material-ui/core';
-const Pool = (props) => { 
+const Pool = (props) => {
     const store = useSelector((state) => state.PoolActiveReducer.AllActivePoolData);
     const id = props.match.params.id;
     const tier = props.match.params.tier;
     const [open, setOpen] = useState(false);
     let tierMinValue = '';
     let tierMaxValue = '';
-    let tier1Allocation='';
-    let tier2Allocation='';
-    let tier3Allocation='';
-    let TotalBnbinOneTier='';
-    let TotalBnbinTwoTier='';
-    let TotalBnbinThreeTier='';
-    let progressValue='';
-    let logo='';
+    let tier1Allocation = '';
+    let tier2Allocation = '';
+    let tier3Allocation = '';
+    let TotalBnbinOneTier = '';
+    let TotalBnbinTwoTier = '';
+    let TotalBnbinThreeTier = '';
+    let progressValue = '';
+    let logo = '';
     let name = '';
     let description = '';
     let weblink = '';
@@ -38,36 +38,40 @@ const Pool = (props) => {
     let mediumlink = '';
     let discardlink = '';
     let symbol = '';
-    let tokenPriceInBNB='' ;
-    let tokenAddress='';
+    let tokenPriceInBNB = '';
+    let tokenAddress = '';
     let prersaleTime = new Date()
-    let amountAllocatedForPresale='';
-    let preSaleEndDateAndTime='';
+    let amountAllocatedForPresale = '';
+    let preSaleEndDateAndTime = '';
+    let maxcap= '';
     store.find((elem) => {
-        if(elem.id==id){
-            console.log('elem:::' , elem)
-        logo=elem.logoURL
-        name=elem.projectName;
-        description = elem.projectDescription
-        weblink= elem.websiteLink.includes("https://") ? elem.websiteLink : `https://${elem.websiteLink}`  ;
-        twitterlink= elem.twitterLink.includes("https://") ? elem.twitterLink : `https://${elem.twitterLink}` ;
-        telegramlink= elem.telegramlink.includes("https://") ? elem.telegramlink : `https://${elem.telegramlink}` ;
-        mediumlink= elem.mediumLink.includes("https://") ? elem.mediumLink : `https://${elem.mediumLink}` ;
-        discardlink= elem.discrodLink.includes("https://") ? elem.discrodLink : `https://${elem.discrodLink}` ;
-        symbol=elem.symbol;
-        tokenPriceInBNB=elem.tokenPriceInBNB;
-        tokenAddress=elem.contractAddressDeployed;
-        amountAllocatedForPresale=elem.amountAllocatedForPresale;
-        preSaleEndDateAndTime= elem.preSaleEndDateAndTime;
+        if (elem.id == id) {
+            console.log('elem:::', elem)
+            logo = elem.logoURL
+            name = elem.projectName;
+            description = elem.projectDescription
+            weblink = elem.websiteLink.includes("https://") ? elem.websiteLink : `https://${elem.websiteLink}`;
+            twitterlink = elem.twitterLink.includes("https://") ? elem.twitterLink : `https://${elem.twitterLink}`;
+            telegramlink = elem.telegramlink.includes("https://") ? elem.telegramlink : `https://${elem.telegramlink}`;
+            mediumlink = elem.mediumLink.includes("https://") ? elem.mediumLink : `https://${elem.mediumLink}`;
+            discardlink = elem.discrodLink.includes("https://") ? elem.discrodLink : `https://${elem.discrodLink}`;
+            symbol = elem.symbol;
+            tokenPriceInBNB = elem.tokenPriceInBNB;
+            tokenAddress = elem.contractAddressDeployed;
+            amountAllocatedForPresale = elem.amountAllocatedForPresale;
+            preSaleEndDateAndTime = elem.preSaleEndDateAndTime;
+        
 
-    }
-    if (tier == 1) {
-        tierMinValue = elem.minAllocationPerUser;
-        tierMaxValue = elem.maxAllocationPerUser;
-        tier1Allocation=elem.tier1Allocation;
-        TotalBnbinOneTier=elem.TotalBnbinOneTier
-        progressValue= ((((TotalBnbinOneTier/( 10**18) / tokenPriceInBNB))/((amountAllocatedForPresale)*(tier1Allocation/100)))*100).toFixed(3)
-        prersaleTime = new Date(elem.preSaleEndDateAndTime * 1000);
+        }
+        if (tier == 1) {
+            tierMinValue = elem.minAllocationPerUser;
+            tierMaxValue = elem.maxAllocationPerUser;
+            tier1Allocation = elem.tier1Allocation;
+            TotalBnbinOneTier = elem.TotalBnbinOneTier;
+            maxcap= elem.hardcap;
+         //   progressValue = ((((TotalBnbinOneTier / (10 ** 18) / tokenPriceInBNB)) / ((amountAllocatedForPresale) * (tier1Allocation / 100))) * 100).toFixed(3)
+            progressValue= (((TotalBnbinOneTier / (10 ** 18) /(maxcap/ (10 ** 18)))  * 100)).toFixed(3);
+            prersaleTime = new Date(elem.preSaleEndDateAndTime * 1000);
         }
         // if (tier == 2) {
         //     tierMinValue = elem.tier2MinAmountPerUserInBNB;
@@ -93,6 +97,7 @@ const Pool = (props) => {
         // }
 
     })
+    
     const [amount, setAmount] = useState(0)
     const [show, setshow] = useState(false);
     const [day, setDay] = useState(0);
@@ -100,7 +105,7 @@ const Pool = (props) => {
     const [min, setMin] = useState(0);
     const [sec, setSec] = useState(0);
     function timer(time) {
-        var time= new Date(preSaleEndDateAndTime * 1000);
+        var time = new Date(preSaleEndDateAndTime * 1000);
         var now = new Date()
         var diff = time.getTime() - now.getTime()
         if (diff <= 0) {
@@ -145,7 +150,7 @@ const Pool = (props) => {
         }
         catch (err) {
             return false;
-       }
+        }
     }
     const { account } = useWeb3React();
 
@@ -169,15 +174,15 @@ const Pool = (props) => {
             return 0;
         }
     }, [tier1Con])
-   
+
     const JoinPool = useCallback(async (e) => {
         setOpen(true)
         e.preventDefault();
         if (account) {
-            try {            
+            try {
                 if (tier == 1 && amount <= tierMaxValue && amount >= tierMinValue) {
-                    const pay = await onTransfer(); 
-                    if(pay.status){
+                    const pay = await onTransfer();
+                    if (pay.status) {
                         contribute();
                         setOpen(false)
                         toast.success('Contributed Successfully', {
@@ -185,9 +190,9 @@ const Pool = (props) => {
                             autoClose: 6000,
                         });
                     }
-                    else{
+                    else {
                         setOpen(false)
-                    }             
+                    }
                 }
                 // else if (tier == 2 && amount <= tierMaxValue && amount >= tierMinValue) {
                 //     const pay = await onTransfer();  
@@ -202,14 +207,14 @@ const Pool = (props) => {
                     toast.error('Invalid Value', {
                         position: "top-right",
                         autoClose: 2000,
-                        
+
                     });
                     setOpen(false)
                 }
             }
             catch (err) {
                 return false;
-                
+
             }
         }
         else {
@@ -218,21 +223,21 @@ const Pool = (props) => {
 
     }, [onTransfer])
 
-   const [whiteList,setWhiteList]=useState(Boolean);
+    const [whiteList, setWhiteList] = useState(Boolean);
     const CheckWhiteList = useCallback(async (e) => {
-        if (account) {   
-            try {            
-                if (tier ==1) {          
-                    const checkwhitelist= await WhiteListTiers();
-                    setWhiteList(checkwhitelist.t1)  
+        if (account) {
+            try {
+                if (tier == 1) {
+                    const checkwhitelist = await WhiteListTiers();
+                    setWhiteList(checkwhitelist.t1)
                 }
-                else if (tier == 2 ) {
-                    const checkwhitelist= await WhiteListTiers();
-                    setWhiteList(checkwhitelist.t2)  
+                else if (tier == 2) {
+                    const checkwhitelist = await WhiteListTiers();
+                    setWhiteList(checkwhitelist.t2)
                 }
-                else if (tier == 3 ) {
-                    const checkwhitelist= await WhiteListTiers();
-                    setWhiteList(checkwhitelist.t3)  
+                else if (tier == 3) {
+                    const checkwhitelist = await WhiteListTiers();
+                    setWhiteList(checkwhitelist.t3)
                 }
                 // else if (tier == 4 ) {
                 //     const checkwhitelist= await T4();
@@ -255,98 +260,108 @@ const Pool = (props) => {
         CheckWhiteList();
         contribute();
     }, [account, tokenAddress])
-
+   // alert(progressValue)
     return (
         <>
-        <Backdrop className="loader" sx={{ color: '#fff' }} open={open}><CircularProgress color="inherit" /></Backdrop>
-        <div className='landing-nft main-pool'>
-            <Navbar />
-            <section className="header-section main-pool">
-                <img src={require("../../static/images/landing-leocorn/background-main-head.png")} className="main-heads-one" alt="" />
-                <div className="auto-container">
-                    <div className="row main-pool-page">
-                        <div className="col-xl-5 col-lg-4 col-md-12 col-12">
-                            <div className="main-left-side">
-                                <div className="upper">
-                                    <div className="left-inner">
-                                        <div className="image">
-                                            <img src={logo} style={{ width: 100, height: 100, borderRadius: '50%' }} />
-                                        </div>
-                                        <div className="name-socials">
-                                            <h1>{name}</h1>
-                                            <div className="socials">
-                                                <a className='linkss' href={weblink} target="_blank"><img src={require("../../static/images/landing-leocorn/pool-page1.png")} alt="" /></a>
-                                                <a className='linkss' href={twitterlink} target="_blank"><img src={require("../../static/images/landing-leocorn/pool-page4.png")} alt="" /></a>
-                                                <a className='linkss' href={telegramlink} target="_blank"><img src={require("../../static/images/landing-leocorn/pool-page3.png")} alt="" /></a>
-                                                {mediumlink ?
-                                                    <a className='linkss' href={mediumlink} target="_blank"><img src={require("../../static/images/landing-leocorn/pool-page5.png")} alt="" /></a> : ""
-                                                }
-                                                {discardlink ?
+            <Backdrop className="loader" sx={{ color: '#fff' }} open={open}><CircularProgress color="inherit" /></Backdrop>
+            <div className='landing-nft main-pool'>
+                <Navbar />
+                <section className="header-section main-pool">
+                    <img src={require("../../static/images/landing-leocorn/background-main-head.png")} className="main-heads-one" alt="" />
+                    <div className="auto-container">
+                        <div className="row main-pool-page">
+                            <div className="col-xl-5 col-lg-4 col-md-12 col-12">
+                                <div className="main-left-side">
+                                    <div className="upper">
+                                        <div className="left-inner">
+                                            <div className="image">
+                                                <img src={logo} style={{ width: 100, height: 100, borderRadius: '50%' }} />
+                                            </div>
+                                            <div className="name-socials">
+                                                <h1>{name}</h1>
+                                                <div className="socials">
+                                                    <a className='linkss' href={weblink} target="_blank"><img src={require("../../static/images/landing-leocorn/pool-page1.png")} alt="" /></a>
+                                                    <a className='linkss' href={twitterlink} target="_blank"><img src={require("../../static/images/landing-leocorn/pool-page4.png")} alt="" /></a>
+                                                    <a className='linkss' href={telegramlink} target="_blank"><img src={require("../../static/images/landing-leocorn/pool-page3.png")} alt="" /></a>
+                                                    {mediumlink ?
+                                                        <a className='linkss' href={mediumlink} target="_blank"><img src={require("../../static/images/landing-leocorn/pool-page5.png")} alt="" /></a> : ""
+                                                    }
+                                                    {discardlink ?
 
-                                                    <a className='linkss' href={discardlink} target="_blank"><img src={require("../../static/images/landing-leocorn/pool-page2.png")} alt="" /></a> : ""
-                                                }
+                                                        <a className='linkss' href={discardlink} target="_blank"><img src={require("../../static/images/landing-leocorn/pool-page2.png")} alt="" /></a> : ""
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="right-inner">
-                                        <button className="button-one-one" type="button">LIVE</button>
-                                        {/* <button className="button-two" type="button">Tier {tier}</button> */}
-                                        {/* {whiteList?
+                                        <div className="right-inner">
+                                            <button className="button-one-one" type="button">LIVE</button>
+                                            {/* <button className="button-two" type="button">Tier {tier}</button> */}
+                                            {/* {whiteList?
                                         <button className="button-three" type="button">WhiteListed</button>:
                                         <button className="button-four" type="button">Not WhiteListed</button>} */}
-                                        {/* <div className="text_main"><p>{progressValue}%</p></div> */}
-                                    {/* <div class="progress">
+                                          
+                                            {/* <div class="progress">
                                      <div className="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                        </div> */}
-                                          {/* <MDBProgress material  value={progressValue} /> */}
-                                      
+                                            <div className='row'>
+                                                <div className='col-lg-12'>
+                                                    <div className='progressbarof'>
+                                                    <div className="text_main"><p>{progressValue}%</p></div>
+                                                        <MDBProgress material value={progressValue} />
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="para">
-                                    <p className="para-one">{description}</p>
+                                    <div className="para">
+                                        <p className="para-one">{description}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="col-xl-7 col-lg-8 col-md-12 col-12 offset-xl-0   offset-0">
-                            <div className="main-right-side">
-                                <div className="wallet-balance">
-                                    <div className="wallet-balancess">
-                                        <h6>Your Current Contribution</h6>
-                                        <div className="image-text">
-                                            <img src={require("../../static/images/submit-form/coin-bnb.png")} alt="" />
-                                            <h4>{TierContribute / (10 ** 18)} BNB</h4>
+                            <div className="col-xl-7 col-lg-8 col-md-12 col-12 offset-xl-0   offset-0">
+                                <div className="main-right-side">
+                                    <div className="wallet-balance">
+                                        <div className="wallet-balancess">
+                                            <h6>Your Current Contribution</h6>
+                                            <div className="image-text">
+                                                <img src={require("../../static/images/submit-form/coin-bnb.png")} alt="" />
+                                                <h4>{TierContribute / (10 ** 18)} BNB</h4>
+                                            </div>
+                                            <h6>Your Tokens</h6>
+                                            <div className="image-text">
+                                                <img src={logo} style={{ width: 30, height: 30, borderRadius: '50%', marginTop: 5 }} alt="" />
+                                                <h4>{(TierContribute) / (tokenPriceInBNB)} {symbol}</h4>
+                                            </div>
                                         </div>
-                                        <h6>Your Tokens</h6>
-                                        <div className="image-text">
-                                            <img src={logo} style={{ width: 30, height: 30, borderRadius: '50%', marginTop: 5 }} alt="" />
-                                            <h4>{(TierContribute ) / (tokenPriceInBNB)} {symbol}</h4>
-                                        </div>
-                                    </div>
-                                    <hr className="hr-submit-form"></hr>
-                                    <div className="form-bnb">
-                                        {TierContribute != tierMaxValue ?
-                                            <form>
-                                                <div class="form-group">
-                                                    <label for="example">Your Contribution</label>
-                                                    <input type="number" class="form-control" id="example"
-                                                        value={amount}
-                                                        onChange={(e) => setAmount(e.target.value)}
-                                                        aria-describedby="text" placeholder="0.0" />
-                                                    <div className="bnb-drop">
-                                                        <div className="drop-down-single-line">
-                                                            <div class="dropdown show">
-                                                                <a class=" " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    <span className="image"><img src={require("../../static/images/submit-form/coin-bnb.png")} alt="" /></span>BNB<span className="main-carret"></span>
-                                                                </a>
+                                        <hr className="hr-submit-form"></hr>
+                                        <div className="form-bnb">
+                                            {TierContribute != tierMaxValue ?
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label for="example">Your Contribution</label>
+                                                        <input type="number" class="form-control" id="example"
+                                                            value={amount}
+                                                            onChange={(e) => setAmount(e.target.value)}
+                                                            aria-describedby="text" placeholder="0.0" />
+                                                        <div className="bnb-drop">
+                                                            <div className="drop-down-single-line">
+                                                                <div class="dropdown show">
+                                                                    <a class=" " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                        <span className="image"><img src={require("../../static/images/submit-form/coin-bnb.png")} alt="" /></span>BNB<span className="main-carret"></span>
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                {/* <div className="you-will-receive">
+                                                    {/* <div className="you-will-receive">
                                                 <span className="span-one">You’ll recieve</span><span className="image">
                                                     <img src={data.logo} alt="" style={{ width: 25, height: 25, borderRadius: '50%', marginLeft: 10 }} /></span><span className="FAN">100,000,000 $FAN</span>
                                             </div> */}
-                                              {/* {whiteList?
+                                                    {/* {whiteList?
                                                 <div className="buttons">
                                                     {progressValue < 100?<button type="button" onClick={JoinPool}>CONTRIBUTE & JOIN POOL</button>:""}
                                                  
@@ -356,61 +371,61 @@ const Pool = (props) => {
                                                 
                                              </div>
                                               } */}
-                                               <div className="buttons">
-                                                 <button type="button" onClick={JoinPool}>CONTRIBUTE & JOIN POOL</button>
-                                                
-                                             </div>
-                                            </form> :
-                                            <div style={{ fontSize: 16, display: 'flex', justifyContent: 'center', marginTop: 100 }}>
-                                                <p style={{ color: 'yellow' }}>This Presale is currently in progress</p>
-                                            </div>
-                                        }
-                                        {/* ------------------Joinnning Pool MODAL----------------- */}
-                                        <Modal isOpen={show} toggle={props.toggleBuyWallet} className="register-modal joining-pool-modal">
-                                            <ModalHeader toggle={props.toggleBuyWallet}>
-                                                <button type="button" class="close" data-dismiss="modal" onClick={() => setshow(false)} aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </ModalHeader>
-                                            <ModalBody className="modal-body">
-                                                <div className="container main-divs">
-                                                    <h1>Joining the pool</h1>
-                                                    <div className="transaction-approved">
-                                                        <h2 className="main-h">Transaction approved!</h2>
-                                                        <h3 className="main-hthree">You have successfully joined this pool</h3>
+                                                    <div className="buttons">
+                                                        <button type="button" onClick={JoinPool}>CONTRIBUTE & JOIN POOL</button>
+
                                                     </div>
+                                                </form> :
+                                                <div style={{ fontSize: 16, display: 'flex', justifyContent: 'center', marginTop: 100 }}>
+                                                    <p style={{ color: 'yellow' }}>This Presale is currently in progress</p>
                                                 </div>
-                                            </ModalBody>
-                                        </Modal>
-                                    </div>
-                                </div>
-                                <div className="pool-details">
-                                    <div className="poor-detailss">
-                                        <h6>Pool Details</h6>
-                                        <p>Price: {tokenPriceInBNB / 10** 18} BNB Per {symbol} </p>
-                                        {/* <p>Price: {tokenSale} BNB = 100,000,000 ${symbol}</p> */}
-                                        <p>For Sale:{amountAllocatedForPresale} {symbol}</p>
-                                        <p>Max contribution: {tierMaxValue} BNB</p>
-                                        <p>Min contribution: {tierMinValue} BNB</p>
-                                    </div>
-                                    <div className="calender">
-                                        <h1>ENDS IN</h1>
-                                        <div className="main-calender">
-                                            <h1>{day} <br></br><span>DAYS</span></h1>
-                                            <h1>{hour} <br></br><span>HRS</span></h1>
-                                            <h1>{min} <br></br><span>MIN</span></h1>
-                                            <h1>{sec} <br></br><span>SEC</span></h1>
+                                            }
+                                            {/* ------------------Joinnning Pool MODAL----------------- */}
+                                            <Modal isOpen={show} toggle={props.toggleBuyWallet} className="register-modal joining-pool-modal">
+                                                <ModalHeader toggle={props.toggleBuyWallet}>
+                                                    <button type="button" class="close" data-dismiss="modal" onClick={() => setshow(false)} aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </ModalHeader>
+                                                <ModalBody className="modal-body">
+                                                    <div className="container main-divs">
+                                                        <h1>Joining the pool</h1>
+                                                        <div className="transaction-approved">
+                                                            <h2 className="main-h">Transaction approved!</h2>
+                                                            <h3 className="main-hthree">You have successfully joined this pool</h3>
+                                                        </div>
+                                                    </div>
+                                                </ModalBody>
+                                            </Modal>
                                         </div>
-                                        <p>{prersaleTime.toUTCString()}</p>
+                                    </div>
+                                    <div className="pool-details">
+                                        <div className="poor-detailss">
+                                            <h6>Pool Details</h6>
+                                            <p>Price: {tokenPriceInBNB / 10 ** 18} BNB Per {symbol} </p>
+                                            {/* <p>Price: {tokenSale} BNB = 100,000,000 ${symbol}</p> */}
+                                            <p>For Sale:{amountAllocatedForPresale} {symbol}</p>
+                                            <p>Max contribution: {tierMaxValue} BNB</p>
+                                            <p>Min contribution: {tierMinValue} BNB</p>
+                                        </div>
+                                        <div className="calender">
+                                            <h1>ENDS IN</h1>
+                                            <div className="main-calender">
+                                                <h1>{day} <br></br><span>DAYS</span></h1>
+                                                <h1>{hour} <br></br><span>HRS</span></h1>
+                                                <h1>{min} <br></br><span>MIN</span></h1>
+                                                <h1>{sec} <br></br><span>SEC</span></h1>
+                                            </div>
+                                            <p>{prersaleTime.toUTCString()}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
-            <Footer />
-        </div>
+                </section>
+                <Footer />
+            </div>
         </>
     );
 }

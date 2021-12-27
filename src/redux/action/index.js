@@ -30,7 +30,8 @@ export const useContarctAction = () => async (dispatch) => {
           // elem.t4EndTime = await contract.methods.saleEndTimeTierFour().call()
           elem.softcap= await contract.methods.softCap().call();
           elem.hardcap= await contract.methods.maxCap().call();
-     
+          elem.TotalBnbinOneTier = await contract.methods.totalBnbReceived().call();
+          
        }
      }
      catch(err){
@@ -78,6 +79,7 @@ export const usePendingContarctAction = () => async (dispatch) => {
            elem.softcap= await contract.methods.softCap().call();
            elem.hardcap= await contract.methods.maxCap().call();
            elem.TotalBnbinOneTier = await contract.methods.totalBnbReceived().call();
+        
         }
       }
       catch(err){

@@ -3,6 +3,7 @@ import './index.css';
 import { Link } from 'react-router-dom';
 import Navbar from '../../components/navbar';
 import { Finalize } from "../../hooks/PoolDataFetcher";
+import { Cancelize } from "../../hooks/PoolDataFetcher";
 import axios from 'axios';
 import { useWeb3React } from '@web3-react/core'
 import { Backdrop } from '@material-ui/core';
@@ -11,7 +12,8 @@ import { toast } from 'react-toastify';
 const Projects = () => {
     const { account } = useWeb3React();
     const [open, setOpen] = useState(false);
-    const { Final } = Finalize()
+    const { Final } = Finalize();
+    const { Cancel } = Cancelize()
     const [searchTerm, setSearchTerm] = useState('')
     const [data, getDate] = useState([]);
 
@@ -41,6 +43,23 @@ const Projects = () => {
     const FinalFun=async(currentAddress)=>{
         setOpen(true)
         const data = await Final(currentAddress)
+        console.log(data)
+        
+            setOpen(false)
+            toast.success('Finalization Done', {
+                position: "top-center",
+                autoClose: 7000,
+            });
+            getAlldata();
+        
+        // else {
+        //     setOpen(false)
+        //    // getAlldata();
+        // }
+    }
+    const CancelFun=async(currentAddress)=>{
+        setOpen(true)
+        const data = await Cancel(currentAddress)
         console.log(data)
         
             setOpen(false)
@@ -129,7 +148,7 @@ const Projects = () => {
                                                 <th scope="col"> WEBSITE </th>
                                                 {/* <th scope="col"> CONTACT PERSON</th> */}
                                                 <th scope="col">CONTRACT ADDRESS</th>
-                                                <th scope="col"> APPROVE/REJECT </th>
+                                                <th scope="col"> APPROVE/CANCEL POOL </th>
 
                                             </tr>
                                         </thead>
@@ -163,7 +182,7 @@ const Projects = () => {
                                                         <td className='text-left'><img className='balance-table-img' src={elem.logoURL} style={{ width: 40 }} alt="" /> {elem.projectName}</td>
                                                         <td className='text-left-2nd'><a>{elem.contractAddressDeployed} </a></td>
                                                         <td className='text-left-2nd'><a href={elem.websiteLink} target="_blank">{elem.websiteLink} </a></td>
-                                                        <td className='text-left-normal'>{elem.contactPersonName}</td>
+                                                        {/* <td className='text-left-normal'>{elem.contactPersonName}</td> */}
                                                         <td className='text-left-normal'> <p>{elem.contactPersonWalletAddress == "" ? "" : `${elem.contactPersonWalletAddress.substring(0, 6)}...${elem.contactPersonWalletAddress.substring(
                                                             elem.contactPersonWalletAddress.length - 4
                                                         )}`}</p></td>
@@ -180,7 +199,7 @@ const Projects = () => {
                                                                 {/* <Link className='buttion-on' >Approve</Link>  {elem.statusOfApplication}*/}
                                                                 <td id="gfngfmg" className={elem.statusOfApplication == 'Pending' ? 'text-green-pending' : elem.statusOfApplication == 'Approved' ? 'text-green-approved' : 'text-green-rejected'}>   {
                                                                elem.statusOfApplication === 'Approved' ? <button className={elem.finalizeSaleDone === true ? 'green1' : 'disabled1'} onClick={() => FinalFun({ id: elem.id, address: elem.contractAddressDeployed })}>Finalize</button> : <button className='disabled2' >Finalize</button>
-                                                            } <Link to={"/project-details/" + id} className='disabled1 ml-2 text-white' >Detail</Link></td>
+                                                            }<button className={elem.finalizeSaleDone === true ? 'green1' : 'disabled1'} onClick={() => CancelFun({ id: elem.id, address: elem.contractAddressDeployed })}>Cancel</button>  <Link to={"/project-details/" + id} className='disabled1 ml-2 text-white' >Detail</Link></td>
                                                                
                                                               
                                                             </div>

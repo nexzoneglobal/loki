@@ -92,6 +92,37 @@ export const Finalize = () => {
     return {Final:FinalizeSale}
   
 }
+
+//cancel
+
+export const Cancelize = () => {
+    const { account } = useWeb3React();
+    const web3 = Getweb3();
+    const CancelSale = useCallback(async (idr) => {
+        if(idr && idr.address && idr.id && account){
+           
+            const contract = getBep20Contract(idr.address, web3)
+            try{
+                const finalizeSale = await contract.methods.cancelSale().send({ from: account.toString() });
+                const {data} = await axios.post('https://app.rcsale.app/project/finalizeSale', { id :idr.id });
+                if(data.status){
+                    return true;
+                }
+                return false;
+            }catch(error){
+                console.log(error)
+                return false;
+            }
+            }
+            return false
+        // return finalizeSale
+    }, [account])
+
+
+    return {Cancel:CancelSale}
+  
+}
+
 export const Contribute = (tokenAddress) => {
     const { account } = useWeb3React();
     const web3 = Getweb3(); 
