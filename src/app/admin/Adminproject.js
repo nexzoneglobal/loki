@@ -24,6 +24,7 @@ const AdminProject = () => {
     const [logoUrl, setLogoUrl] = useState([]);
     const [namefeatured, setnamefeatured] = useState('');
     const [urlfeatured, seturlfeatured] = useState('');
+    const [symbolfeatured, setsymbolfeatured] = useState('');
     const [deletefeature, setdeletefeature] = useState('');
 
 
@@ -233,7 +234,7 @@ const AdminProject = () => {
         try {
 
             await axios.post("https://app.rcsale.app/featured/addFeatured", {
-                image: logo64, name: namefeatured, symbol: urlfeatured, published: false
+                image: logo64, name: namefeatured, symbol: symbolfeatured, published: false, url:urlfeatured
             })
                 .then((response) => {
                         setOpen(false)
@@ -584,11 +585,14 @@ const AdminProject = () => {
                                                                                 <div class="form-group">
                                                                                     <label for="example">Symbol of Token<span>*</span></label>
                                                                                     <input type="text"
-                                                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter Symbol of Token" onChange={(e) => seturlfeatured(e.target.value)} />
-                                                                                    {/* {Object.keys(maxallo).map((key) => {
-                                                                console.log("key", key);
-                                                                return <p className="inputErrors">{maxallo[key]}</p>
-                                                            })} */}
+                                                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter Symbol of Token" onChange={(e) => setsymbolfeatured(e.target.value)} />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-12">
+                                                                                <div class="form-group">
+                                                                                    <label for="example">URL<span>*</span></label>
+                                                                                    <input type="text"
+                                                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter Your URL" onChange={(e) => seturlfeatured(e.target.value)} />
                                                                                 </div>
                                                                             </div>
                                                                             <div className="buttonsff">

@@ -1345,7 +1345,9 @@ text-align: center;
 .featured-pool-closed .card-main .main-image button {
   margin-left: 140px;
 }
-
+.banner-mju{
+  margin-top: 120px;
+}
 }
 
 @media(max-width: 400px){
@@ -1359,6 +1361,9 @@ text-align: center;
   margin-left: 91px;
 }
 
+.banner-mju{
+  margin-top: 120px;
+}
 }
 @media(max-width: 360px){
   .featured-pool .card-main .main-image button {
@@ -1372,6 +1377,10 @@ text-align: center;
 }
 .featured-pool-closed .card-main .main-image button {
   margin-left: 36px;
+}
+
+.banner-mju{
+  margin-top: 120px;
 }
 }
 

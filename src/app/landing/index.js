@@ -59,7 +59,7 @@ const Landing = () => {
   }, [])
   const topTTT = alladd.map((elems, key) => {
     return (
-      <a index={key}>
+      <a index={key} href={elems.url} target="_blank">
         <div className="imgds">
           <img src={elems.image} alt="" className="img-fluid main-imgd jhghjg" />
         </div>
@@ -257,7 +257,7 @@ const Landing = () => {
 
   const topT = allfeatured.map((elems, key) => {
     return (
-      <a index={key}>
+      <a index={key} href={elems.url} target='_blank'>
         <div className="item mt-2">
           <div className="main-card text-center">
             <div className="iconxerc">
@@ -373,27 +373,20 @@ const Landing = () => {
           </div>
         </div>
       </section>
+    
       <div className="banner-mju">
         <div className="container">
           <div className="row">
             <div className="col-md-9 m-auto">
               <div className="inner-banners-x">
-                
+
 
                 {topTTT.length > 0 &&
-            <OwlCarousel className="slider-items owl-carousel ltf-owl" autoplaySpeed={3000}  {...owl_optionn}>
-              {topTTT}
-            </OwlCarousel>
-          }
-                {/* <div className="imgds">
-                  <img src={require("../../static/images/landing-leocorn/ing12.png")} alt="" className="img-fluid main-imgd" />
-                </div>
-                <div className="textsd">
-                  <h4 className="dfgh">MISSED DOGE? BUY <span>FLOKI</span></h4>
-                </div> */}
-                {/* <div className="imgds">
-                  <img src={require("../../static/images/landing-leocorn/ing12.png")} alt="" className="img-fluid main-imgd" />
-                </div> */}
+                  <OwlCarousel className="slider-items owl-carousel ltf-owl" autoplaySpeed={3000}  {...owl_optionn}>
+                    {topTTT}
+                  </OwlCarousel>
+                }
+      
               </div>
 
             </div>
@@ -401,6 +394,7 @@ const Landing = () => {
         </div>
 
       </div>
+     
       <section className="featured-pool-closed">
         <div className="auto-container">
           <h1>Top Trending Token</h1>
