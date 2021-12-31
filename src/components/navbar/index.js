@@ -79,12 +79,12 @@ const Navbar=(props)=>{
                                     <div className="container main-divs">
                                         <h1>Select Wallet Provider</h1>
                                         <div className="meta-mask" onClick={connectMetamask}>
-                                            <Link className="main-link-meta" href="#"><img src={require("../../static/images/landing-leocorn/Group 16.png")} alt="" /></Link>
+                                            <Link className="main-link-meta" to="#"><img src={require("../../static/images/landing-leocorn/Group 16.png")} alt="" /></Link>
                                         </div>
                                         <div className="scan-wallet" onClick={trustWallet}>
-                                            <Link className="main-link-meta" href="#"><img src={require("../../static/images/landing-leocorn/sacn-wallet.png")} alt="" /></Link>
+                                            <Link className="main-link-meta" to="#"><img src={require("../../static/images/landing-leocorn/sacn-wallet.png")} alt="" /></Link>
                                             <h1>WalletConnect</h1>
-                                            <Link className="link-scan" href="#"><p>Scan with WalletConnect to Connect</p></Link>
+                                            <Link className="link-scan" to="#"><p>Scan with WalletConnect to Connect</p></Link>
                                         </div>
                                         <p className="main-term">By connecting, I accept LEOCORN's   <Link className="link-scan" >Terms of Service</Link></p>
                                     </div>
