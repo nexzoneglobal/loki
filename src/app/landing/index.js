@@ -177,7 +177,7 @@ const Landing = () => {
   };
 
 
-
+  console.log('hereeeeeeeeeeeeeee i m ', closestore)
 
   // const { eligible } = Eligible(tokenAddress);
 
@@ -352,9 +352,6 @@ const Landing = () => {
 
     )
   })
-
-
-
 
   return (
     <div className='landing-nft'>

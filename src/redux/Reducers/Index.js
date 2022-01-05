@@ -5,6 +5,7 @@ const initState = {
 };
 export const PoolActiveReducer = (state = initState, action) => {
   const { type, payload } = action; //object destructring
+  console.log("seonddddddddd",action.payload)
   switch (type) {
     case "ACTIVEPOOLDATA":
       return {

@@ -16,14 +16,15 @@ const ClosedPoolCard = (props) => {
 
     <div className=" card-main">
       <div className="main-image">
-        <img src={props.logoURL} alt="" style={{ width: 60, height: 60, borderRadius: '50%' }} />
-        <h1>{props.projectName}</h1>
-        { props.kycVerified ?<button>KYC</button>:''}
+        <img src={props?.logoURL} alt="" style={{ width: 60, height: 60, borderRadius: '50%' }} />
+        <h1>{props?.projectName}</h1>
+        { props?.kycVerified ?<button>KYC</button>:''}
       </div>
       <div className="progress-baar">
         <div className="percentage">
           <p className="one">Progress</p>
           <p>{progressValue}%</p>
+          
         </div>
         <MDBProgress material  value={progressValue} />
         {/* <div class="progress">
