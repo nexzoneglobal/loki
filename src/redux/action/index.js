@@ -115,9 +115,7 @@ export const useClosingContarctAction = () => async (dispatch) => {
             avg=0
             elem.TotalBnbinOneTier=avg;
           }
-          
-          console.log('test', avg)
-         
+             
           //  elem.TotalBnbinTwoTier = await contract.methods.totalBnbInTierTwo().call()
           //  elem.TotalBnbinThreeTier = await contract.methods.totalBnbInTierThree().call();
         }
