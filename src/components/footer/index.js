@@ -33,7 +33,7 @@ const Footer = () => {
         <div className="auto-container">
           <div className="main-terms">
             <p className="main-termss">© 2021 RC LAUNCHPAD, All Right Reserved</p>
-            <p className="main-term" href="https://rewardcycle.club/terms-of-use/" target="_blank">Term & Conditions</p>
+            <a className="main-term" href="https://rewardcycle.club/terms-of-use/" target="_blank">Term & Conditions</a>
           </div>
         </div>
       </div>
