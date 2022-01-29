@@ -10,6 +10,7 @@ import Pool from './pools';
 import SubmitProject from './submitproject';
 import ProjectDetails from './project-details';
 import AdminProject from './admin/Adminproject';
+import RcLock from './rclock/rclock';
 import Projects from './projects';
 import '../static/css/style.css';
 import ClosePool from "./closepool";
@@ -57,6 +58,7 @@ useEagerConnect()
             <Route exact path='/comingsoom/:id/:tier' component={props => <ComingsoonPool {...props} />} />
             {/* admin routes */}
             <Route exact path='/adminproject' component={props => <AdminProject {...props} />} />
+            <Route exact path='/rclock' component={props => <RcLock {...props} />} />
           </Switch>
         </Router>
       </div>

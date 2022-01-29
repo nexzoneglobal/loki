@@ -7,11 +7,6 @@
 				"type": "address"
 			},
 			{
-				"internalType": "address payable",
-				"name": "_lpWallet",
-				"type": "address"
-			},
-			{
 				"internalType": "address",
 				"name": "tokenForDiscount",
 				"type": "address"
@@ -40,19 +35,6 @@
 		"type": "event"
 	},
 	{
-		"inputs": [],
-		"name": "LP_Wallet",
-		"outputs": [
-			{
-				"internalType": "address payable",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -68,38 +50,12 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "newAddress",
-				"type": "address"
-			}
-		],
-		"name": "changeDiscountTokenAddress",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "address payable",
 				"name": "newWallet",
 				"type": "address"
 			}
 		],
 		"name": "changeFundsWallet",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "newWallet",
-				"type": "address"
-			}
-		],
-		"name": "changeLPWallet",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -263,6 +219,11 @@
 					{
 						"internalType": "uint256",
 						"name": "liquidityPercentage",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_liquidityUnlockTime",
 						"type": "uint256"
 					}
 				],
@@ -518,37 +479,6 @@
 			}
 		],
 		"name": "transferOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "destination",
-				"type": "address"
-			}
-		],
-		"name": "withdrawFunds",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "destination",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "tokenAddress",
-				"type": "address"
-			}
-		],
-		"name": "withdrawTokens",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"

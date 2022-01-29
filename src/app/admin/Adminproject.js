@@ -16,6 +16,7 @@ const AdminProject = () => {
     const [allfeatured, setallfeatured] = useState([]);
     const [Approvestatus, setApprovestatus] = useState('');
     const [ApproveId, setApproveId] = useState('');
+    const [ApproveIdaudit, setApproveIdaudit] = useState('');
     const [publishstatus, setpublishstatus] = useState('');
     const [publishId, setpublishId] = useState('');
     const [logo, setLogo] = useState('');
@@ -30,6 +31,7 @@ const AdminProject = () => {
 
     //
     const [togglers, settogglers] = useState(false);;
+    const [togglersaudit, settogglersaudit] = useState(false);;
     //add states
 
     const [nameadd, setnameadd] = useState('');
@@ -58,7 +60,7 @@ const AdminProject = () => {
                     }
                     setOpen(false)
                 });
-             
+
         }
         catch (err) {
             setOpen(false)
@@ -67,26 +69,43 @@ const AdminProject = () => {
             // alert("Invalid Address")
         }
     }
-    
+
     const handleChangeEvent = async (e, id) => {
         console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeee", e);
-        if(e==false){
-        settogglers(true);    
-        // setApprovestatus('off');
-       
-        setApproveId(id);
-        console.log("valssssssssss",Approvestatus)
-        }
-        else if(e==true){
-            setApprovestatus('on');
-            settogglers(false);    
+        if (e == false) {
+            settogglers(true);
+            // setApprovestatus('off');
+
             setApproveId(id);
-            console.log("valssssssssss",Approvestatus)
+            console.log("valssssssssss", Approvestatus)
+        }
+        else if (e == true) {
+            setApprovestatus('on');
+            settogglers(false);
+            setApproveId(id);
+            console.log("valssssssssss", Approvestatus)
+        }
+    }
+
+    const handleChangeEventaudit = async (e, id) => {
+        console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeee", e);
+        if (e == false) {
+            settogglersaudit(true);
+            // setApprovestatus('off');
+
+            setApproveIdaudit(id);
+            console.log("valssssssssss", Approvestatus)
+        }
+        else if (e == true) {
+            setApprovestatus('on');
+            settogglersaudit(false);
+            setApproveIdaudit(id);
+            console.log("valssssssssss", Approvestatus)
         }
     }
     console.log("togglerrssssss", togglers);
     const handlePublish = async (de) => {
-     
+
         if (de.published == false) {
             setpublishstatus(true);
             setpublishId(de.id);
@@ -99,7 +118,7 @@ const AdminProject = () => {
     }
 
     const handleaddPublish = async (de) => {
-       
+
         if (de.published == false) {
             setaddstatus(true);
             setaddId(de.id);
@@ -120,7 +139,7 @@ const AdminProject = () => {
                     setOpen(false)
 
                     alltrending();
-                  window.$("#exampleModalLabel12").modal('hide');
+                    window.$("#exampleModalLabel12").modal('hide');
                 });
 
         }
@@ -145,7 +164,33 @@ const AdminProject = () => {
                         autoClose: 7000,
                     });
                     window.$("#exampleModal").modal('hide');
-                   
+
+                });
+
+        }
+        catch (err) {
+            setOpen(false)
+            // eslint-disable-next-line no-console
+            // console.log(err);
+            // alert("Invalid Address")
+        }
+
+    }
+
+    const approveAudit = async () => {
+        setOpen(true)
+        try {
+
+            await axios.post("https://app.rcsale.app/project/approveAuditStatus", { id: ApproveIdaudit, status: togglersaudit })
+                .then((response) => {
+                    setOpen(false)
+                    getAlldata();
+                    toast.success('Updated Successfully', {
+                        position: "top-center",
+                        autoClose: 7000,
+                    });
+                    window.$("#exampleModal404").modal('hide');
+
                 });
 
         }
@@ -234,18 +279,18 @@ const AdminProject = () => {
         try {
 
             await axios.post("https://app.rcsale.app/featured/addFeatured", {
-                image: logo64, name: namefeatured, symbol: symbolfeatured, published: false, url:urlfeatured
+                image: logo64, name: namefeatured, symbol: symbolfeatured, published: false, url: urlfeatured
             })
                 .then((response) => {
-                        setOpen(false)
-                        // getDate(response.data.msg)
-                        toast.success('Added Successfully', {
-                            position: "top-center",
-                            autoClose: 7000,
-                        });
-                        alltrending();
-                        window.$("#exampleModal2").modal('hide');
-                    
+                    setOpen(false)
+                    // getDate(response.data.msg)
+                    toast.success('Added Successfully', {
+                        position: "top-center",
+                        autoClose: 7000,
+                    });
+                    alltrending();
+                    window.$("#exampleModal2").modal('hide');
+
                 });
 
         }
@@ -278,7 +323,7 @@ const AdminProject = () => {
     }
 
     const deletepublish = async (elems) => {
-      
+
         setdeletefeature(elems.id)
     }
 
@@ -309,12 +354,12 @@ const AdminProject = () => {
     }
 
     //add flow
-    const approveAdd= async () =>{
+    const approveAdd = async () => {
         setOpen(true)
         try {
 
             await axios.post("https://app.rcsale.app/advertisement/addAdvertisement", {
-                image: logo64add, name: nameadd, url:urladd, published: false
+                image: logo64add, name: nameadd, url: urladd, published: false
             })
                 .then((response) => {
                     setOpen(false)
@@ -355,29 +400,29 @@ const AdminProject = () => {
         }
     }
 
-    const publishAdd= ()=>{
+    const publishAdd = () => {
         setOpen(true)
         try {
 
             axios.post("https://app.rcsale.app/advertisement/publishAdvertisement", { id: addId, publish: addstatus })
                 .then((response) => {
-                 setOpen(false)
+                    setOpen(false)
                     toast.success('Updated Successfully', {
                         position: "top-center",
                         autoClose: 7000,
                     });
-                   alladds();
-                    
-                //  window.$("#exampleModal21").modal('hide');
+                    alladds();
+
+                    //  window.$("#exampleModal21").modal('hide');
                 });
-            
+
         }
         catch (err) {
             setOpen(false)
             // eslint-disable-next-line no-console
             // console.log(err);
             // alert("Invalid Address")
-        } 
+        }
     }
 
 
@@ -413,240 +458,78 @@ const AdminProject = () => {
     // render() {
     return (
         <>
-         <Backdrop className="loader" xs={{ color: '#fff' }} open={open}><CircularProgress color="primary" style={{ width: "100px", height: '100px' }} /></Backdrop>
-     
-        <div className='landing-nft projects'>
+            <Backdrop className="loader" xs={{ color: '#fff' }} open={open}><CircularProgress color="primary" style={{ width: "100px", height: '100px' }} /></Backdrop>
 
-            <Navbar />
+            <div className='landing-nft projects'>
+
+                <Navbar />
 
 
-            <section className="header-section submit-projects pt-120" style={{ backgroundImage: `url(${require("../../static/images/submit-form/background-projectss.png")})` }}>
-                <img src={require("../../static/images/landing-leocorn/background-main-head.png")} className="main-heads-one" alt="" />
-                <div className="auto-container">
-                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Projects</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Trending Token</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Ad's Management</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="pills-tabContent">
-                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                            <div className="submit-project">
-                                <div className="inner-submit-upper-div">
-                                    <div className="row  ">
-                                        <div className="searchbar">
-                                            <h1>Projects</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="inner-lower-div">
-                                    <div class="projects-table-main">
-                                        <div class="table-responsive button-table">
-                                            <table class="table table-clr table-striped text-center">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col"> PROJECT NAME </th>
-                                                        {/* <th scope="col"> Finalize </th> */}
-                                                        <th scope="col"> WEBSITE </th>
-                                                        <th scope="col"> CONTACT PERSON</th>
-                                                        <th scope="col">VERIFY</th>
-                                                        <th scope="col"> DETAIL</th>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="main-t-body-text" >
-                                                    {data.map((elem, key) => {
-                                                        const { id } = elem;
-                                                        return (
-                                                            <tr index={key}>
-                                                                <td className=''>
-                                                                    <span className="main-image-dhgy"><img src={elem.logoURL} style={{ width: 40 }} className="main-image-dhgy mr-2" alt="" />{elem.projectName}
-
-                                                                    </span>
-
-                                                                </td>
-                                                                <td className='text-left-2nd'>
-                                                                    <a href={elem.websiteLink} target="_blank">{elem.websiteLink} </a>
-                                                                </td>
-                                                                <td className='text-left-normal'>
-                                                                    <h6>{elem.contactPersonName}</h6>
-                                                                    <h6><small>{elem.contactPersonEmail}</small></h6>
-                                                                </td>
-                                                                <td className='text-left-normal'>
-                                                                    <label class="switch" data-toggle="modal" data-target="#exampleModal">
-                                                                        <input type="checkbox" defaultChecked={elem.kycVerified} onChange={(event) => handleChangeEvent(elem.kycVerified, id)} />
-                                                                        <span class="slider round"></span>
-                                                                    </label>
-
-                                                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal" aria-hidden="true">
-                                                                        <div class="modal-dialog" role="document">
-                                                                            <div class="modal-content">
-
-                                                                                <div class="modal-body">
-                                                                                    <div className="row ptb">
-                                                                                        <div className="col-sm-12">
-                                                                                            <div className="inner-side-content text-center pt-40">
-                                                                                                <h4>Confirmation</h4>
-                                                                                                <h5>Are you sure to verify this project?</h5>
-                                                                                                <ul className="list-inline pt-20">
-                                                                                                    <li className="list-inline-item">
-                                                                                                        <button type="button" class="buttion-on" onClick={approveKyc} data-toggle="modal" data-target="#exampleModal" >Approve</button>
-                                                                                                    </li>
-                                                                                                    <li className="list-inline-item">
-                                                                                                        <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
-                                                                                                    </li>
-                                                                                                </ul>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td className="button-detailss">
-                                                                    <div className="d-flex">
-                                                                        <Link className='buttion-on' to={"/project-details/" + id}>Detail</Link>
-                                                                        {/* <Link className='button-rig' to='/project-details'>Reject</Link> */}
-                                                                    </div>
-
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    })
-                                                    }
-                                                </tbody>
-                                            </table>
-                                            <div className="load-more-button">
-                                                <button typr="button">Load More</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                            <div className="submit-project">
-                                <div className="inner-submit-upper-div">
-                                    <div className="row">
-                                        <div className="col-sm-10 p-0">
+                <section className="header-section submit-projects pt-120" style={{ backgroundImage: `url(${require("../../static/images/submit-form/background-projectss.png")})` }}>
+                    <img src={require("../../static/images/landing-leocorn/background-main-head.png")} className="main-heads-one" alt="" />
+                    <div className="auto-container">
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Projects</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Trending Token</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Ad's Management</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div className="submit-project">
+                                    <div className="inner-submit-upper-div">
+                                        <div className="row  ">
                                             <div className="searchbar">
-                                                <h1>Trending Tokens</h1>
-                                            </div>
-                                        </div>
-                                        <div className="col-sm-2">
-                                            <button className="add-btn" data-toggle="modal" data-target="#exampleModal2">Add</button>
-                                            <div class="modal fade dfhdkh" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModal2" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-body dkfjdkfj">
-                                                            <div className="row">
-                                                                <div className="col-xl-12 col-lg-10 col-md-12">
-                                                                    <div className="djhdkjfh">
-                                                                        <h4>Add Trending Tokens</h4>
-                                                                        <div class="row">
-                                                                            <div className="col-lg-12 col-md-12 col-12 ">
-                                                                                <div className="jvdkjs pt-10">
-
-                                                                                    <div class="form-group">
-                                                                                        <label for="exampleInputsymbol">Upload Image<span>*</span></label>
-                                                                                        <div className="dashed-border-new">
-                                                                                            <div className="main-image-div main-bvc">
-                                                                                                <img src={logo ? logo : require("../../static/images/submit-form/cloud.png")} alt="" />
-                                                                                                {selectedImg ? renderPhotos(selectedImg) : null}
-                                                                                            </div>
-                                                                                            <p className="text-center"><span>
-                                                                                                <label for="files" className="msindh">Upload Image</label>
-                                                                                                <input type="file" id="files"
-                                                                                                    value={logo}
-                                                                                                    onChange={handleImageChange}
-                                                                                                    name="avatar" className="d-none custom-file-inputt" accept="image/*" />
-                                                                                            </span></p>
-                                                                                            {/* {Object.keys(logoError).map((key) => {
-                                                                                        return <p className="inputErrors">{logoError[key]}</p>
-                                                                                    })} */}
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-12 mt-4">
-                                                                                <div class="form-group">
-                                                                                    <label for="example">Name of Token<span>*</span></label>
-                                                                                    <input type="text"
-                                                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter Name of Token" onChange={(e) => setnamefeatured(e.target.value)} />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-12">
-                                                                                <div class="form-group">
-                                                                                    <label for="example">Symbol of Token<span>*</span></label>
-                                                                                    <input type="text"
-                                                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter Symbol of Token" onChange={(e) => setsymbolfeatured(e.target.value)} />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-12">
-                                                                                <div class="form-group">
-                                                                                    <label for="example">URL<span>*</span></label>
-                                                                                    <input type="text"
-                                                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter Your URL" onChange={(e) => seturlfeatured(e.target.value)} />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div className="buttonsff">
-                                                                                <button onClick={uploadTrending} data-toggle="modal" data-target="#exampleModal2">Save</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <h1>Projects</h1>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="inner-lower-div">
-                                    <div class="projects-table-main">
-                                        <div class="table-responsive button-table">
-                                            <table class="table table-clr table-striped text-center">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col"> TOKEN NAME </th>
-                                                        {/* <th scope="col"> Finalize </th> */}
-                                                        <th scope="col"> SYMBOLS </th>
-                                                        <th scope="col"> PUBLISH/UNPUBLISH</th>
-                                                        {/* <th scope="col">EDIT</th> */}
-                                                        <th scope="col">DELETE</th>
+                                    <div className="inner-lower-div">
+                                        <div class="projects-table-main">
+                                            <div class="table-responsive button-table">
+                                                <table class="table table-clr table-striped text-center">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col"> PROJECT NAME </th>
+                                                            {/* <th scope="col"> Finalize </th> */}
+                                                            <th scope="col"> WEBSITE </th>
+                                                            <th scope="col"> CONTACT PERSON</th>
+                                                            <th scope="col">KYC</th>
+                                                            <th scope="col">Audit</th>
+                                                            <th scope="col"> DETAIL</th>
 
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="main-t-body-text" >
-                                                    {allfeatured.map((elems, key) => {
-                                                        const { id } = elems;
-                                                        return (
-                                                            <tr index={key}>
-                                                                <td className=''>
-                                                                    <span className="main-image-dhgy"><img src={elems.image} style={{ width: 40 }} className="main-image-dhgy mr-2" alt="" />{elems.name}
-                                                                    </span>
-                                                                </td>
-                                                                <td className='text-left-normal'>
-                                                                    <h6>{elems.symbol}</h6>
-                                                                </td>
-                                                                <td className='text-left-normal'>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="main-t-body-text" >
+                                                        {data.map((elem, key) => {
+                                                            const { id } = elem;
+                                                            return (
+                                                                <tr index={key}>
+                                                                    <td className=''>
+                                                                        <span className="main-image-dhgy"><img src={elem.logoURL} style={{ width: 40 }} className="main-image-dhgy mr-2" alt="" />{elem.projectName}
 
-                                                                    {elems.published ? <button className='publish-sdmin' data-toggle="modal" data-target="#exampleModalLabel12" onClick={() => handlePublish(elems)}>UnPublish</button> : <button className='publish-sdmin' data-toggle="modal" data-target="#exampleModalLabel12" onClick={() => handlePublish(elems)}>Publish</button>}
+                                                                        </span>
 
-                                                                </td>
+                                                                    </td>
+                                                                    <td className='text-left-2nd'>
+                                                                        <a href={elem.websiteLink} target="_blank">{elem.websiteLink} </a>
+                                                                    </td>
+                                                                    <td className='text-left-normal'>
+                                                                        <h6>{elem.contactPersonName}</h6>
+                                                                        <h6><small>{elem.contactPersonEmail}</small></h6>
+                                                                    </td>
+                                                                    <td className='text-left-normal'>
+                                                                        <label class="switch" data-toggle="modal" data-target="#exampleModal">
+                                                                            <input type="checkbox" defaultChecked={elem.kycVerified} onChange={(event) => handleChangeEvent(elem.kycVerified, id)} />
+                                                                            <span class="slider round"></span>
+                                                                        </label>
 
-
-                                                                <td className="button-detailss">
-                                                                    <div className="d-flex">
-                                                                        <button className='deleteadmin' data-toggle="modal" data-target="#exampleModal14" onClick={() => deletepublish(elems)}>Delete</button>
-                                                                        <div class="modal fade" id="exampleModal14" tabindex="-1" role="dialog" aria-labelledby="exampleModal14" aria-hidden="true">
+                                                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal" aria-hidden="true">
                                                                             <div class="modal-dialog" role="document">
                                                                                 <div class="modal-content">
 
@@ -655,10 +538,10 @@ const AdminProject = () => {
                                                                                             <div className="col-sm-12">
                                                                                                 <div className="inner-side-content text-center pt-40">
                                                                                                     <h4>Confirmation</h4>
-                                                                                                    <h5>Are you shore to delete this project?</h5>
+                                                                                                    <h5>Are you sure to verify this KYC?</h5>
                                                                                                     <ul className="list-inline pt-20">
                                                                                                         <li className="list-inline-item">
-                                                                                                            <button type="button" class="buttion-on" data-toggle="modal" data-target="#exampleModal14" onClick={deleteFeatures}>Approve</button>
+                                                                                                            <button type="button" class="buttion-on" onClick={approveKyc} data-toggle="modal" data-target="#exampleModal" >Approve</button>
                                                                                                         </li>
                                                                                                         <li className="list-inline-item">
                                                                                                             <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
@@ -671,36 +554,130 @@ const AdminProject = () => {
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        {/* <Link className='button-rig' to='/project-details'>Reject</Link> */}
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
+                                                                    </td>
+                                                                    <td className='text-left-normal'>
+                                                                        <label class="switch" data-toggle="modal" data-target="#exampleModal404">
+                                                                            <input type="checkbox" defaultChecked={elem.audit} onChange={(event) => handleChangeEventaudit(elem.audit, id)} />
+                                                                            <span class="slider round"></span>
+                                                                        </label>
 
+                                                                        <div class="modal fade" id="exampleModal404" tabindex="-1" role="dialog" aria-labelledby="exampleModal404" aria-hidden="true">
+                                                                            <div class="modal-dialog" role="document">
+                                                                                <div class="modal-content">
 
+                                                                                    <div class="modal-body">
+                                                                                        <div className="row ptb">
+                                                                                            <div className="col-sm-12">
+                                                                                                <div className="inner-side-content text-center pt-40">
+                                                                                                    <h4>Confirmation</h4>
+                                                                                                    <h5>Are you sure to verify this audit?</h5>
+                                                                                                    <ul className="list-inline pt-20">
+                                                                                                        <li className="list-inline-item">
+                                                                                                            <button type="button" class="buttion-on" onClick={approveAudit} data-toggle="modal" data-target="#exampleModal404" >Approve</button>
+                                                                                                        </li>
+                                                                                                        <li className="list-inline-item">
+                                                                                                            <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
+                                                                                                        </li>
+                                                                                                    </ul>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td className="button-detailss">
+                                                                        <div className="d-flex">
+                                                                            <Link className='buttion-on' to={"/project-details/" + id}>Detail</Link>
+                                                                            {/* <Link className='button-rig' to='/project-details'>Reject</Link> */}
+                                                                        </div>
 
-                                                        )
-                                                    })
-                                                    }
-                                                </tbody>
-                                            </table>
-                                            <div class="modal fade" id="exampleModalLabel12" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel12" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                                <div className="load-more-button">
+                                                    <button typr="button">Load More</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                <div className="submit-project">
+                                    <div className="inner-submit-upper-div">
+                                        <div className="row">
+                                            <div className="col-sm-10 p-0">
+                                                <div className="searchbar">
+                                                    <h1>Trending Tokens</h1>
+                                                </div>
+                                            </div>
+                                            <div className="col-sm-2">
+                                                <button className="add-btn" data-toggle="modal" data-target="#exampleModal2">Add</button>
+                                                <div class="modal fade dfhdkh" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModal2" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body dkfjdkfj">
+                                                                <div className="row">
+                                                                    <div className="col-xl-12 col-lg-10 col-md-12">
+                                                                        <div className="djhdkjfh">
+                                                                            <h4>Add Trending Tokens</h4>
+                                                                            <div class="row">
+                                                                                <div className="col-lg-12 col-md-12 col-12 ">
+                                                                                    <div className="jvdkjs pt-10">
 
-                                                        <div class="modal-body">
-                                                            <div className="row ptb">
-                                                                <div className="col-sm-12">
-                                                                    <div className="inner-side-content text-center pt-40">
-                                                                        <h4>Confirmation</h4>
-                                                                        <h5>Are you sure to publish this project?</h5>
-                                                                        <ul className="list-inline pt-20">
-                                                                            <li className="list-inline-item">
-                                                                                <button type="button" class="buttion-on"  data-toggle="modal" data-target="#exampleModalLabel12" onClick={AprrovePublish}>Approve</button>
-                                                                            </li>
-                                                                            <li className="list-inline-item">
-                                                                                <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
-                                                                            </li>
-                                                                        </ul>
+                                                                                        <div class="form-group">
+                                                                                            <label for="exampleInputsymbol">Upload Image<span>*</span></label>
+                                                                                            <div className="dashed-border-new">
+                                                                                                <div className="main-image-div main-bvc">
+                                                                                                    <img src={logo ? logo : require("../../static/images/submit-form/cloud.png")} alt="" />
+                                                                                                    {selectedImg ? renderPhotos(selectedImg) : null}
+                                                                                                </div>
+                                                                                                <p className="text-center"><span>
+                                                                                                    <label for="files" className="msindh">Upload Image</label>
+                                                                                                    <input type="file" id="files"
+                                                                                                        value={logo}
+                                                                                                        onChange={handleImageChange}
+                                                                                                        name="avatar" className="d-none custom-file-inputt" accept="image/*" />
+                                                                                                </span></p>
+                                                                                                {/* {Object.keys(logoError).map((key) => {
+                                                                                        return <p className="inputErrors">{logoError[key]}</p>
+                                                                                    })} */}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-12 mt-4">
+                                                                                    <div class="form-group">
+                                                                                        <label for="example">Name of Token<span>*</span></label>
+                                                                                        <input type="text"
+                                                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter Name of Token" onChange={(e) => setnamefeatured(e.target.value)} />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-12">
+                                                                                    <div class="form-group">
+                                                                                        <label for="example">Symbol of Token<span>*</span></label>
+                                                                                        <input type="text"
+                                                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter Symbol of Token" onChange={(e) => setsymbolfeatured(e.target.value)} />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-12">
+                                                                                    <div class="form-group">
+                                                                                        <label for="example">URL<span>*</span></label>
+                                                                                        <input type="text"
+                                                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter Your URL" onChange={(e) => seturlfeatured(e.target.value)} />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="buttonsff">
+                                                                                    <button onClick={uploadTrending} data-toggle="modal" data-target="#exampleModal2">Save</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -708,83 +685,185 @@ const AdminProject = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="load-more-button">
-                                                <button typr="button">Load More</button>
+                                        </div>
+                                    </div>
+                                    <div className="inner-lower-div">
+                                        <div class="projects-table-main">
+                                            <div class="table-responsive button-table">
+                                                <table class="table table-clr table-striped text-center">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col"> TOKEN NAME </th>
+                                                            {/* <th scope="col"> Finalize </th> */}
+                                                            <th scope="col"> SYMBOLS </th>
+                                                            <th scope="col"> PUBLISH/UNPUBLISH</th>
+                                                            {/* <th scope="col">EDIT</th> */}
+                                                            <th scope="col">DELETE</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="main-t-body-text" >
+                                                        {allfeatured.map((elems, key) => {
+                                                            const { id } = elems;
+                                                            return (
+                                                                <tr index={key}>
+                                                                    <td className=''>
+                                                                        <span className="main-image-dhgy"><img src={elems.image} style={{ width: 40 }} className="main-image-dhgy mr-2" alt="" />{elems.name}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td className='text-left-normal'>
+                                                                        <h6>{elems.symbol}</h6>
+                                                                    </td>
+                                                                    <td className='text-left-normal'>
+
+                                                                        {elems.published ? <button className='publish-sdmin' data-toggle="modal" data-target="#exampleModalLabel12" onClick={() => handlePublish(elems)}>UnPublish</button> : <button className='publish-sdmin' data-toggle="modal" data-target="#exampleModalLabel12" onClick={() => handlePublish(elems)}>Publish</button>}
+
+                                                                    </td>
+
+
+                                                                    <td className="button-detailss">
+                                                                        <div className="d-flex">
+                                                                            <button className='deleteadmin' data-toggle="modal" data-target="#exampleModal14" onClick={() => deletepublish(elems)}>Delete</button>
+                                                                            <div class="modal fade" id="exampleModal14" tabindex="-1" role="dialog" aria-labelledby="exampleModal14" aria-hidden="true">
+                                                                                <div class="modal-dialog" role="document">
+                                                                                    <div class="modal-content">
+
+                                                                                        <div class="modal-body">
+                                                                                            <div className="row ptb">
+                                                                                                <div className="col-sm-12">
+                                                                                                    <div className="inner-side-content text-center pt-40">
+                                                                                                        <h4>Confirmation</h4>
+                                                                                                        <h5>Are you shore to delete this project?</h5>
+                                                                                                        <ul className="list-inline pt-20">
+                                                                                                            <li className="list-inline-item">
+                                                                                                                <button type="button" class="buttion-on" data-toggle="modal" data-target="#exampleModal14" onClick={deleteFeatures}>Approve</button>
+                                                                                                            </li>
+                                                                                                            <li className="list-inline-item">
+                                                                                                                <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
+                                                                                                            </li>
+                                                                                                        </ul>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            {/* <Link className='button-rig' to='/project-details'>Reject</Link> */}
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+
+
+
+                                                            )
+                                                        })
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                                <div class="modal fade" id="exampleModalLabel12" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel12" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+
+                                                            <div class="modal-body">
+                                                                <div className="row ptb">
+                                                                    <div className="col-sm-12">
+                                                                        <div className="inner-side-content text-center pt-40">
+                                                                            <h4>Confirmation</h4>
+                                                                            <h5>Are you sure to publish this project?</h5>
+                                                                            <ul className="list-inline pt-20">
+                                                                                <li className="list-inline-item">
+                                                                                    <button type="button" class="buttion-on" data-toggle="modal" data-target="#exampleModalLabel12" onClick={AprrovePublish}>Approve</button>
+                                                                                </li>
+                                                                                <li className="list-inline-item">
+                                                                                    <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="load-more-button">
+                                                    <button typr="button">Load More</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-                            <div className="submit-project">
-                                <div className="inner-submit-upper-div">
-                                    <div className="row  ">
-                                        <div className="col-sm-10 p-0">
-                                            <div className="searchbar">
-                                                <h1>Ads Management</h1>
+                            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                                <div className="submit-project">
+                                    <div className="inner-submit-upper-div">
+                                        <div className="row  ">
+                                            <div className="col-sm-10 p-0">
+                                                <div className="searchbar">
+                                                    <h1>Ads Management</h1>
+                                                </div>
+
                                             </div>
+                                            <div className="col-sm-2">
+                                                <button className="add-btn" data-toggle="modal" data-target="#exampleModal3">Add</button>
+                                                <div class="modal fade dfhdkh" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModal3" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body dkfjdkfj">
+                                                                <div className="row">
+                                                                    <div className="col-xl-12 col-lg-10 col-md-12">
+                                                                        <div className="djhdkjfh">
+                                                                            <h4>Ads Management</h4>
+                                                                            <div class="row">
+                                                                                <div className="col-lg-12 col-md-12 col-12 ">
+                                                                                    <div className="jvdkjs pt-10">
 
-                                        </div>
-                                        <div className="col-sm-2">
-                                            <button className="add-btn" data-toggle="modal" data-target="#exampleModal3">Add</button>
-                                            <div class="modal fade dfhdkh" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModal3" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-body dkfjdkfj">
-                                                            <div className="row">
-                                                                <div className="col-xl-12 col-lg-10 col-md-12">
-                                                                    <div className="djhdkjfh">
-                                                                        <h4>Ads Management</h4>
-                                                                        <div class="row">
-                                                                            <div className="col-lg-12 col-md-12 col-12 ">
-                                                                                <div className="jvdkjs pt-10">
-
-                                                                                    <div class="form-group">
-                                                                                        <label for="exampleInputsymbol">Image of Ad<span>*</span></label>
-                                                                                        <div className="dashed-border-new">
-                                                                                            <div className="main-image-div main-bvc">
-                                                                                                <img src={logoadd ? logoadd : require("../../static/images/submit-form/cloud.png")} alt="" />
-                                                                                                {selectedImgadd ? renderPhotos(selectedImgadd) : null}
-                                                                                            </div>
-                                                                                            <p className="text-center"><span>
-                                                                                                <label for="filesssss" className="msindhss">Upload Image</label>
-                                                                                                <input type="file" id="filesssss"
-                                                                                                    value={logoadd}
-                                                                                                    onChange={handleImageChangeadd}
-                                                                                                    name="avatar" className="d-none custom-file-inputt" accept="image/*" />
-                                                                                            </span></p>
-                                                                                            {/* {Object.keys(logoError).map((key) => {
+                                                                                        <div class="form-group">
+                                                                                            <label for="exampleInputsymbol">Image of Ad<span>*</span></label>
+                                                                                            <div className="dashed-border-new">
+                                                                                                <div className="main-image-div main-bvc">
+                                                                                                    <img src={logoadd ? logoadd : require("../../static/images/submit-form/cloud.png")} alt="" />
+                                                                                                    {selectedImgadd ? renderPhotos(selectedImgadd) : null}
+                                                                                                </div>
+                                                                                                <p className="text-center"><span>
+                                                                                                    <label for="filesssss" className="msindhss">Upload Image</label>
+                                                                                                    <input type="file" id="filesssss"
+                                                                                                        value={logoadd}
+                                                                                                        onChange={handleImageChangeadd}
+                                                                                                        name="avatar" className="d-none custom-file-inputt" accept="image/*" />
+                                                                                                </span></p>
+                                                                                                {/* {Object.keys(logoError).map((key) => {
                                                             return <p className="inputErrors">{logoError[key]}</p>
                                                         })} */}
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div class="col-lg-12 mt-4">
-                                                                                <div class="form-group">
-                                                                                    <label for="example">Name<span>*</span></label>
-                                                                                    <input type="text"
-                                                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter Ads Name" onChange={(e) => setnameadd(e.target.value)} />
-                                                                                    {/* {Object.keys(minallo).map((key) => {
+                                                                                <div class="col-lg-12 mt-4">
+                                                                                    <div class="form-group">
+                                                                                        <label for="example">Name<span>*</span></label>
+                                                                                        <input type="text"
+                                                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter Ads Name" onChange={(e) => setnameadd(e.target.value)} />
+                                                                                        {/* {Object.keys(minallo).map((key) => {
                                                                 console.log("key", key);
                                                                 return <p className="inputErrors">{minallo[key]}</p>
                                                             })} */}
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div class="col-lg-12">
-                                                                                <div class="form-group">
-                                                                                    <label for="example">URL<span>*</span></label>
-                                                                                    <input type="text"
-                                                                                        class="form-control" id="example" aria-describedby="text" placeholder="Enter Add URL" onChange={(e) => seturladd(e.target.value)} />
-                                                                                    {/* {Object.keys(maxallo).map((key) => {
+                                                                                <div class="col-lg-12">
+                                                                                    <div class="form-group">
+                                                                                        <label for="example">URL<span>*</span></label>
+                                                                                        <input type="text"
+                                                                                            class="form-control" id="example" aria-describedby="text" placeholder="Enter Add URL" onChange={(e) => seturladd(e.target.value)} />
+                                                                                        {/* {Object.keys(maxallo).map((key) => {
                                                                 console.log("key", key);
                                                                 return <p className="inputErrors">{maxallo[key]}</p>
                                                             })} */}
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div className="buttonsff">
-                                                                                <button onClick={approveAdd} data-toggle="modal" data-target="#exampleModal3">Save</button>
+                                                                                <div className="buttonsff">
+                                                                                    <button onClick={approveAdd} data-toggle="modal" data-target="#exampleModal3">Save</button>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -796,120 +875,119 @@ const AdminProject = () => {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="inner-lower-div">
-                                    <div class="projects-table-main">
-                                        <div class="table-responsive button-table">
-                                            <table class="table table-clr table-striped text-center">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col"> THUMBNAIL </th>
-                                                        <th scope="col"> URL </th>
-                                                        <th scope="col"> DATE CREATED </th>
-                                                        <th scope="col"> PUBLISH/UNPUBLISH</th>
-                                                        <th scope="col">DELETE</th>
+                                    <div className="inner-lower-div">
+                                        <div class="projects-table-main">
+                                            <div class="table-responsive button-table">
+                                                <table class="table table-clr table-striped text-center">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col"> THUMBNAIL </th>
+                                                            <th scope="col"> URL </th>
+                                                            <th scope="col"> DATE CREATED </th>
+                                                            <th scope="col"> PUBLISH/UNPUBLISH</th>
+                                                            <th scope="col">DELETE</th>
 
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="main-t-body-text" >
-                                                {alladdss.map((elems, key) => {
-                                                        const { id } = elems;
-                                                        return (
-                                                            <tr index={key}>
-                                                        <td className=''>
-                                                            <span className="main-image-dhgy"><img src={elems.image} style={{ width: 40 }} className="main-image-dhgy mr-2" alt="" />{elems.name}
-                                                            </span>
-                                                        </td>
-                                                        <td className='text-left-normal'>
-                                                            <h6>{elems.url}</h6>
-                                                        </td>
-                                                        <td className='text-left-normal'>
-                                                            <h6>{ new Date(elems.date).toLocaleDateString() }</h6>
-                                                        </td>
-                                                        <td className='text-left-normal'>
-                                                        {elems.published ? <button className='publish-sdmin' data-toggle="modal" data-target="#exampleModal21" onClick={() => handleaddPublish(elems)}>UnPublish</button> : <button className='publish-sdmin' data-toggle="modal" data-target="#exampleModal21" onClick={() => handleaddPublish(elems)}>Publish</button>}
-                                                            {/* <button className='publish-sdmin' data-toggle="modal" data-target="#exampleModal21"  >Publish</button> */}
-                                                            <div class="modal fade" id="exampleModal21" tabindex="-1" role="dialog" aria-labelledby="exampleModal21" aria-hidden="true">
-                                                                <div class="modal-dialog" role="document">
-                                                                    <div class="modal-content">
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="main-t-body-text" >
+                                                        {alladdss.map((elems, key) => {
+                                                            const { id } = elems;
+                                                            return (
+                                                                <tr index={key}>
+                                                                    <td className=''>
+                                                                        <span className="main-image-dhgy"><img src={elems.image} style={{ width: 40 }} className="main-image-dhgy mr-2" alt="" />{elems.name}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td className='text-left-normal'>
+                                                                        <h6>{elems.url}</h6>
+                                                                    </td>
+                                                                    <td className='text-left-normal'>
+                                                                        <h6>{new Date(elems.date).toLocaleDateString()}</h6>
+                                                                    </td>
+                                                                    <td className='text-left-normal'>
+                                                                        {elems.published ? <button className='publish-sdmin' data-toggle="modal" data-target="#exampleModal21" onClick={() => handleaddPublish(elems)}>UnPublish</button> : <button className='publish-sdmin' data-toggle="modal" data-target="#exampleModal21" onClick={() => handleaddPublish(elems)}>Publish</button>}
+                                                                        {/* <button className='publish-sdmin' data-toggle="modal" data-target="#exampleModal21"  >Publish</button> */}
+                                                                        <div class="modal fade" id="exampleModal21" tabindex="-1" role="dialog" aria-labelledby="exampleModal21" aria-hidden="true">
+                                                                            <div class="modal-dialog" role="document">
+                                                                                <div class="modal-content">
 
-                                                                        <div class="modal-body">
-                                                                            <div className="row ptb">
-                                                                                <div className="col-sm-12">
-                                                                                    <div className="inner-side-content text-center pt-40">
-                                                                                        <h4>Confirmation</h4>
-                                                                                        <h5>Are you sure to publish this project?</h5>
-                                                                                        <ul className="list-inline pt-20">
-                                                                                            <li className="list-inline-item">
-                                                                                                <button type="button" class="buttion-on" onClick={publishAdd} data-dismiss="modal" >Approve</button>
-                                                                                            </li>
-                                                                                            <li className="list-inline-item">
-                                                                                                <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
-                                                                                            </li>
-                                                                                        </ul>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-
-                                                        <td className="button-detailss">
-                                                            <div className="d-flex">
-                                                                <button className='deleteadmin' data-toggle="modal" data-target="#exampleModal23"  onClick={() => handleaddPublish(elems)}>Delete</button>
-                                                                <div class="modal fade" id="exampleModal23" tabindex="-1" role="dialog" aria-labelledby="exampleModal23" aria-hidden="true">
-                                                                    <div class="modal-dialog" role="document">
-                                                                        <div class="modal-content">
-
-                                                                            <div class="modal-body">
-                                                                                <div className="row ptb">
-                                                                                    <div className="col-sm-12">
-                                                                                        <div className="inner-side-content text-center pt-40">
-                                                                                            <h4>Confirmation</h4>
-                                                                                            <h5>Are you sure to delete this project?</h5>
-                                                                                            <ul className="list-inline pt-20">
-                                                                                                <li className="list-inline-item">
-                                                                                                    <button type="button" class="buttion-on" onClick={deleteadd} data-toggle="modal" data-target="#exampleModal23">Approve</button>
-                                                                                                </li>
-                                                                                                <li className="list-inline-item">
-                                                                                                    <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
-                                                                                                </li>
-                                                                                            </ul>
+                                                                                    <div class="modal-body">
+                                                                                        <div className="row ptb">
+                                                                                            <div className="col-sm-12">
+                                                                                                <div className="inner-side-content text-center pt-40">
+                                                                                                    <h4>Confirmation</h4>
+                                                                                                    <h5>Are you sure to publish this project?</h5>
+                                                                                                    <ul className="list-inline pt-20">
+                                                                                                        <li className="list-inline-item">
+                                                                                                            <button type="button" class="buttion-on" onClick={publishAdd} data-dismiss="modal" >Approve</button>
+                                                                                                        </li>
+                                                                                                        <li className="list-inline-item">
+                                                                                                            <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
+                                                                                                        </li>
+                                                                                                    </ul>
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                </div>
+                                                                    </td>
 
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                  )
-                                                    })
-                                                    }
+                                                                    <td className="button-detailss">
+                                                                        <div className="d-flex">
+                                                                            <button className='deleteadmin' data-toggle="modal" data-target="#exampleModal23" onClick={() => handleaddPublish(elems)}>Delete</button>
+                                                                            <div class="modal fade" id="exampleModal23" tabindex="-1" role="dialog" aria-labelledby="exampleModal23" aria-hidden="true">
+                                                                                <div class="modal-dialog" role="document">
+                                                                                    <div class="modal-content">
 
-                                                </tbody>
-                                            </table>
-                                            <div className="load-more-button">
-                                                <button typr="button">Load More</button>
+                                                                                        <div class="modal-body">
+                                                                                            <div className="row ptb">
+                                                                                                <div className="col-sm-12">
+                                                                                                    <div className="inner-side-content text-center pt-40">
+                                                                                                        <h4>Confirmation</h4>
+                                                                                                        <h5>Are you sure to delete this project?</h5>
+                                                                                                        <ul className="list-inline pt-20">
+                                                                                                            <li className="list-inline-item">
+                                                                                                                <button type="button" class="buttion-on" onClick={deleteadd} data-toggle="modal" data-target="#exampleModal23">Approve</button>
+                                                                                                            </li>
+                                                                                                            <li className="list-inline-item">
+                                                                                                                <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
+                                                                                                            </li>
+                                                                                                        </ul>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                                <div className="load-more-button">
+                                                    <button typr="button">Load More</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                </div>
-            </section>
-        </div>
+                    </div>
+                </section>
+            </div>
         </>
     );
- 
+
 }
 
 

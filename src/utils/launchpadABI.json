@@ -62,6 +62,11 @@
 						"internalType": "uint256",
 						"name": "liquidityPercentage",
 						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_liquidityUnlockTime",
+						"type": "uint256"
 					}
 				],
 				"internalType": "struct constructorLibrary.parameter",
@@ -71,11 +76,6 @@
 			{
 				"internalType": "address payable",
 				"name": "_launchpadOwner",
-				"type": "address"
-			},
-			{
-				"internalType": "address payable",
-				"name": "_lpWallet",
 				"type": "address"
 			},
 			{
@@ -124,7 +124,7 @@
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "tokensIntoLiqudity",
+				"name": "tokensIntoLiquidity",
 				"type": "uint256"
 			}
 		],
@@ -190,48 +190,23 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "newAllocation",
-				"type": "uint256"
-			}
-		],
-		"name": "changeMaximumAllocation",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "newAllocation",
-				"type": "uint256"
-			}
-		],
-		"name": "changeMinimumAllocation",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
+		"inputs": [],
+		"name": "claimTokens",
+		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"inputs": [],
-		"name": "claimTokens",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"name": "deadlineToFinalize",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -322,6 +297,19 @@
 	{
 		"inputs": [],
 		"name": "liquidityPercentage",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "liquidityUnlockTime",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -556,6 +544,19 @@
 	},
 	{
 		"inputs": [],
+		"name": "uniswapV2Factory",
+		"outputs": [
+			{
+				"internalType": "contract IUniswapV2Factory",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "uniswapV2Pair",
 		"outputs": [
 			{
@@ -578,44 +579,6 @@
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "newMaxCap",
-				"type": "uint256"
-			}
-		],
-		"name": "updateMaxCap",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "withdrawBNBEmergency",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "recipient",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "withdrawTokensEmergency",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{

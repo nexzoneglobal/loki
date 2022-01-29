@@ -15,11 +15,11 @@ import Environment from '../../utils/Environment';
 import DeployContact from '../../hooks/DeployContact'
 import ApproveContract, { BalanceOfContract, BalanceOfDiscountToken } from '../../hooks/approve'
 import BigNumber from 'bignumber.js';
-import { useHistory } from "react-router-dom";
+//import { useHistory } from "react-router-dom";
 
 const SubmitProject = () => {
 
-    let history = useHistory();
+  //  let history = useHistory();
     const { account } = useWeb3React();
     const [open, setOpen] = useState(false);
     const [projectName, setProjectName] = useState('');
@@ -39,6 +39,7 @@ const SubmitProject = () => {
     const [websiteLink, setWebsiteLink] = useState('');
     const [twitterLink, setTwitterLinkt] = useState('');
     const [telegramLink, setTelegramLink] = useState('');
+    const [auditlink,setauditlink]=useState('');
     //optional link
     const [discardLink, setDiscardLink] = useState('');
     const [mediumLink, setMediumLink] = useState('');
@@ -51,6 +52,8 @@ const SubmitProject = () => {
     const [amount, setAmount] = useState('');
     const [date, setDate] = useState('');
     const [dateend, setDateEnd] = useState('');
+    const [unlockliquidity, setunlockliquidity] = useState('');
+
     const [datefirst, setDatefirst] = useState('');
     const [datesecond, setDatesecond] = useState('');
     const [datethird, setDatethird] = useState('');
@@ -153,9 +156,10 @@ const SubmitProject = () => {
         setDate(e.target.value)
     }
     const handlePresaleEndDate = (e) => {
-        // const d=new Date(e.target.value);
-        // setDate(d)
         setDateEnd(e.target.value)
+    }
+    const handleunlockliquidity = (e) => {
+        setunlockliquidity(e.target.value)
     }
     const firstClaimDate = (e) => {
         // const d=new Date(e.target.value);
@@ -221,6 +225,7 @@ const SubmitProject = () => {
 
                 const epochStartTime = new Date(date).getTime() / 1000.0;
                 const epochEndTime = new Date(dateend).getTime() / 1000.0;
+                const epochunlockTime = new Date(unlockliquidity).getTime() /1000.0;
                 const tokenPriceInBNB = new BigNumber(price).multipliedBy(new BigNumber(10).pow(18));
                 const PancaketokenListingPriceInBNB = new BigNumber(tokenListingPriceInBNB).multipliedBy(new BigNumber(10).pow(18));
                 const maxAllocationPerUsers = new BigNumber(maxAllocationPerUser).multipliedBy(new BigNumber(10).pow(18));
@@ -290,6 +295,7 @@ const SubmitProject = () => {
                             maxAllocaPerUser: maxAllocationPerUsers.toNumber().toString(),
                             minAllocaPerUser: minAllocationPerUsers.toNumber().toString(),
                             liquidityPercentage: liquidityPercentage,
+                            _liquidityUnlockTime:epochunlockTime
 
 
                         })
@@ -305,7 +311,7 @@ const SubmitProject = () => {
 
 
                         await axios.post('https://app.rcsale.app/project/createProject', {
-                            projectName: projectName, symbol: projectSymbol,
+                            projectName: projectName, symbol: projectSymbol,liquidityUnlockTime:unlockliquidity,auditLink:auditlink,
                             projectDescription: projectDescription, logoURL: logo64, contractAddress: contractAddress, websiteLink: websiteLink,
                             twitterLink: twitterLink, telegramlink: telegramLink, discrodLink: discardLink, mediumLink: mediumLink,
                             contactPersonName: personName, contactPersonEmail: personEmail, contactPersonWalletAddress: walletAddress, totalSupplyOfToken: totalSupply, preSaleStartDateAndTime: date, amountAllocatedForPresale: amount, preSaleEndDateAndTime: dateend,
@@ -318,7 +324,7 @@ const SubmitProject = () => {
                                     position: "top-center",
                                     autoClose: 7000,
                                 });
-                                history.push("/projects");
+                             //   history.push("/projects");
                             });
                     }
                     else {
@@ -643,7 +649,7 @@ const SubmitProject = () => {
                                                             <label for="exampleemail">Contact Person Email Address<span>*</span></label>
                                                             <input type="email" value={personEmail}
                                                                 onChange={(e) => setPersonEmail(e.target.value)}
-                                                                class="form-control" id="exampleemail" placeholder="Enter twitter link" />
+                                                                class="form-control" id="exampleemail" placeholder="Enter Person Email Address" />
                                                             {Object.keys(emailError).map((key) => {
                                                                 console.log("key", key);
                                                                 return <p className="inputErrors">{emailError[key]}</p>
@@ -881,6 +887,21 @@ const SubmitProject = () => {
                                                         })} */}
                                                         </div>
                                                     </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="exampleamount">Liquidity lockup Time (UTC)<span></span></label>
+                                                            <div class="sd-container">
+                                                            <input class="sd"
+                                                                    type="date"
+                                                                    value={unlockliquidity}
+                                                                    onChange={handleunlockliquidity}
+                                                                    id="party" type="datetime-local" name="partydate" ></input>
+                                                                <span class="open-button">
+                                                                    <button type="button">📅</button>
+                                                                </span>
+                                                                </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1045,10 +1066,36 @@ const SubmitProject = () => {
                                             </div>
                                         </div>
                                     </div>
+
                                     <div className="row">
                                         <div className="col-xl-8 col-lg-10 col-md-12">
                                             <div className="inner-submit-lower-div">
-                                                <h4>KYC Details</h4>
+                                                <h4>AUdit  Details</h4>
+                                                <div class="row">
+
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label for="example">Enter your Audit url link</label>
+                                                            <input type="text"
+                                                                class="form-control" id="example" aria-describedby="text" placeholder="Enter your Audit URL link" onChange={(e) => setauditlink(e.target.value)} />
+                                                            {/* {Object.keys(minallo).map((key) => {
+                                                                console.log("key", key);
+                                                                return <p className="inputErrors">{minallo[key]}</p>
+                                                            })} */}
+                                                        </div>
+                                                    </div>
+                                                
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div className="row">
+                                        <div className="col-xl-8 col-lg-10 col-md-12">
+                                            <div className="inner-submit-lower-div">
+                                                <h4>KYC  Details</h4>
                                                 <div class="row">
 
                                                     <div class="col-lg-6">
