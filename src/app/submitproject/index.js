@@ -537,7 +537,11 @@ const SubmitProject = () => {
                                 <h1>Submit Your Project</h1>
                                 <p>* Required</p>
                                 <p className='valide'>⭐Important ! Please whitelist our deployer address before clicking submit
-                                    The deployer address 0x07ac0b25fcdfa66def65cb30243630ee64c6126b </p>
+                                    The deployer address 0x36CeBF1F6d1d084e06055Efcb5f59AcD34777858 <br></br> or exlude all fee to zero for presale stage
+                                     </p>
+                                     <p className='valide'>
+                                     ⭐Important ! Presale setup fee is 1 bnb</p>
+                                   
                             </div>
                             <div className="container">
                                 <form >
@@ -1186,6 +1190,9 @@ const SubmitProject = () => {
                                         <div className="col-xl-8 col-lg-8 col-md-12">
                                             <div className="inner-submit-lower-div">
                                                 <div class="row">
+                                                     <p className='valide'>
+                                     ⭐Important ! During the presale period, please do not transfer any tokens or private sale tokens to any wallet
+</p>
                                                     {/* <p> Total Token for Approval and Presale : {getToken}</p> */}
                                                 </div>
                                                 <div class="col-lg-6">
