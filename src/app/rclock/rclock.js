@@ -5,12 +5,18 @@ import Navbar from '../../components/navbar';
 import { Finalize } from "../../hooks/PoolDataFetcher";
 import axios from 'axios';
 import { useWeb3React } from '@web3-react/core'
+import Web3 from "web3";
 import { set } from 'lodash';
 import { Backdrop } from '@material-ui/core';
 import { CircularProgress } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ApproveContract from '../../hooks/approve'
+import Environment from '../../utils/Environment';
+import DeployContact, { DeployContactvault } from '../../hooks/DeployContact'
+import BigNumber from 'bignumber.js';
 const RcLock = () => {
+    const { account } = useWeb3React();
     const [open, setOpen] = useState(false);
     const [data, getDate] = useState([]);
     const [allfeatured, setallfeatured] = useState([]);
@@ -43,33 +49,134 @@ const RcLock = () => {
     const [addId, setaddId] = useState('');
 
     //new
-   
+    const { deployprojectonlaunchpadvault } = DeployContactvault();
     const [date, setDate] = useState('');
     const [Projectname, setProjectname] = useState('')
+    const [isLpTokens, setisLpToken] = useState('')
     const [Projecttoken, setProjecttoken] = useState('')
     const [Projectdecimal, setProjectdecimal] = useState('')
     const [Projectamount, setProjectamount] = useState('')
+    const { Approvetoken } = ApproveContract(Projecttoken);
+    const [lockedtokendata, setlockedtokendata] = useState([]);
+    const [mylockedtokendata, setmylockedtokendata] = useState([]);
+    const [lockedliquiditydata, setlockedliquiditydata] = useState([]);
+    const [mylockedliquiditydata, setmylockedliquiditydata] = useState([]);
     const handleChangeDate = (e) => {
         // const d=new Date(e.target.value);
         // setDate(d)
         setDate(e.target.value)
     }
+    const submittoken = async () => {
+        console.log(date, Projectname, Projecttoken);
+
+        setOpen(true)
+        try {
+            const totalTokens = new BigNumber(Projectamount).multipliedBy(new BigNumber(10).pow(Projectdecimal));
+            const epochTime = new Date(date).getTime() / 1000.0;
+            const Arguments = ({
+                _tokenAddress: Projecttoken,
+                amountToLock: totalTokens,
+                _unlockTime: epochTime,
+
+
+
+            })
+            let approve = await Approvetoken(Environment.vaultToken, totalTokens);
+            if (approve) {
+
+                let locktoken = await deployprojectonlaunchpadvault(Arguments._tokenAddress, Arguments.amountToLock, Arguments._unlockTime);
+                if (locktoken) {
+                    await axios.post("https://app.rcsale.app/locked/lock", {
+                        tokenName: Projectname, tokenAddress: Projecttoken, tokenDecimals: Projectdecimal, account: account, unlockTime: date, amount: Projectamount,isLpToken:isLpTokens
+
+                    })
+                        .then((response) => {
+
+                            if (response.data.status) {
+                                getDate(response.data.msg);
+                                toast.success('Lock Successfully', {
+                                    position: "top-center",
+                                    autoClose: 7000,
+                                });
+                                myalllockedtoken();
+                                myalllockedlp();
+                            }
+                            setOpen(false)
+                        });
+
+                }
+            }
+        }
+        catch (err) {
+            setOpen(false)
+
+        }
+    }
+   
     useEffect(() => {
-        getAlldata();
-        alltrending();
-        alladds();
+       alllockedtoken();
+       alllockedlp();
+
+      
     }, [])
-    const getAlldata = async () => {
+    useEffect(() => {
+     
+        myalllockedtoken();
+        myalllockedlp();
+       
+     }, [account])
+    const alllockedtoken = async () => {
         setOpen(true)
         try {
 
-            await axios.get("https://app.rcsale.app/project/all")
+            await axios.get("https://app.rcsale.app/locked/getAllLockedTokens")
                 .then((response) => {
 
                     if (response.data.status) {
-                        getDate(response.data.msg)
+                        setlockedtokendata(response.data.data)
                     }
                     setOpen(false)
+                });
+
+        }
+        catch (err) {
+            setOpen(false)
+        }
+    }
+
+    const alllockedlp = async () => {
+        setOpen(true)
+        try {
+
+            await axios.get("https://app.rcsale.app/locked/getAllLockedLp")
+                .then((response) => {
+
+                    if (response.data.status) {
+                        setlockedliquiditydata(response.data.data)
+                    }
+                    setOpen(false)
+                });
+
+        }
+        catch (err) {
+            setOpen(false)
+        
+        }
+    }
+
+    const myalllockedtoken = async () => {
+        setOpen(true)
+        try {
+
+            await axios.post("https://app.rcsale.app/locked/getLockedTokensOfAddress", { account:account })
+                .then((response) => {
+                   
+                    if (response.data.status) {
+                        setmylockedtokendata(response.data.data)
+                    }
+                    setOpen(false)
+                    
+                   
                 });
 
         }
@@ -80,7 +187,30 @@ const RcLock = () => {
             // alert("Invalid Address")
         }
     }
+    const myalllockedlp = async () => {
+        setOpen(true)
+        try {
 
+            await axios.post("https://app.rcsale.app/locked/getLockedLpOfAddress", { account:account })
+                .then((response) => {
+                   
+                    if (response.data.status) {
+                        setmylockedliquiditydata(response.data.data)
+                    }
+                    setOpen(false)
+                    
+                   
+                });
+
+        }
+        catch (err) {
+            setOpen(false)
+            // eslint-disable-next-line no-console
+            // console.log(err);
+            // alert("Invalid Address")
+        }
+    }
+ //end here
     const handleChangeEvent = async (e, id) => {
         console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeee", e);
         if (e == false) {
@@ -97,7 +227,7 @@ const RcLock = () => {
             console.log("valssssssssss", Approvestatus)
         }
     }
-    console.log("togglerrssssss", togglers);
+
     const handlePublish = async (de) => {
 
         if (de.published == false) {
@@ -145,31 +275,29 @@ const RcLock = () => {
         }
     }
 
-    const approveKyc = async () => {
-        setOpen(true)
-        try {
+    // const approveKyc = async () => {
+    //     setOpen(true)
+    //     try {
 
-            await axios.post("https://app.rcsale.app/project/approveKYCStatus", { id: ApproveId, status: togglers })
-                .then((response) => {
-                    setOpen(false)
-                    getAlldata();
-                    toast.success('Updated Successfully', {
-                        position: "top-center",
-                        autoClose: 7000,
-                    });
-                    window.$("#exampleModal").modal('hide');
+    //         await axios.post("https://app.rcsale.app/project/approveKYCStatus", { id: ApproveId, status: togglers })
+    //             .then((response) => {
+    //                 setOpen(false)
+    //                 getAlldata();
+    //                 toast.success('Updated Successfully', {
+    //                     position: "top-center",
+    //                     autoClose: 7000,
+    //                 });
+    //                 window.$("#exampleModal").modal('hide');
 
-                });
+    //             });
 
-        }
-        catch (err) {
-            setOpen(false)
-            // eslint-disable-next-line no-console
-            // console.log(err);
-            // alert("Invalid Address")
-        }
+    //     }
+    //     catch (err) {
+    //         setOpen(false)
+          
+    //     }
 
-    }
+    // }
 
     const handleImageChange = (e) => {
 
@@ -422,7 +550,7 @@ const RcLock = () => {
             // alert("Invalid Address")
         }
     }
-
+    
     // render() {
     return (
         <>
@@ -454,10 +582,29 @@ const RcLock = () => {
                                         <div className="row  ">
                                             <div className="searchbar">
                                                 <h1>Create your lock </h1>
+                                                <p>* Required</p>
+                                                <p className='valide'>* To make sure there will be no issues during the transaction, please exclude all reward and tax fee from this contract "0xf89936E90d08C13E84d0832246B09BbeeCee5d92" </p>
+                          
                                             </div>
-                                            <div class="col-lg-6 mt-4">
+                                            <div class="col-lg-6 ">
+
+                                            </div>
+                                            <div class="col-lg-6 ">
+
+</div>
+                                            <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <label for="example">Token or LP Token address<span>*</span></label>
+                                                    <label for="example">Select Token or LP Token<span>*</span></label>
+                                                    <select  class='form-control2'   onChange={(e) => setisLpToken(e.target.value)}>
+                                                        <option value="false">Token</option>
+                                                        <option value="true">LP Token</option>
+                                                    </select>
+                                                     
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="example">Contract address<span>*</span></label>
                                                     <input type="text"
                                                         class="form-control" id="example" aria-describedby="text" onChange={(e) => setProjecttoken(e.target.value)} placeholder="Enter Token or LP Token address" />
                                                 </div>
@@ -489,7 +636,7 @@ const RcLock = () => {
                                                     <div class="sd-container">
                                                         <input class="sd"
                                                             type="date"
-                                                            value=""
+                                                            value={date}
                                                             onChange={handleChangeDate}
                                                             id="party" type="datetime-local" name="partydate"  ></input>
                                                         <span class="open-button">
@@ -500,7 +647,7 @@ const RcLock = () => {
                                                 </div>
                                             </div>
                                             <div className="buttonsff">
-                                                <button  >Save</button>
+                                                <button  type='submit' onClick={submittoken}  >Save</button>
                                             </div>
                                         </div>
                                     </div>
@@ -526,175 +673,109 @@ const RcLock = () => {
                                                 </li>
 
                                             </ul>
+                                            <div className='col-12'>
+                                                <div class="tab-content" id="pills-tabContent">
+                                                    <div class="tab-pane fade show active" id="pills-alllock" role="tabpanel" aria-labelledby="pills-alllock-tab">
+                                                        <div className="inner-lower-div">
+                                                            <div class="projects-table-main">
+                                                                <div class="table-responsive button-table">
+                                                                    <table class="table table-clr table-striped text-center">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th scope="col"> Token </th>
 
-                                            <div class="tab-content" id="pills-tabContent">
-                                                <div class="tab-pane fade" id="pills-alllock" role="tabpanel" aria-labelledby="pills-alllock-tab">
-                                                    <div className="inner-lower-div">
-                                                        <div class="projects-table-main">
-                                                            <div class="table-responsive button-table">
-                                                                <table class="table table-clr table-striped text-center">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th scope="col"> PROJECT NAME </th>
-                                                                            {/* <th scope="col"> Finalize </th> */}
-                                                                            <th scope="col"> WEBSITE </th>
-                                                                            <th scope="col"> CONTACT PERSON</th>
-                                                                            <th scope="col">VERIFY</th>
-                                                                            <th scope="col"> DETAIL</th>
+                                                                                <th scope="col"> Amount </th>
 
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody className="main-t-body-text" >
-                                                                        {data.map((elem, key) => {
-                                                                            const { id } = elem;
-                                                                            return (
-                                                                                <tr index={key}>
-                                                                                    <td className=''>
-                                                                                        <span className="main-image-dhgy"><img src={elem.logoURL} style={{ width: 40 }} className="main-image-dhgy mr-2" alt="" />{elem.projectName}
+                                                                                <th scope="col"> DETAIL</th>
 
-                                                                                        </span>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody className="main-t-body-text" >
+                                                                            {lockedtokendata?.map((elem, key) => {
+                                                                                const { id } = elem;
+                                                                                return (
+                                                                                    <tr index={key}>
+                                                                                        <td className=''>
+                                                                                            {/* <span className="main-image-dhgy"><img src={elem.logoURL} style={{ width: 40 }} className="main-image-dhgy mr-2" alt="" />{elem.tokenName}
 
-                                                                                    </td>
-                                                                                    <td className='text-left-2nd'>
-                                                                                        <a href={elem.websiteLink} target="_blank">{elem.websiteLink} </a>
-                                                                                    </td>
-                                                                                    <td className='text-left-normal'>
-                                                                                        <h6>{elem.contactPersonName}</h6>
-                                                                                        <h6><small>{elem.contactPersonEmail}</small></h6>
-                                                                                    </td>
-                                                                                    <td className='text-left-normal'>
-                                                                                        <label class="switch" data-toggle="modal" data-target="#exampleModal">
-                                                                                            <input type="checkbox" defaultChecked={elem.kycVerified} onChange={(event) => handleChangeEvent(elem.kycVerified, id)} />
-                                                                                            <span class="slider round"></span>
-                                                                                        </label>
+                                                                                            </span> */}
+                                                                                            <h6>{elem.tokenName}</h6>
+                                                                                    
+                                                                                        </td>
 
-                                                                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal" aria-hidden="true">
-                                                                                            <div class="modal-dialog" role="document">
-                                                                                                <div class="modal-content">
+                                                                                        <td className='text-left-normal'>
+                                                                                            <h6>{elem.amount}</h6>
+                                                                                            <h6><small>{elem.unlockTime}</small></h6>
+                                                                                        </td>
 
-                                                                                                    <div class="modal-body">
-                                                                                                        <div className="row ptb">
-                                                                                                            <div className="col-sm-12">
-                                                                                                                <div className="inner-side-content text-center pt-40">
-                                                                                                                    <h4>Confirmation</h4>
-                                                                                                                    <h5>Are you sure to verify this project?</h5>
-                                                                                                                    <ul className="list-inline pt-20">
-                                                                                                                        <li className="list-inline-item">
-                                                                                                                            <button type="button" class="buttion-on" onClick={approveKyc} data-toggle="modal" data-target="#exampleModal" >Approve</button>
-                                                                                                                        </li>
-                                                                                                                        <li className="list-inline-item">
-                                                                                                                            <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
-                                                                                                                        </li>
-                                                                                                                    </ul>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
+                                                                                        <td className="button-detailss">
+                                                                                            <div className="d-flex">
+                                                                                                <Link className='buttion-on' to={"/lock-details/" + id}>Detail</Link>
+                                                                                                {/* <Link className='button-rig' to='/lock-details'>Reject</Link> */}
                                                                                             </div>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td className="button-detailss">
-                                                                                        <div className="d-flex">
-                                                                                            <Link className='buttion-on' to={"/project-details/" + id}>Detail</Link>
-                                                                                            {/* <Link className='button-rig' to='/project-details'>Reject</Link> */}
-                                                                                        </div>
 
-                                                                                    </td>
-                                                                                </tr>
-                                                                            )
-                                                                        })
-                                                                        }
-                                                                    </tbody>
-                                                                </table>
-                                                                <div className="load-more-button">
-                                                                    <button typr="button">Load More</button>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                )
+                                                                            })
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <div className="load-more-button">
+                                                                        <button typr="button">Load More</button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="tab-pane fade" id="pills-mylock" role="tabpanel" aria-labelledby="pills-mylock-tab">
-                                                    <div className="inner-lower-div">
-                                                        <div class="projects-table-main">
-                                                            <div class="table-responsive button-table">
-                                                                <table class="table table-clr table-striped text-center">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th scope="col"> PROJECT NAME </th>
-                                                                            {/* <th scope="col"> Finalize </th> */}
-                                                                            <th scope="col"> WEBSITE </th>
-                                                                            <th scope="col"> CONTACT PERSON</th>
-                                                                            <th scope="col">VERIFY</th>
-                                                                            <th scope="col"> DETAIL</th>
+                                                    <div class="tab-pane fade" id="pills-mylock" role="tabpanel" aria-labelledby="pills-mylock-tab">
+                                                        <div className="inner-lower-div">
+                                                            <div class="projects-table-main">
+                                                                <div class="table-responsive button-table">
+                                                                    <table class="table table-clr table-striped text-center">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th scope="col"> Token </th>
 
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody className="main-t-body-text" >
-                                                                        {data.map((elem, key) => {
-                                                                            const { id } = elem;
-                                                                            return (
-                                                                                <tr index={key}>
-                                                                                    <td className=''>
-                                                                                        <span className="main-image-dhgy"><img src={elem.logoURL} style={{ width: 40 }} className="main-image-dhgy mr-2" alt="" />{elem.projectName}
+                                                                                <th scope="col"> Amount </th>
 
-                                                                                        </span>
+                                                                                <th scope="col"> DETAIL</th>
 
-                                                                                    </td>
-                                                                                    <td className='text-left-2nd'>
-                                                                                        <a href={elem.websiteLink} target="_blank">{elem.websiteLink} </a>
-                                                                                    </td>
-                                                                                    <td className='text-left-normal'>
-                                                                                        <h6>{elem.contactPersonName}</h6>
-                                                                                        <h6><small>{elem.contactPersonEmail}</small></h6>
-                                                                                    </td>
-                                                                                    <td className='text-left-normal'>
-                                                                                        <label class="switch" data-toggle="modal" data-target="#exampleModal">
-                                                                                            <input type="checkbox" defaultChecked={elem.kycVerified} onChange={(event) => handleChangeEvent(elem.kycVerified, id)} />
-                                                                                            <span class="slider round"></span>
-                                                                                        </label>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody className="main-t-body-text" >
+                                                                            {mylockedtokendata?.map((elem, key) => {
+                                                                                const { id } = elem;
+                                                                                return (
+                                                                                    <tr index={key}>
+                                                                                        <td className=''>
+                                                                                            <h6>{elem.tokenName}
 
-                                                                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal" aria-hidden="true">
-                                                                                            <div class="modal-dialog" role="document">
-                                                                                                <div class="modal-content">
+                                                                                            </h6>
 
-                                                                                                    <div class="modal-body">
-                                                                                                        <div className="row ptb">
-                                                                                                            <div className="col-sm-12">
-                                                                                                                <div className="inner-side-content text-center pt-40">
-                                                                                                                    <h4>Confirmation</h4>
-                                                                                                                    <h5>Are you sure to verify this project?</h5>
-                                                                                                                    <ul className="list-inline pt-20">
-                                                                                                                        <li className="list-inline-item">
-                                                                                                                            <button type="button" class="buttion-on" onClick={approveKyc} data-toggle="modal" data-target="#exampleModal" >Approve</button>
-                                                                                                                        </li>
-                                                                                                                        <li className="list-inline-item">
-                                                                                                                            <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
-                                                                                                                        </li>
-                                                                                                                    </ul>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
+                                                                                        </td>
+
+                                                                                        <td className='text-left-normal'>
+                                                                                            <h6>{elem.amount}</h6>
+                                                                                            <h6><small>{elem.unlockTime}</small></h6>
+                                                                                        </td>
+
+                                                                                        <td className="button-detailss">
+                                                                                            <div className="d-flex">
+                                                                                                <Link className='buttion-on' to={"/lock-details/" + id}>Detail</Link>
+                                                                                                {/* <Link className='button-rig' to='/lock-details'>Reject</Link> */}
                                                                                             </div>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td className="button-detailss">
-                                                                                        <div className="d-flex">
-                                                                                            <Link className='buttion-on' to={"/project-details/" + id}>Detail</Link>
-                                                                                            {/* <Link className='button-rig' to='/project-details'>Reject</Link> */}
-                                                                                        </div>
 
-                                                                                    </td>
-                                                                                </tr>
-                                                                            )
-                                                                        })
-                                                                        }
-                                                                    </tbody>
-                                                                </table>
-                                                                <div className="load-more-button">
-                                                                    <button typr="button">Load More</button>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                )
+                                                                            })
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <div className="load-more-button">
+                                                                        <button typr="button">Load More</button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -709,95 +790,61 @@ const RcLock = () => {
                             <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                                 <div className="submit-project">
 
-                                    <div className="inner-lower-div">
-                                        <div className="inner-submit-upper-div1">
-                                            <div className="row">
-                                                <div className="col-sm-10 p-0">
-                                                    <div className="searchbar">
-                                                        <h1>Liquidity token</h1>
-                                                    </div>
+                                    {/* <div className="inner-lower-div"> */}
+                                    <div className="inner-submit-upper-div1">
+                                        <div className="row">
+                                            <div className="col-sm-10 p-0">
+                                                <div className="searchbar">
+                                                    <h1>Liquidity token</h1>
                                                 </div>
-                                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link active" id="pills-alllockliquidity-tab" data-toggle="pill" href="#pills-alllockliquidity" role="tab" aria-controls="pills-alllockliquidity" aria-selected="true">All Lock</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" id="pills-mylockliquidity-tab" data-toggle="pill" href="#pills-mylockliquidity" role="tab" aria-controls="pills-mylockliquidity" aria-selected="false">My Lock</a>
-                                                    </li>
+                                            </div>
+                                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" id="pills-alllockliquidity-tab" data-toggle="pill" href="#pills-alllockliquidity" role="tab" aria-controls="pills-alllockliquidity" aria-selected="true">All Lock</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="pills-mylockliquidity-tab" data-toggle="pill" href="#pills-mylockliquidity" role="tab" aria-controls="pills-mylockliquidity" aria-selected="false">My Lock</a>
+                                                </li>
 
-                                                </ul>
-
+                                            </ul>
+                                            <div className='col-12'>
                                                 <div class="tab-content" id="pills-tabContent">
-                                                    <div class="tab-pane fade" id="pills-alllockliquidity" role="tabpanel" aria-labelledby="pills-alllockliquidity-tab">
+                                                    <div class="tab-pane show fade active" id="pills-alllockliquidity" role="tabpanel" aria-labelledby="pills-alllockliquidity-tab">
                                                         <div className="inner-lower-div">
                                                             <div class="projects-table-main">
                                                                 <div class="table-responsive button-table">
                                                                     <table class="table table-clr table-striped text-center">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th scope="col"> PROJECT NAME </th>
-                                                                                {/* <th scope="col"> Finalize </th> */}
-                                                                                <th scope="col"> WEBSITE </th>
-                                                                                <th scope="col"> CONTACT PERSON</th>
-                                                                                <th scope="col">VERIFY</th>
+                                                                                <th scope="col"> Token </th>
+
+                                                                                <th scope="col"> Amount </th>
+
                                                                                 <th scope="col"> DETAIL</th>
 
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody className="main-t-body-text" >
-                                                                            {data.map((elem, key) => {
+                                                                            {lockedliquiditydata?.map((elem, key) => {
                                                                                 const { id } = elem;
                                                                                 return (
                                                                                     <tr index={key}>
                                                                                         <td className=''>
-                                                                                            <span className="main-image-dhgy"><img src={elem.logoURL} style={{ width: 40 }} className="main-image-dhgy mr-2" alt="" />{elem.projectName}
+                                                                                            {/* <span className="main-image-dhgy"><img src={elem.logoURL} style={{ width: 40 }} className="main-image-dhgy mr-2" alt="" />{elem.projectName}
 
-                                                                                            </span>
+                                                                                            </span> */}
+                                                                                           <h6>{elem.tokenName}</h6>
+                                                                                        </td>
 
-                                                                                        </td>
-                                                                                        <td className='text-left-2nd'>
-                                                                                            <a href={elem.websiteLink} target="_blank">{elem.websiteLink} </a>
-                                                                                        </td>
                                                                                         <td className='text-left-normal'>
-                                                                                            <h6>{elem.contactPersonName}</h6>
-                                                                                            <h6><small>{elem.contactPersonEmail}</small></h6>
+                                                                                        <h6>{elem.amount}</h6>
+                                                                                            <h6><small>{elem.unlockTime}</small></h6>
                                                                                         </td>
-                                                                                        <td className='text-left-normal'>
-                                                                                            <label class="switch" data-toggle="modal" data-target="#exampleModal">
-                                                                                                <input type="checkbox" defaultChecked={elem.kycVerified} onChange={(event) => handleChangeEvent(elem.kycVerified, id)} />
-                                                                                                <span class="slider round"></span>
-                                                                                            </label>
 
-                                                                                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal" aria-hidden="true">
-                                                                                                <div class="modal-dialog" role="document">
-                                                                                                    <div class="modal-content">
-
-                                                                                                        <div class="modal-body">
-                                                                                                            <div className="row ptb">
-                                                                                                                <div className="col-sm-12">
-                                                                                                                    <div className="inner-side-content text-center pt-40">
-                                                                                                                        <h4>Confirmation</h4>
-                                                                                                                        <h5>Are you sure to verify this project?</h5>
-                                                                                                                        <ul className="list-inline pt-20">
-                                                                                                                            <li className="list-inline-item">
-                                                                                                                                <button type="button" class="buttion-on" onClick={approveKyc} data-toggle="modal" data-target="#exampleModal" >Approve</button>
-                                                                                                                            </li>
-                                                                                                                            <li className="list-inline-item">
-                                                                                                                                <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
-                                                                                                                            </li>
-                                                                                                                        </ul>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </td>
                                                                                         <td className="button-detailss">
                                                                                             <div className="d-flex">
-                                                                                                <Link className='buttion-on' to={"/project-details/" + id}>Detail</Link>
-                                                                                                {/* <Link className='button-rig' to='/project-details'>Reject</Link> */}
+                                                                                                <Link className='buttion-on' to={"/lock-details/" + id}>Detail</Link>
+                                                                                                {/* <Link className='button-rig' to='/lock-details'>Reject</Link> */}
                                                                                             </div>
 
                                                                                         </td>
@@ -821,69 +868,33 @@ const RcLock = () => {
                                                                     <table class="table table-clr table-striped text-center">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th scope="col"> PROJECT NAME </th>
-                                                                                {/* <th scope="col"> Finalize </th> */}
-                                                                                <th scope="col"> WEBSITE </th>
-                                                                                <th scope="col"> CONTACT PERSON</th>
-                                                                                <th scope="col">VERIFY</th>
+                                                                                <th scope="col"> Token </th>
+
+                                                                                <th scope="col"> Amount </th>
+
                                                                                 <th scope="col"> DETAIL</th>
 
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody className="main-t-body-text" >
-                                                                            {data.map((elem, key) => {
+                                                                            {mylockedliquiditydata?.map((elem, key) => {
                                                                                 const { id } = elem;
                                                                                 return (
                                                                                     <tr index={key}>
                                                                                         <td className=''>
-                                                                                            <span className="main-image-dhgy"><img src={elem.logoURL} style={{ width: 40 }} className="main-image-dhgy mr-2" alt="" />{elem.projectName}
-
-                                                                                            </span>
+                                                                                        <h6>{elem.tokenName}</h6>
 
                                                                                         </td>
-                                                                                        <td className='text-left-2nd'>
-                                                                                            <a href={elem.websiteLink} target="_blank">{elem.websiteLink} </a>
-                                                                                        </td>
+                                                                                      
                                                                                         <td className='text-left-normal'>
-                                                                                            <h6>{elem.contactPersonName}</h6>
-                                                                                            <h6><small>{elem.contactPersonEmail}</small></h6>
+                                                                                        <h6>{elem.amount}</h6>
+                                                                                            <h6><small>{elem.unlockTime}</small></h6>
                                                                                         </td>
-                                                                                        <td className='text-left-normal'>
-                                                                                            <label class="switch" data-toggle="modal" data-target="#exampleModal">
-                                                                                                <input type="checkbox" defaultChecked={elem.kycVerified} onChange={(event) => handleChangeEvent(elem.kycVerified, id)} />
-                                                                                                <span class="slider round"></span>
-                                                                                            </label>
-
-                                                                                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal" aria-hidden="true">
-                                                                                                <div class="modal-dialog" role="document">
-                                                                                                    <div class="modal-content">
-
-                                                                                                        <div class="modal-body">
-                                                                                                            <div className="row ptb">
-                                                                                                                <div className="col-sm-12">
-                                                                                                                    <div className="inner-side-content text-center pt-40">
-                                                                                                                        <h4>Confirmation</h4>
-                                                                                                                        <h5>Are you sure to verify this project?</h5>
-                                                                                                                        <ul className="list-inline pt-20">
-                                                                                                                            <li className="list-inline-item">
-                                                                                                                                <button type="button" class="buttion-on" onClick={approveKyc} data-toggle="modal" data-target="#exampleModal" >Approve</button>
-                                                                                                                            </li>
-                                                                                                                            <li className="list-inline-item">
-                                                                                                                                <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
-                                                                                                                            </li>
-                                                                                                                        </ul>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </td>
+                                                                                     
                                                                                         <td className="button-detailss">
                                                                                             <div className="d-flex">
-                                                                                                <Link className='buttion-on' to={"/project-details/" + id}>Detail</Link>
-                                                                                                {/* <Link className='button-rig' to='/project-details'>Reject</Link> */}
+                                                                                                <Link className='buttion-on' to={"/lock-details/" + id}>Detail</Link>
+                                                                                                {/* <Link className='button-rig' to='/lock-details'>Reject</Link> */}
                                                                                             </div>
 
                                                                                         </td>
@@ -904,6 +915,7 @@ const RcLock = () => {
                                             </div>
                                         </div>
                                     </div>
+                                    {/* </div> */}
                                 </div>
                             </div>
                         </div>

@@ -62,10 +62,10 @@ const Navbar=(props)=>{
                                 {/* <Link className="nav-link  pr-lg-4" href="/poolss">Pool  <span className="sr-only">(current)</span></Link> */}
                                 <NavLink activeClassName="nav-link" className='pr-lg-3' to='/projects'>My Projects</NavLink>
                             </li>
-                            {/* <li className="nav-item active">
+                            <li className="nav-item active">
                                 
                                 <NavLink activeClassName="nav-link" className='pr-lg-3' to='/rclock'>RC Lock</NavLink>
-                            </li> */}
+                            </li>
                             </ul>
                             <div className="button-head">
                             {/* <button className="button-one" type="button" onClick={this.connectWallet}>Connect Wallet</button> */}

@@ -42,6 +42,7 @@ const ComingPool = (props) => {
     let amountAllocatedForPresale='';
     let preSaleStartDateAndTime='';
     let preSaleEndDateAndTime='';
+    let contractAddressDeployed="";
     store.find((elem) => {
         if(elem.id==id){
             console.log('elem:::' , elem)
@@ -59,6 +60,7 @@ const ComingPool = (props) => {
         amountAllocatedForPresale=elem.amountAllocatedForPresale;
         preSaleEndDateAndTime= elem.preSaleEndDateAndTime;
         preSaleStartDateAndTime=elem.preSaleStartDateAndTime;    
+        contractAddressDeployed=elem.contractAddressDeployed;
     }
     if (tier == 1) {
         tierMinValue = elem.minAllocationPerUser;
@@ -271,6 +273,8 @@ const ComingPool = (props) => {
                                         </div>
                                     </div>
                                     <div className="right-inner">
+                                    <h2>Presale Address</h2>
+                                     <h5>{contractAddressDeployed}</h5>
                                         <button className="button-one-one" type="button">Coming Soon</button>
                                         {/* <button className="button-two" type="button">Tier {tier}</button> */}
                                         {/* {whiteList?

@@ -62,6 +62,16 @@
 						"internalType": "uint256",
 						"name": "liquidityPercentage",
 						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_liquidityUnlockTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "_whitelist",
+						"type": "bool"
 					}
 				],
 				"internalType": "struct constructorLibrary.parameter",
@@ -71,11 +81,6 @@
 			{
 				"internalType": "address payable",
 				"name": "_launchpadOwner",
-				"type": "address"
-			},
-			{
-				"internalType": "address payable",
-				"name": "_lpWallet",
 				"type": "address"
 			},
 			{
@@ -124,7 +129,7 @@
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "tokensIntoLiqudity",
+				"name": "tokensIntoLiquidity",
 				"type": "uint256"
 			}
 		],
@@ -192,36 +197,17 @@
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "newAllocation",
-				"type": "uint256"
+				"internalType": "bool",
+				"name": "status",
+				"type": "bool"
 			}
 		],
-		"name": "changeMaximumAllocation",
+		"name": "changeWhitelistingStatus",
 		"outputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "bool",
 				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "newAllocation",
-				"type": "uint256"
-			}
-		],
-		"name": "changeMinimumAllocation",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
+				"type": "bool"
 			}
 		],
 		"stateMutability": "nonpayable",
@@ -232,6 +218,19 @@
 		"name": "claimTokens",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "deadlineToFinalize",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -294,6 +293,25 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "isWhitelisted",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "launchPadFeePercentage",
 		"outputs": [
@@ -322,6 +340,19 @@
 	{
 		"inputs": [],
 		"name": "liquidityPercentage",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "liquidityUnlockTime",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -556,6 +587,19 @@
 	},
 	{
 		"inputs": [],
+		"name": "uniswapV2Factory",
+		"outputs": [
+			{
+				"internalType": "contract IUniswapV2Factory",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "uniswapV2Pair",
 		"outputs": [
 			{
@@ -581,40 +625,34 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "newMaxCap",
-				"type": "uint256"
-			}
-		],
-		"name": "updateMaxCap",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [],
-		"name": "withdrawBNBEmergency",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"name": "whitelist",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "recipient",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
+				"internalType": "address[]",
+				"name": "toWhitelist",
+				"type": "address[]"
 			}
 		],
-		"name": "withdrawTokensEmergency",
-		"outputs": [],
+		"name": "whitelistUsers",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},

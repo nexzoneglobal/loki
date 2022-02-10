@@ -28,6 +28,7 @@ import useEagerConnect from "../hooks/useEagerConnect";
 import {useContarctAction,useClosingContarctAction} from "../redux/action"
 import { usePendingContarctAction } from '../redux/action';
 import ComingsoonPool from './comingsoon';
+import LockDetails from './lock-details';
 
 const hist = createBrowserHistory();
 
@@ -54,6 +55,7 @@ useEagerConnect()
             <Route exact path='/submit-project' component={props => <SubmitProject {...props} />} />
             <Route exact path='/sign-in' component={props => <SignIn {...props} />} />
             <Route exact path='/project-details/:id' component={props => <ProjectDetails {...props} />} />
+            <Route exact path='/lock-details/:id' component={props => <LockDetails {...props} />} />
             <Route exact path='/projects' component={props => <Projects {...props} />} />
             <Route exact path='/comingsoom/:id/:tier' component={props => <ComingsoonPool {...props} />} />
             {/* admin routes */}

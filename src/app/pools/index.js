@@ -44,6 +44,7 @@ const Pool = (props) => {
     let amountAllocatedForPresale = '';
     let preSaleEndDateAndTime = '';
     let maxcap= '';
+    let contractAddressDeployed="";
     store.find((elem) => {
         if (elem.id == id) {
             console.log('elem:::', elem)
@@ -60,7 +61,7 @@ const Pool = (props) => {
             tokenAddress = elem.contractAddressDeployed;
             amountAllocatedForPresale = elem.amountAllocatedForPresale;
             preSaleEndDateAndTime = elem.preSaleEndDateAndTime;
-        
+            contractAddressDeployed=elem.contractAddressDeployed
 
         }
         if (tier == 1) {
@@ -294,6 +295,8 @@ const Pool = (props) => {
                                             </div>
                                         </div>
                                         <div className="right-inner">
+                                        <h2>Presale Address</h2>
+                                     <h5>{contractAddressDeployed}</h5>
                                             <button className="button-one-one" type="button">LIVE</button>
                                             {/* <button className="button-two" type="button">Tier {tier}</button> */}
                                             {/* {whiteList?

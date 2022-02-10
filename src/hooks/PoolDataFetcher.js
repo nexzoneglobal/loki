@@ -93,6 +93,56 @@ export const Finalize = () => {
   
 }
 
+export const FinalizeWhitelist = () => {
+    const { account } = useWeb3React();
+    const web3 = Getweb3();
+    const FinalizeSaleWhitelist = useCallback(async (idr,addres) => {
+            console.log('arr', addres)
+            const contract = getBep20Contract(idr, web3)
+            try{
+                const finalizeSale = await contract.methods.whitelistUsers(addres).send({ from: account });
+                
+                return finalizeSale
+            }catch(error){
+                console.log(error)
+                return false;
+            }
+          
+           
+    }, [account])
+
+
+    return {Finalwhitelist:FinalizeSaleWhitelist}
+  
+}
+
+export const Finalizebool = () => {
+    const { account } = useWeb3React();
+    const web3 = Getweb3();
+    const FinalizeSalebool = useCallback(async (idr,addres) => {
+            console.log('arr', addres)
+            const contract = getBep20Contract(idr, web3)
+            try{
+                const finalizeSale = await contract.methods.changeWhitelistingStatus(addres).send({ from: account });
+                
+                return finalizeSale
+            }catch(error){
+                console.log(error)
+                return false;
+            }
+          
+           
+    }, [account])
+
+
+    return {Finalbool:FinalizeSalebool}
+  
+}
+
+
+//addwhitelist new 
+
+
 //cancel
 
 export const Cancelize = () => {

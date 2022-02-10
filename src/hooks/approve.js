@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import environment from '../utils/Environment';
-import { GetTokenContract } from '../utils/contractHelpers'
+import { GetTokenContract,GetTokenLocked } from '../utils/contractHelpers'
 import Getweb3  from './Getweb3';
 import BigNumber from 'bignumber.js';
 
@@ -26,6 +26,7 @@ export const ApproveContract = (tokenAddress) => {
 
     return { Approvetoken: Approvetoken }
 }
+
 
 export const BalanceOfContract = (tokenAddress) => {
     const { account } = useWeb3React();

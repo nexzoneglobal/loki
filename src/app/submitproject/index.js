@@ -19,7 +19,7 @@ import BigNumber from 'bignumber.js';
 
 const SubmitProject = () => {
 
-  //  let history = useHistory();
+    //  let history = useHistory();
     const { account } = useWeb3React();
     const [open, setOpen] = useState(false);
     const [projectName, setProjectName] = useState('');
@@ -39,7 +39,7 @@ const SubmitProject = () => {
     const [websiteLink, setWebsiteLink] = useState('');
     const [twitterLink, setTwitterLinkt] = useState('');
     const [telegramLink, setTelegramLink] = useState('');
-    const [auditlink,setauditlink]=useState('');
+    const [auditlink, setauditlink] = useState('');
     //optional link
     const [discardLink, setDiscardLink] = useState('');
     const [mediumLink, setMediumLink] = useState('');
@@ -103,6 +103,7 @@ const SubmitProject = () => {
     const { deployprojectonlaunchpad } = DeployContact();
     const { Approvetoken } = ApproveContract(contractAddress);
     const { BalanceOfToken } = BalanceOfContract(contractAddress);
+    const [togglersaudit, settogglersaudit] = useState(false);;
     const { BalanceOfTokenDiscount } = BalanceOfDiscountToken(Environment.TokenDiscount);
     const handleImageChange = (e) => {
 
@@ -206,12 +207,11 @@ const SubmitProject = () => {
     }
 
 
-
     const result = Web3.utils.isAddress(contractAddress);
     const result1 = Web3.utils.isAddress(walletAddress);
 
     const SubmitForm = useCallback(async (e) => {
-        
+
         e.preventDefault();
         formValidation();
 
@@ -221,11 +221,11 @@ const SubmitProject = () => {
             //  tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: iteration1, secondIterationPercentage: iteration2
             if (projectName !== '' && projectSymbol !== '' && projectDescription !== '' && logo64 !== ''
                 && websiteLink !== '' && twitterLink !== '' && telegramLink !== '' && personName !== '' && personEmail !== '' && totalSupply !== '' && amount !== '' && date !== '' && decimals !== '' && contractAddress !== ''
-                && walletAddress !== '' && tokenListingPriceInBNB !== '' && liquidityPercentage!=='') {
+                && walletAddress !== '' && tokenListingPriceInBNB !== '' && liquidityPercentage !== '') {
 
                 const epochStartTime = new Date(date).getTime() / 1000.0;
                 const epochEndTime = new Date(dateend).getTime() / 1000.0;
-                const epochunlockTime = new Date(unlockliquidity).getTime() /1000.0;
+                const epochunlockTime = new Date(unlockliquidity).getTime() / 1000.0;
                 const tokenPriceInBNB = new BigNumber(price).multipliedBy(new BigNumber(10).pow(18));
                 const PancaketokenListingPriceInBNB = new BigNumber(tokenListingPriceInBNB).multipliedBy(new BigNumber(10).pow(18));
                 const maxAllocationPerUsers = new BigNumber(maxAllocationPerUser).multipliedBy(new BigNumber(10).pow(18));
@@ -245,97 +245,98 @@ const SubmitProject = () => {
 
                 const tier1Requirements = 3000000;
                 const tier2Requirements = 2000000;
-                 const tier3Requirements = 1000000;
-        
+                const tier3Requirements = 1000000;
+
                 const tier1DiscountPercentage = 25;
                 const tier2DiscountPercentage = 20;
                 const tier3DiscountPercentage = 10;
-        
-                var discounted=0
+
+                var discounted = 0
                 setOpen(true)
-           //     console.log("hereeeeeeeee", totalTokens);
-             //  let BalanceOfContract = await BalanceOfToken();
-          //      console.log("balvvvvvvvvvvvvvv", BalanceOfContract);
-              
-             //   console.log("consile",BalanceOfContract >= totalTokensinWei.toNumber().toString())
+                //     console.log("hereeeeeeeee", totalTokens);
+                //  let BalanceOfContract = await BalanceOfToken();
+                //      console.log("balvvvvvvvvvvvvvv", BalanceOfContract);
+
+                //   console.log("consile",BalanceOfContract >= totalTokensinWei.toNumber().toString())
                 //   if (BalanceOfContract >= totalTokensinWei.toNumber().toString()) {
-                    let approve = await Approvetoken(Environment.DeployerAddress, totalTokens);
-                 //   debugger
-                    if (approve.status) {
-
-                     
-                        let tokencontractofdiscountinwei = await BalanceOfTokenDiscount();
-                        let tokencontractofdiscount = tokencontractofdiscountinwei / 10 ** 18;
-                
-                        if (tokencontractofdiscount >= tier1Requirements) {
-                            discounted=tier1DiscountPercentage
-                        }
-                        else if (tokencontractofdiscount >= tier2Requirements) {
-                            discounted=tier2DiscountPercentage
-                        }
-                        else if (tokencontractofdiscount >= tier3Requirements) {
-                            discounted=tier3DiscountPercentage
-                        }
-                        else {
-                            discounted=0
-                        }
-                    
-                         const discount = 1 - ((1 * discounted) / 100);
-
-                        const leoCornArguments = ({
-                            nameOfProject: projectName,
-                            _saleStartTime: epochStartTime,
-                            _saleEndTime: epochEndTime,
-                            _projectOwner: walletAddress,
-                            tokenToIDO: contractAddress,
-                            tokenDecimals: decimals,
-                            _numberOfIdoTokensToSell: amountAllocatedForPresale.toNumber().toString(),
-                            _tokenPriceInBNB: tokenPriceInBNB.toNumber().toString(),
-                            _tokenListingPriceInBNB: PancaketokenListingPriceInBNB.toNumber().toString(),
-                            maxAllocaPerUser: maxAllocationPerUsers.toNumber().toString(),
-                            minAllocaPerUser: minAllocationPerUsers.toNumber().toString(),
-                            liquidityPercentage: liquidityPercentage,
-                            _liquidityUnlockTime:epochunlockTime
+                let approve = await Approvetoken(Environment.DeployerAddress, totalTokens);
+                //   debugger
+                if (approve.status) {
 
 
-                        })
+                    let tokencontractofdiscountinwei = await BalanceOfTokenDiscount();
+                    let tokencontractofdiscount = tokencontractofdiscountinwei / 10 ** 18;
 
-                        console.log("argssssssssssssssssssssssssssssssssssssssssssss", leoCornArguments);
-
-
-                     
-                        
-                     //   const  discount=1;
-                        let deployer = await deployprojectonlaunchpad(leoCornArguments, discount)
-                        let contractAddressDeployed = deployer.events.OwnershipTransferred[0].address;
-
-
-                        await axios.post('https://app.rcsale.app/project/createProject', {
-                            projectName: projectName, symbol: projectSymbol,liquidityUnlockTime:unlockliquidity,auditLink:auditlink,
-                            projectDescription: projectDescription, logoURL: logo64, contractAddress: contractAddress, websiteLink: websiteLink,
-                            twitterLink: twitterLink, telegramlink: telegramLink, discrodLink: discardLink, mediumLink: mediumLink,
-                            contactPersonName: personName, contactPersonEmail: personEmail, contactPersonWalletAddress: walletAddress, totalSupplyOfToken: totalSupply, preSaleStartDateAndTime: date, amountAllocatedForPresale: amount, preSaleEndDateAndTime: dateend,
-                            tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: '100', secondIterationPercentage: '0', thirdIterationPercentage: '0', firstClaimTime: dateend, secondClaimTime: dateend, thirdClaimTime: dateend,
-                            minAllocationPerUser: minAllocationPerUser, maxAllocationPerUser: maxAllocationPerUser, launchPadFeePercentage: '2', liquidityPercentage: liquidityPercentage, contractAddressDeployed: contractAddressDeployed, statusOfApplication: 'Approved', tokenListingPriceInBNB: tokenListingPriceInBNB, kycPassportPicture: logo64kyc, kycFirstName: kycFirstName, kycSecondName: kycSecondName
-                        })
-                            .then((response) => {
-                                setOpen(false)
-                                toast.success('Project Submitted', {
-                                    position: "top-center",
-                                    autoClose: 7000,
-                                });
-                             //   history.push("/projects");
-                            });
+                    if (tokencontractofdiscount >= tier1Requirements) {
+                        discounted = tier1DiscountPercentage
+                    }
+                    else if (tokencontractofdiscount >= tier2Requirements) {
+                        discounted = tier2DiscountPercentage
+                    }
+                    else if (tokencontractofdiscount >= tier3Requirements) {
+                        discounted = tier3DiscountPercentage
                     }
                     else {
-                        setOpen(false)
-                        toast.error('Invalid Form Submission', {
-                            position: "bottom-center",
-                            autoClose: 2000,
-                        });
+                        discounted = 0
                     }
+
+                    const discount = 1 - ((1 * discounted) / 100);
+
+                    const leoCornArguments = ({
+                        nameOfProject: projectName,
+                        _saleStartTime: epochStartTime,
+                        _saleEndTime: epochEndTime,
+                        _projectOwner: walletAddress,
+                        tokenToIDO: contractAddress,
+                        tokenDecimals: decimals,
+                        _numberOfIdoTokensToSell: amountAllocatedForPresale.toNumber().toString(),
+                        _tokenPriceInBNB: tokenPriceInBNB.toNumber().toString(),
+                        _tokenListingPriceInBNB: PancaketokenListingPriceInBNB.toNumber().toString(),
+                        maxAllocaPerUser: maxAllocationPerUsers.toNumber().toString(),
+                        minAllocaPerUser: minAllocationPerUsers.toNumber().toString(),
+                        liquidityPercentage: liquidityPercentage,
+                        _liquidityUnlockTime: epochunlockTime,
+                        _whitelist:togglersaudit
+
+
+                    })
+
+                    console.log("argssssssssssssssssssssssssssssssssssssssssssss", leoCornArguments);
+
+
+
+
+                    //   const  discount=1;
+                    let deployer = await deployprojectonlaunchpad(leoCornArguments, discount)
+                    let contractAddressDeployed = deployer.events.OwnershipTransferred[0].address;
+
+
+                    await axios.post('https://app.rcsale.app/project/createProject', {
+                        projectName: projectName, symbol: projectSymbol, liquidityUnlockTime: unlockliquidity, auditLink: auditlink,
+                        projectDescription: projectDescription, logoURL: logo64, contractAddress: contractAddress, websiteLink: websiteLink,
+                        twitterLink: twitterLink, telegramlink: telegramLink, discrodLink: discardLink, mediumLink: mediumLink,
+                        contactPersonName: personName, contactPersonEmail: personEmail, contactPersonWalletAddress: walletAddress, totalSupplyOfToken: totalSupply, preSaleStartDateAndTime: date, amountAllocatedForPresale: amount, preSaleEndDateAndTime: dateend,
+                        tokenDecimals: decimals, tokenPriceInBNB: price, firstIterationPercentage: '100', secondIterationPercentage: '0', thirdIterationPercentage: '0', firstClaimTime: dateend, secondClaimTime: dateend, thirdClaimTime: dateend,
+                        minAllocationPerUser: minAllocationPerUser, maxAllocationPerUser: maxAllocationPerUser, launchPadFeePercentage: '2', liquidityPercentage: liquidityPercentage, contractAddressDeployed: contractAddressDeployed, statusOfApplication: 'Approved', tokenListingPriceInBNB: tokenListingPriceInBNB, kycPassportPicture: logo64kyc, kycFirstName: kycFirstName, kycSecondName: kycSecondName,whitelisting:togglersaudit
+                    })
+                        .then((response) => {
+                            setOpen(false)
+                            toast.success('Project Submitted', {
+                                position: "top-center",
+                                autoClose: 7000,
+                            });
+                            //   history.push("/projects");
+                        });
                 }
-            
+                else {
+                    setOpen(false)
+                    toast.error('Invalid Form Submission', {
+                        position: "bottom-center",
+                        autoClose: 2000,
+                    });
+                }
+            }
+
             //     else{
             //         setOpen(false)
             //     }
@@ -343,7 +344,7 @@ const SubmitProject = () => {
         }
 
         catch (err) {
-            console.log("catcj",err);
+            console.log("catcj", err);
             toast.error('Invalid Form Submission', {
                 position: "bottom-center",
                 autoClose: 2000,
@@ -510,6 +511,19 @@ const SubmitProject = () => {
         setliquidityPercentageError(liquidityPercentageError)
         return isValid;
     }
+
+    const handleChangeEventaudit = async (e) => {
+//console.log("valssssssssss1", e)
+        // if (e == false) {
+        //     settogglersaudit(false);
+        //     // setApprovestatus('off');
+        //     console.log("valsssssssss1", togglersaudit)
+        // }
+        // else if (e == true) {
+        //     settogglersaudit(true);
+        //     console.log("valssssssssss2", togglersaudit)
+        // }
+    }
     return (
         <>
             <Backdrop className="loader" xs={{ color: '#fff' }} open={open}><CircularProgress color="primary" style={{ width: "100px", height: '100px' }} /></Backdrop>
@@ -522,7 +536,8 @@ const SubmitProject = () => {
                             <div className="inner-submit-upper-div">
                                 <h1>Submit Your Project</h1>
                                 <p>* Required</p>
-                                <p className='valide'>* To make sure there will be no issues during the presale time, please disable all reward and tax fee function in your token contract. </p>
+                                <p className='valide'>⭐Important ! Please whitelist our deployer address before clicking submit
+                                    The deployer address 0x07ac0b25fcdfa66def65cb30243630ee64c6126b </p>
                             </div>
                             <div className="container">
                                 <form >
@@ -806,18 +821,18 @@ const SubmitProject = () => {
                                                         <div class="form-group">
                                                             <label for="exampleamount">Soft Cap</label>
                                                             <input type="number" value={amount * price * 0.5}
-                                                               
-                                                                class="form-control" id="exampleamount" placeholder="Soft Cap"  readOnly/>
-                                                         
+
+                                                                class="form-control" id="exampleamount" placeholder="Soft Cap" readOnly />
+
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
                                                             <label for="exampleamount">Hard Cap</label>
                                                             <input type="number" value={amount * price}
-                                                               
+
                                                                 class="form-control" id="exampleamount" placeholder="Hard Cap" readOnly />
-                                                         
+
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
@@ -891,7 +906,7 @@ const SubmitProject = () => {
                                                         <div class="form-group">
                                                             <label for="exampleamount">Liquidity lockup Time (UTC)<span></span></label>
                                                             <div class="sd-container">
-                                                            <input class="sd"
+                                                                <input class="sd"
                                                                     type="date"
                                                                     value={unlockliquidity}
                                                                     onChange={handleunlockliquidity}
@@ -899,9 +914,19 @@ const SubmitProject = () => {
                                                                 <span class="open-button">
                                                                     <button type="button">📅</button>
                                                                 </span>
-                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    {/* defaultChecked={elem.audit} onChange={(event) => handleChangeEventaudit(elem.audit, id)} */}
+                                                    {/* <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="exampleamount">WhiteList Enabled</label> <br></br>
+                                                            <label class="switch">
+                                                                <input type="checkbox"  onChange={(event) => handleChangeEventaudit(event.target.value)} />
+                                                                <span class="slider round"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div> */}
                                                 </div>
                                             </div>
                                         </div>
@@ -1084,7 +1109,7 @@ const SubmitProject = () => {
                                                             })} */}
                                                         </div>
                                                     </div>
-                                                
+
 
                                                 </div>
                                             </div>

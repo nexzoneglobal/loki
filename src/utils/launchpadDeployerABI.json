@@ -225,6 +225,11 @@
 						"internalType": "uint256",
 						"name": "_liquidityUnlockTime",
 						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "_whitelist",
+						"type": "bool"
 					}
 				],
 				"internalType": "struct constructorLibrary.parameter",

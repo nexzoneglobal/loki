@@ -39,6 +39,7 @@ const ClosePool = (props) => {
     let firstClaimTime=''
     let secondClaimTime=''
     let thirdClaimTime=''
+    let contractAddressDeployed=''
     closeingstore.find((elem) => {
            
        if(elem.id==id){
@@ -62,6 +63,7 @@ const ClosePool = (props) => {
            firstClaimTime=new Date(elem.firstClaimTime);
            secondClaimTime=elem.secondClaimTime
            thirdClaimTime=elem.thirdClaimTime
+           contractAddressDeployed=elem.contractAddressDeployed
        }
         if (tier == 1) {
             tierMinValue = elem.minAllocationPerUser;
@@ -260,9 +262,11 @@ const ClosePool = (props) => {
                                         </div>
                                     </div>
                                     <div className="right-inner">
-                                        <button className="button-one" type="button">CLOSED</button>
+                                       
                                         {/* <button className="button-two" type="button">Tier {tier}</button> */}
-                                     
+                                        <h2>Presale Address</h2>
+                                     <h5>{contractAddressDeployed}</h5>
+                                     <button className="button-one" type="button">CLOSED</button>
                                     </div>
                                 </div>
                                 <div className="para">
