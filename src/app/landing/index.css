@@ -1364,6 +1364,13 @@ text-align: center;
 .banner-mju{
   margin-top: 120px;
 }
+.searchContainer{
+  border: 1.5px solid #1561FB;
+ text-align: center;
+  border-radius: 15px;
+  position: relative;
+  margin: 0px;
+}
 }
 @media(max-width: 360px){
   .featured-pool .card-main .main-image button {
@@ -1382,6 +1389,13 @@ text-align: center;
 .banner-mju{
   margin-top: 120px;
 }
+.searchContainer{
+  border: 1.5px solid #1561FB;
+ text-align: center;
+  border-radius: 15px;
+  position: relative;
+  margin: 0px;
+}
 }
 
 
@@ -1396,4 +1410,40 @@ text-align: center;
  overflow: hidden;
  /* width: 200px; */
  white-space: nowrap;
+}
+
+
+ .searchContainer{
+  border: 1.5px solid #1561FB;
+  width: 58%;
+  border-radius: 15px;
+  position: relative;
+  float: right;
+  margin: -54px 0px;
+}
+.fa, .fas{
+    font-weight: 900!important;
+}
+.main-search-ison{
+    position: absolute;
+    top: 0px;
+}
+  .searchContainer i{
+  color: #1561FB;
+  padding-right: 30px;
+  padding-left: 24px;
+  padding-top: 0px;
+  font-size: 22px;
+  font-weight: lighter;
+}
+  .searchContainer input{
+  background-color: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  width: 100%;
+  padding-left: 60px;
+  color: #ffffff;
+  padding-right: 20px;
+  font-size: 20px;
 }

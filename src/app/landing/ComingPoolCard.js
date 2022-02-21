@@ -38,7 +38,7 @@ const ComingPoolCard = (props) => {
         <img src={props.logoURL} alt="" />
         <h1 style={{ marginLeft: 20 }}>{props.projectName}</h1>
       { props.kycVerified ?<button>KYC</button>:''}
-        
+      { props?.audit ?<button>Audit</button>:''}
       </div>
       <div className="ksajdksj">
         <h6>Presale Address :</h6>

@@ -12,6 +12,7 @@ import { Backdrop } from '@material-ui/core';
 import { CircularProgress } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import BigNumber from 'bignumber.js';
 const ClosePool = (props) => {
     const [open, setOpen] = useState(false);
     const closeingstore = useSelector((state) => state.PoolActiveReducer.ClosedData);
@@ -143,7 +144,7 @@ const ClosePool = (props) => {
             }
         }
     }, [WhiteListTiers])
-    
+
     const FirstClaimToken = useCallback(async (e) => {
         setOpen(true)
         e.preventDefault();
@@ -228,6 +229,7 @@ const ClosePool = (props) => {
         contribute();
         vestedPeriod()
         CheckWhiteList();
+        window.scrollTo(0, 0)
     }, [account, tokenAddress])
     return (
         <>
@@ -356,7 +358,7 @@ const ClosePool = (props) => {
                                 <div className="pool-details">
                                     <div className="poor-detailss">
                                         <h6>Pool Details</h6>
-                                        <p>Price: {price} BNB Per {symbol}</p>
+                                        <p>Price: {price.toFixed(10)} BNB Per {symbol}</p>
                                         <p>For Sale:{tokenSale} {symbol}</p>
                                         <p>Max contribution: {tierMaxValue} BNB</p>
                                         <p>Min contribution: {tierMinValue} BNB</p>

@@ -1,6 +1,7 @@
 import React from 'react';
 import './index.css';
 import { MDBProgress } from 'mdbreact';
+
 const ClosedPoolCard = (props) => {
 
   // console.log("props in TotalBnbPerTier",props.TotalBnbPerTier);
@@ -19,6 +20,7 @@ const ClosedPoolCard = (props) => {
         <img src={props?.logoURL} alt="" style={{ width: 60, height: 60, borderRadius: '50%' }} />
         <h1>{props?.projectName}</h1>
         { props?.kycVerified ?<button>KYC</button>:''}
+        { props?.audit ?<button>Audit</button>:''}
       </div>
       <div className="progress-baar">
         <div className="percentage">

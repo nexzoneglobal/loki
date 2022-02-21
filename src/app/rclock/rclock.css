@@ -392,3 +392,38 @@
   font-size: 14px !important;
   color: crimson;
 }
+
+
+ .searchbar .searchContainer{
+  border: 1.5px solid #1561FB;
+  width: 58%;
+  border-radius: 15px;
+  position: relative;
+  float: right;
+}
+.fa, .fas{
+    font-weight: 900!important;
+}
+.main-search-ison{
+    position: absolute;
+    top: 0px;
+}
+ .searchbar .searchContainer i{
+  color: #1561FB;
+  padding-right: 30px;
+  padding-left: 24px;
+  padding-top: 0px;
+  font-size: 22px;
+  font-weight: lighter;
+}
+ .searchbar .searchContainer input{
+  background-color: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  width: 100%;
+  padding-left: 60px;
+  color: #ffffff;
+  padding-right: 20px;
+  font-size: 20px;
+}

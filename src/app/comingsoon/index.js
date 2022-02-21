@@ -240,6 +240,7 @@ const ComingPool = (props) => {
     useEffect(() => {
         CheckWhiteList();
         contribute();
+        window.scrollTo(0, 0)
     }, [account, tokenAddress])
 
     return (
@@ -343,7 +344,7 @@ const ComingPool = (props) => {
                                 <div className="pool-details">
                                     <div className="poor-detailss">
                                         <h6>Pool Details</h6>
-                                        <p>Price: {tokenPriceInBNB  } BNB Per {symbol} </p>
+                                        <p>Price: {tokenPriceInBNB.toFixed(10)  } BNB Per {symbol} </p>
                                         {/* <p>Price: {tokenSale} BNB = 100,000,000 ${symbol}</p> */}
                                         <p>For Sale:{amountAllocatedForPresale} {symbol}</p>
                                         <p>Max contribution: {tierMaxValue} BNB</p>

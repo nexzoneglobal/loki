@@ -57,7 +57,7 @@ useEagerConnect()
             <Route exact path='/project-details/:id' component={props => <ProjectDetails {...props} />} />
             <Route exact path='/lock-details/:id' component={props => <LockDetails {...props} />} />
             <Route exact path='/projects' component={props => <Projects {...props} />} />
-            <Route exact path='/comingsoom/:id/:tier' component={props => <ComingsoonPool {...props} />} />
+            <Route exact path='/comingsoon/:id/:tier' component={props => <ComingsoonPool {...props} />} />
             {/* admin routes */}
             <Route exact path='/adminproject' component={props => <AdminProject {...props} />} />
             <Route exact path='/rclock' component={props => <RcLock {...props} />} />

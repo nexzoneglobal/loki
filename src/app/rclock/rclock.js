@@ -87,7 +87,7 @@ const RcLock = () => {
                 let locktoken = await deployprojectonlaunchpadvault(Arguments._tokenAddress, Arguments.amountToLock, Arguments._unlockTime);
                 if (locktoken) {
                     await axios.post("https://app.rcsale.app/locked/lock", {
-                        tokenName: Projectname, tokenAddress: Projecttoken, tokenDecimals: Projectdecimal, account: account, unlockTime: date, amount: Projectamount,isLpToken:isLpTokens
+                        tokenName: Projectname, tokenAddress: Projecttoken, tokenDecimals: Projectdecimal, account: account, unlockTime: date, amount: Projectamount, isLpToken: isLpTokens
 
                     })
                         .then((response) => {
@@ -112,19 +112,19 @@ const RcLock = () => {
 
         }
     }
-   
-    useEffect(() => {
-       alllockedtoken();
-       alllockedlp();
 
-      
+    useEffect(() => {
+        alllockedtoken();
+        alllockedlp();
+
+
     }, [])
     useEffect(() => {
-     
+
         myalllockedtoken();
         myalllockedlp();
-       
-     }, [account])
+
+    }, [account])
     const alllockedtoken = async () => {
         setOpen(true)
         try {
@@ -160,7 +160,7 @@ const RcLock = () => {
         }
         catch (err) {
             setOpen(false)
-        
+
         }
     }
 
@@ -168,15 +168,15 @@ const RcLock = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/locked/getLockedTokensOfAddress", { account:account })
+            await axios.post("https://app.rcsale.app/locked/getLockedTokensOfAddress", { account: account })
                 .then((response) => {
-                   
+
                     if (response.data.status) {
                         setmylockedtokendata(response.data.data)
                     }
                     setOpen(false)
-                    
-                   
+
+
                 });
 
         }
@@ -191,15 +191,15 @@ const RcLock = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/locked/getLockedLpOfAddress", { account:account })
+            await axios.post("https://app.rcsale.app/locked/getLockedLpOfAddress", { account: account })
                 .then((response) => {
-                   
+
                     if (response.data.status) {
                         setmylockedliquiditydata(response.data.data)
                     }
                     setOpen(false)
-                    
-                   
+
+
                 });
 
         }
@@ -210,7 +210,40 @@ const RcLock = () => {
             // alert("Invalid Address")
         }
     }
- //end here
+
+    const searchtoken= async(e)=>{
+        try {
+    
+          await axios.post("https://app.rcsale.app/ocked/searchTokensByName",{search:e})
+            .then((response) => {
+              if (response.status) {
+                console.log("response", response.data);
+                setlockedtokendata(response.data.data)
+              }
+            });
+    
+        }
+        catch (err) {
+    
+        }
+      }
+      const searchliquidity= async(e)=>{
+        try {
+    
+          await axios.post("https://app.rcsale.app/locked/searchLPByName",{search:e})
+            .then((response) => {
+              if (response.status) {
+                console.log("response", response.data);
+                setmylockedliquiditydata(response.data.data)
+              }
+            });
+    
+        }
+        catch (err) {
+    
+        }
+      }
+    //end here
     const handleChangeEvent = async (e, id) => {
         console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeee", e);
         if (e == false) {
@@ -294,7 +327,7 @@ const RcLock = () => {
     //     }
     //     catch (err) {
     //         setOpen(false)
-          
+
     //     }
 
     // }
@@ -550,7 +583,7 @@ const RcLock = () => {
             // alert("Invalid Address")
         }
     }
-    
+   
     // render() {
     return (
         <>
@@ -584,22 +617,22 @@ const RcLock = () => {
                                                 <h1>Create your lock </h1>
                                                 <p>* Required</p>
                                                 <p className='valide'>* To make sure there will be no issues during the transaction, please exclude all reward and tax fee from this contract "0xf89936E90d08C13E84d0832246B09BbeeCee5d92" </p>
-                          
-                                            </div>
-                                            <div class="col-lg-6 ">
 
                                             </div>
                                             <div class="col-lg-6 ">
 
-</div>
+                                            </div>
+                                            <div class="col-lg-6 ">
+
+                                            </div>
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label for="example">Select Token or LP Token<span>*</span></label>
-                                                    <select  class='form-control2'   onChange={(e) => setisLpToken(e.target.value)}>
+                                                    <select class='form-control2' onChange={(e) => setisLpToken(e.target.value)}>
                                                         <option value="false">Token</option>
                                                         <option value="true">LP Token</option>
                                                     </select>
-                                                     
+
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
@@ -647,7 +680,7 @@ const RcLock = () => {
                                                 </div>
                                             </div>
                                             <div className="buttonsff">
-                                                <button  type='submit' onClick={submittoken}  >Save</button>
+                                                <button type='submit' onClick={submittoken}  >Save</button>
                                             </div>
                                         </div>
                                     </div>
@@ -662,6 +695,13 @@ const RcLock = () => {
                                             <div className="col-sm-12 p-0">
                                                 <div className="searchbar">
                                                     <h1>Lock Tokens</h1>
+                                                     <div className="searchContainer">
+                                                        <input className="searchBox" type="search"
+                                                            name="search" placeholder="Search lock tokens"  onChange={(e) => searchtoken(e.target.value)}/>
+                                                        <div className="main-search-ison">
+                                                            <i class="fa fa-search " aria-hidden="true"></i>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -700,7 +740,7 @@ const RcLock = () => {
 
                                                                                             </span> */}
                                                                                             <h6>{elem.tokenName}</h6>
-                                                                                    
+
                                                                                         </td>
 
                                                                                         <td className='text-left-normal'>
@@ -793,9 +833,16 @@ const RcLock = () => {
                                     {/* <div className="inner-lower-div"> */}
                                     <div className="inner-submit-upper-div1">
                                         <div className="row">
-                                            <div className="col-sm-10 p-0">
+                                            <div className="col-sm-12 p-0">
                                                 <div className="searchbar">
                                                     <h1>Liquidity token</h1>
+                                                    <div className="searchContainer">
+                                                        <input className="searchBox" type="search"
+                                                            name="search" placeholder="Search liquidity token" onChange={(e) => searchliquidity(e.target.value)} />
+                                                        <div className="main-search-ison">
+                                                            <i class="fa fa-search " aria-hidden="true"></i>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -833,11 +880,11 @@ const RcLock = () => {
                                                                                             {/* <span className="main-image-dhgy"><img src={elem.logoURL} style={{ width: 40 }} className="main-image-dhgy mr-2" alt="" />{elem.projectName}
 
                                                                                             </span> */}
-                                                                                           <h6>{elem.tokenName}</h6>
+                                                                                            <h6>{elem.tokenName}</h6>
                                                                                         </td>
 
                                                                                         <td className='text-left-normal'>
-                                                                                        <h6>{elem.amount}</h6>
+                                                                                            <h6>{elem.amount}</h6>
                                                                                             <h6><small>{elem.unlockTime}</small></h6>
                                                                                         </td>
 
@@ -882,15 +929,15 @@ const RcLock = () => {
                                                                                 return (
                                                                                     <tr index={key}>
                                                                                         <td className=''>
-                                                                                        <h6>{elem.tokenName}</h6>
+                                                                                            <h6>{elem.tokenName}</h6>
 
                                                                                         </td>
-                                                                                      
+
                                                                                         <td className='text-left-normal'>
-                                                                                        <h6>{elem.amount}</h6>
+                                                                                            <h6>{elem.amount}</h6>
                                                                                             <h6><small>{elem.unlockTime}</small></h6>
                                                                                         </td>
-                                                                                     
+
                                                                                         <td className="button-detailss">
                                                                                             <div className="d-flex">
                                                                                                 <Link className='buttion-on' to={"/lock-details/" + id}>Detail</Link>

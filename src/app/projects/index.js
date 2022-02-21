@@ -46,8 +46,30 @@ const Projects = () => {
     const FinalFun = async (currentAddress) => {
         setOpen(true)
         const data = await Final(currentAddress)
-        console.log(data)
-
+        console.log("console data",data)
+        if(data){
+            try {
+    
+                await axios.post("https://app.rcsale.app/project/finalizeSale", { id: currentAddress.id })
+                    .then((response) => {
+                     //   setOpen(false)
+                      //  getAlldata();
+                        // toast.success('Updated Successfully', {
+                        //     position: "top-center",
+                        //     autoClose: 7000,
+                        // });
+                        // window.$("#exampleModal404").modal('hide');
+    
+                    });
+    
+            }
+            catch (err) {
+                setOpen(false)
+                // eslint-disable-next-line no-console
+                // console.log(err);
+                // alert("Invalid Address")
+            }
+        }
         setOpen(false)
         toast.success('Finalization Done', {
             position: "top-center",
@@ -61,12 +83,37 @@ const Projects = () => {
         // }
     }
     const CancelFun = async (currentAddress) => {
+
+      
         setOpen(true)
         const data = await Cancel(currentAddress)
         console.log(data)
-
         setOpen(false)
-        toast.success('Finalization Done', {
+        if(data){
+            try {
+    
+                await axios.post("https://app.rcsale.app/project/finalizeSale", { id: currentAddress.id })
+                    .then((response) => {
+                     //   setOpen(false)
+                      //  getAlldata();
+                        // toast.success('Updated Successfully', {
+                        //     position: "top-center",
+                        //     autoClose: 7000,
+                        // });
+                        // window.$("#exampleModal404").modal('hide');
+    
+                    });
+    
+            }
+            catch (err) {
+                setOpen(false)
+                // eslint-disable-next-line no-console
+                // console.log(err);
+                // alert("Invalid Address")
+            }
+        }
+
+        toast.success('Cancellation  Done', {
             position: "top-center",
             autoClose: 7000,
         });

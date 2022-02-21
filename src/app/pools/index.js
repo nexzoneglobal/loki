@@ -260,6 +260,7 @@ const Pool = (props) => {
     useEffect(() => {
         CheckWhiteList();
         contribute();
+        window.scrollTo(0, 0);
     }, [account, tokenAddress])
    // alert(progressValue)
     return (

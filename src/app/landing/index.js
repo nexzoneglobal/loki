@@ -10,12 +10,13 @@ import PoolCard from './PoolCard';
 import ComingPoolCard from './ComingPoolCard';
 import ClosedPoolCard from './ClosedPoolCard';
 import { useSelector } from "react-redux";
+
 // import { Eligible } from '../../hooks/PoolDataFetcher'
 const Landing = () => {
 
   const [allfeatured, setallfeatured] = useState([]);
   const [alladd, setalladd] = useState([]);
-
+  const [searchTerm, setSearchTerm] = useState('')
   const toptrending = async () => {
     try {
 
@@ -73,7 +74,7 @@ const Landing = () => {
 
   const store = useSelector((state) => state.PoolActiveReducer.AllActivePoolData);
   const pesndingstore = useSelector((state) => state.PoolActiveReducer.PendingData)
-  const closestore = useSelector((state) => state.PoolActiveReducer.ClosedData)
+  var closestore = useSelector((state) => state.PoolActiveReducer.ClosedData)
   const owl_optionn = {
     nav: false,
     dots: false,
@@ -175,7 +176,55 @@ const Landing = () => {
       },
     },
   };
+  // const {loading, ClosedData} = ClosedData
+  const searchclose = async (e) => {
+    try {
 
+      await axios.post("https://app.rcsale.app/project/searchFinished", { search: e })
+        .then((response) => {
+          if (response.status) {
+          
+          }
+        });
+
+    }
+    catch (err) {
+
+    }
+  }
+  // console.log("closedata", data);
+  const searchOpen = async (e) => {
+    try {
+
+      await axios.post("https://app.rcsale.app/project/searchFinished", { search: e })
+        .then((response) => {
+          if (response.status) {
+            console.log("response", response.data);
+            // setalladd(response.data.data)
+          }
+        });
+
+    }
+    catch (err) {
+
+    }
+  }
+  const searchComing = async (e) => {
+    try {
+
+      await axios.post("https://app.rcsale.app/project/searchFinished", { search: e })
+        .then((response) => {
+          if (response.status) {
+            console.log("response", response.data);
+            // setalladd(response.data.data)
+          }
+        });
+
+    }
+    catch (err) {
+
+    }
+  }
 
   console.log('hereeeeeeeeeeeeeee i m ', closestore)
 
@@ -370,7 +419,7 @@ const Landing = () => {
           </div>
         </div>
       </section>
-    
+
       <div className="banner-mju">
         <div className="container">
           <div className="row">
@@ -383,7 +432,7 @@ const Landing = () => {
                     {topTTT}
                   </OwlCarousel>
                 }
-      
+
               </div>
 
             </div>
@@ -391,7 +440,7 @@ const Landing = () => {
         </div>
 
       </div>
-     
+
       <section className="featured-pool-closed">
         <div className="auto-container">
           <h1>Top Trending Token</h1>
@@ -420,6 +469,13 @@ const Landing = () => {
             </div>
           </div>
           <h1 className="main-pool-featured h1">Active Pool</h1>
+          <div className="searchContainer">
+            <input className="searchBox" type="search"
+              name="search" placeholder="Search Active Pool" />
+            <div className="main-search-ison">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </div>
+          </div>
           <div className="row main-pool-featured">
             {display}
           </div>
@@ -428,6 +484,13 @@ const Landing = () => {
       <section className="featured-pool-coming-soon">
         <div className="auto-container">
           <h1>Pools Coming Soon</h1>
+          <div className="searchContainer">
+            <input className="searchBox" type="search"
+              name="search" placeholder="Search Coming Soon Pool" />
+            <div className="main-search-ison">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </div>
+          </div>
           <div className="row main-pool-featured">
             {pesndingstore.map((elem, index) => {
               let tier3Date = new Date(elem.preSaleStartDateAndTime);
@@ -439,7 +502,7 @@ const Landing = () => {
               return (
 
                 <div className="col-xl-4 col-lg-4 col-md-6 col-12 mb-4" key={index}>
-                  <Link to={'/comingsoom/' + elem.id + '/' + 1} id={1} >
+                  <Link to={'/comingsoon/' + elem.id + '/' + 1} id={1} >
                     <ComingPoolCard {...elem} tier={1} allcation={elem.tier1Allocation} max={elem.maxAllocationPerUser}
                       min={elem.minAllocationPerUser}
                       preSaleStartDateAndTime={new Date(elem.preSaleStartDateAndTime)}
@@ -466,37 +529,51 @@ const Landing = () => {
       <section className="featured-pool-closed">
         <div className="auto-container">
           <h1>Pools Closed</h1>
+          <div className="searchContainer">
+            <input className="searchBox" type="search"
+              name="search" placeholder="Search Pool Closed" onChange={(e) => searchclose(e.target.value)} />
+            <div className="main-search-ison">
+              <i class="fa fa-search " aria-hidden="true"></i>
+            </div>
+          </div>
           <div className="row main-pool-featured">
 
-            {closestore.map((elem, closeindex) => {
-              const { id, TotalBnbinOneTier, TotalBnbinTwoTier, TotalBnbinThreeTier } = elem
-              const t1 = 1; const t2 = 2; const t3 = 3; const t4 = 4;
-              return (
+            {/* {data.filter((val) => {
+              if (searchTerm === "") {
+                return val
+              } else if (val.contactPersonName.toLowerCase().includes(searchTerm.toLowerCase()))  */}
+              {
+                closestore.map((elem, closeindex) => {
+                  const { id, TotalBnbinOneTier, TotalBnbinTwoTier, TotalBnbinThreeTier } = elem
+                  const t1 = 1; const t2 = 2; const t3 = 3; const t4 = 4;
+                  return (
 
-                <div className="col-xl-4 col-lg-4 col-md-6 col-12 mt-4" key={closeindex}>
-                  <Link to={'/closepool/' + id + '/' + t1}>
-                    <ClosedPoolCard {...elem} tier={1} TotalBnbPerTier={TotalBnbinOneTier} tierAllocation={elem.tier1Allocation} />
-                  </Link>
-                </div>
-                /* <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={closeindex}>
-                  <Link to={'/closepool/' + id + '/' + t2}>
-                    <ClosedPoolCard tier={2} {...elem} TotalBnbPerTier={TotalBnbinTwoTier} tierAllocation={elem.tier2Allocation} />
-                  </Link>
-                </div>
-                <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={closeindex}>
-                  <Link to={'/closepool/' + id + '/' + t3}>
-                    <ClosedPoolCard tier={3} {...elem} TotalBnbPerTier={TotalBnbinThreeTier} tierAllocation={elem.tier3Allocation} />
-                  </Link>
-                </div> */
-                /* <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={closeindex}>
-                  <Link to={'/closepool/' + id + '/' + t4}>
-                    <ClosedPoolCard tier={4} {...elem} />
-                  </Link>
-                </div> */
+                    <div className="col-xl-4 col-lg-4 col-md-6 col-12 mt-4" key={closeindex}>
+                      <Link to={'/closepool/' + id + '/' + t1}>
+                        <ClosedPoolCard {...elem} tier={1} TotalBnbPerTier={TotalBnbinOneTier} tierAllocation={elem.tier1Allocation} />
+                      </Link>
+                    </div>
+                    /* <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={closeindex}>
+                      <Link to={'/closepool/' + id + '/' + t2}>
+                        <ClosedPoolCard tier={2} {...elem} TotalBnbPerTier={TotalBnbinTwoTier} tierAllocation={elem.tier2Allocation} />
+                      </Link>
+                    </div>
+                    <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={closeindex}>
+                      <Link to={'/closepool/' + id + '/' + t3}>
+                        <ClosedPoolCard tier={3} {...elem} TotalBnbPerTier={TotalBnbinThreeTier} tierAllocation={elem.tier3Allocation} />
+                      </Link>
+                    </div> */
+                    /* <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={closeindex}>
+                      <Link to={'/closepool/' + id + '/' + t4}>
+                        <ClosedPoolCard tier={4} {...elem} />
+                      </Link>
+                    </div> */
 
-              )
+                  )
 
-            })}
+                })
+              }
+            {/* })} */}
           </div>
         </div>
       </section>
