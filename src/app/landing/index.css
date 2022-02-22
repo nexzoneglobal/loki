@@ -1348,6 +1348,16 @@ text-align: center;
 .banner-mju{
   margin-top: 120px;
 }
+
+.searchContainer{
+  border: 1.5px solid #1561FB;
+  text-align: center !important;
+   border-radius: 15px !important;
+   position: relative;
+   margin: 0px !important;
+     width: 100% !important;
+     border-radius: 15px !important;
+}
 }
 
 @media(max-width: 400px){

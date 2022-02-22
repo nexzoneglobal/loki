@@ -528,6 +528,10 @@
     .projects .header-section .submit-project .inner-submit-upper-div .searchbar .buttons-filter button{
         height: 48px;
     }
+   
+.projects .header-section .submit-project .inner-lower-div {
+    padding-top: 158px !important;
+}
 }
 
 
