@@ -537,7 +537,7 @@ const SubmitProject = () => {
                                 <h1>Submit Your Project</h1>
                                 <p>* Required</p>
                                 <p className='valide'>⭐Important ! Please whitelist our deployer address before clicking submit
-                                    The deployer address 0x36CeBF1F6d1d084e06055Efcb5f59AcD34777858 <br></br> or exlude all fee to zero for presale stage
+                                    The deployer address 0x5f806F283b29193cF96BBe88F8abDCAc4F52a9A3 <br></br> or exlude all fee to zero for presale stage
                                      </p>
                                      <p className='valide'>
                                      ⭐Important ! Presale setup fee is 1 bnb</p>

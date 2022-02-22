@@ -1343,7 +1343,7 @@ text-align: center;
   justify-content: unset;
 }
 .featured-pool-closed .card-main .main-image button {
-  margin-left: 140px;
+  /* margin-left: 140px; */
 }
 .banner-mju{
   margin-top: 120px;
@@ -1358,7 +1358,7 @@ text-align: center;
   margin-left: 92px;
 }
 .featured-pool-closed .card-main .main-image button {
-  margin-left: 91px;
+  /* margin-left: 91px; */
 }
 
 .banner-mju{
@@ -1366,10 +1366,12 @@ text-align: center;
 }
 .searchContainer{
   border: 1.5px solid #1561FB;
- text-align: center;
-  border-radius: 15px;
-  position: relative;
-  margin: 0px;
+  text-align: center !important;
+   border-radius: 15px !important;
+   position: relative;
+   margin: 0px !important;
+     width: 100% !important;
+     border-radius: 15px !important;
 }
 }
 @media(max-width: 360px){
@@ -1391,10 +1393,18 @@ text-align: center;
 }
 .searchContainer{
   border: 1.5px solid #1561FB;
- text-align: center;
+ text-align: center !important;
   border-radius: 15px;
   position: relative;
   margin: 0px;
+  
+    
+    width: 100%;
+    border-radius: 15px;
+    /* position: relative;
+    float: right; */
+  
+
 }
 }
 

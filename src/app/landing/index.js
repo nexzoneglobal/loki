@@ -16,7 +16,7 @@ const Landing = () => {
 
   const [allfeatured, setallfeatured] = useState([]);
   const [alladd, setalladd] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('')
+  // const [searchTerm, setSearchTerm] = useState('')
   const toptrending = async () => {
     try {
 
@@ -177,6 +177,7 @@ const Landing = () => {
     },
   };
   // const {loading, ClosedData} = ClosedData
+   const [searchTerm, setSearchTerm]=useState('');
   const searchclose = async (e) => {
     try {
 
@@ -531,19 +532,18 @@ const Landing = () => {
           <h1>Pools Closed</h1>
           <div className="searchContainer">
             <input className="searchBox" type="search"
-              name="search" placeholder="Search Pool Closed" onChange={(e) => searchclose(e.target.value)} />
+              name="search" placeholder="Search Pool Closed" onChange={(e) => setSearchTerm(e.target.value)} />
             <div className="main-search-ison">
               <i class="fa fa-search " aria-hidden="true"></i>
             </div>
           </div>
           <div className="row main-pool-featured">
-
-            {/* {data.filter((val) => {
+            
+            {closestore.filter((elem,closeindex) => {
               if (searchTerm === "") {
-                return val
-              } else if (val.contactPersonName.toLowerCase().includes(searchTerm.toLowerCase()))  */}
-              {
-                closestore.map((elem, closeindex) => {
+                return elem
+              } else if (elem.projectName.toLowerCase().includes(searchTerm.toLowerCase())){
+               
                   const { id, TotalBnbinOneTier, TotalBnbinTwoTier, TotalBnbinThreeTier } = elem
                   const t1 = 1; const t2 = 2; const t3 = 3; const t4 = 4;
                   return (
@@ -553,27 +553,24 @@ const Landing = () => {
                         <ClosedPoolCard {...elem} tier={1} TotalBnbPerTier={TotalBnbinOneTier} tierAllocation={elem.tier1Allocation} />
                       </Link>
                     </div>
-                    /* <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={closeindex}>
-                      <Link to={'/closepool/' + id + '/' + t2}>
-                        <ClosedPoolCard tier={2} {...elem} TotalBnbPerTier={TotalBnbinTwoTier} tierAllocation={elem.tier2Allocation} />
-                      </Link>
-                    </div>
-                    <div className="col-xl-4 col-lg-4 col-md-6 col-12" key={closeindex}>
-                      <Link to={'/closepool/' + id + '/' + t3}>
-                        <ClosedPoolCard tier={3} {...elem} TotalBnbPerTier={TotalBnbinThreeTier} tierAllocation={elem.tier3Allocation} />
-                      </Link>
-                    </div> */
-                    /* <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={closeindex}>
-                      <Link to={'/closepool/' + id + '/' + t4}>
-                        <ClosedPoolCard tier={4} {...elem} />
-                      </Link>
-                    </div> */
-
                   )
 
-                })
+            
               }
-            {/* })} */}
+           }).map((elem,closeindex) => {
+                const { id, TotalBnbinOneTier, TotalBnbinTwoTier, TotalBnbinThreeTier } = elem
+                const t1 = 1; const t2 = 2; const t3 = 3; const t4 = 4;
+                return (
+
+                  <div className="col-xl-4 col-lg-4 col-md-6 col-12 mt-4" key={closeindex}>
+                    <Link to={'/closepool/' + id + '/' + t1}>
+                      <ClosedPoolCard {...elem} tier={1} TotalBnbPerTier={TotalBnbinOneTier} tierAllocation={elem.tier1Allocation} />
+                    </Link>
+                  </div>
+                )
+
+              })
+           }
           </div>
         </div>
       </section>
