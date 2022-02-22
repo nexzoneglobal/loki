@@ -440,7 +440,14 @@
   padding-bottom: 86px;
   padding-right: 20px !important;
 }
-.projects .header-section .submit-project .inner-lower-div {
-  padding-top: 20px !important;
+.projects .header-section .submit-project .inner-lower-div{
+  padding: 10px !important;
 }
+
+}
+
+@media (max-width: 400px){
+  .projects .header-section .submit-project .inner-lower-div {
+    padding-top: 20px !important;
+  }
 }

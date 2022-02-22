@@ -226,7 +226,7 @@
   }
   .projects .header-section .submit-project .inner-lower-div{
     padding-left: 60px;
-    padding-top: 30px;
+    /* padding-top: 30px; */
     padding-bottom: 86px;
     padding-right: 60px;
   }
@@ -528,10 +528,12 @@
     .projects .header-section .submit-project .inner-submit-upper-div .searchbar .buttons-filter button{
         height: 48px;
     }
-   
-.projects .header-section .submit-project .inner-lower-div {
-    padding-top: 158px !important;
-}
+    .setpad{
+        padding: 10px 20px;
+    }
+/* .projects .header-section .submit-project .inner-lower-div {
+    : 158px !important;
+} */
 }
 
 

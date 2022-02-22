@@ -248,11 +248,12 @@ const Projects = () => {
                                         </div> */}
                                     </div>
                                 </div>
-                                <div className="row  setpad">
-                                    <h2> <span className='warning'>Warning !</span> <span className='exlude'>Please exclude your Presale address from any fees and dividents !!</span>   </h2>
-                                </div>
+                               
                             </div>
                             <div className="inner-lower-div">
+                            <div className="row  setpad">
+                                    <h2> <span className='warning'>Warning !</span> <span className='exlude'>Please exclude your Presale address from any fees and dividents !!</span>   </h2>
+                                </div>
                                 <div class="projects-table-main">
                                     <div class="table-responsive button-table">
                                         <table class="table table-clr table-striped text-center">
