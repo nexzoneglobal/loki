@@ -33,7 +33,7 @@ const ClosedPoolCard = (props) => {
           <div className="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
         </div> */}
         <div className='button text-center'>
-          <button>  closed </button> </br>
+          <button>  closed </button> <br/>
           <a> Liquidity unlockTime: {props?.liquidityUnlockTime} </a>
         </div>
       </div>
