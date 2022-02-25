@@ -4,6 +4,7 @@ import bep20 from './bep20.json';
 import launchpadDeployerABI from './launchpadDeployerABI.json' 
 import vaultToken from './vaultToken.json' 
 import IERC20 from './IERC20.json'
+import Factory from './uniswapfactory.json'
 const getContract = (abi, address, web3) => {
     const _web3 = web3 ?? web3NoAccount;
  
@@ -29,4 +30,7 @@ export const GetDeployervault = (address, web3) => {
 }
 export const GetTokenContract = (address, web3) => {
     return getContract(IERC20, address, web3)
+}
+export const getFactoryContract = (address, web3) => {
+    return getContract(Factory, address, web3)
 }

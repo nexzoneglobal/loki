@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import './index.css';
 import { Link } from 'react-router-dom';
 import Navbar from '../../components/navbar';
-import { Finalize,FinalizeWhitelist,Finalizebool } from "../../hooks/PoolDataFetcher";
+import { Finalize, FinalizeWhitelist, Finalizebool } from "../../hooks/PoolDataFetcher";
+import { GetUsePair, GetLockedDetails } from '../../hooks/functions'
 import { Cancelize } from "../../hooks/PoolDataFetcher";
 import axios from 'axios';
 import { useWeb3React } from '@web3-react/core'
@@ -14,15 +15,17 @@ const Projects = () => {
     const [open, setOpen] = useState(false);
     const { Final } = Finalize();
     const { Cancel } = Cancelize();
-    const {Finalwhitelist}= FinalizeWhitelist();
-    const {Finalbool}= Finalizebool();
+    const { Finalwhitelist } = FinalizeWhitelist();
+    const { Finalbool } = Finalizebool();
     const [searchTerm, setSearchTerm] = useState('')
     const [data, getDate] = useState([]);
     const [togglersaudit, settogglersaudit] = useState(false);
     const [ApproveIdaudit, setApproveIdaudit] = useState('');
     const [Approvestatus, setApprovestatus] = useState('');
     const [projectAddresses, setprojectAddresses] = useState('');
-    
+    const { GetPair } = GetUsePair();
+    const { GetLocked } = GetLockedDetails();
+    const [walletAddress, SetWalletAddres] = useState('')
     const getAlldata = async () => {
         try {
 
@@ -44,32 +47,61 @@ const Projects = () => {
 
 
     const FinalFun = async (currentAddress) => {
+      
+        SetWalletAddres(currentAddress.contractAddress)
         setOpen(true)
-        const data = await Final(currentAddress)
-        console.log("console data",data)
-        if(data){
-            try {
-    
-                await axios.post("https://app.rcsale.app/project/finalizeSale", { id: currentAddress.id })
-                    .then((response) => {
-                     //   setOpen(false)
-                      //  getAlldata();
-                        // toast.success('Updated Successfully', {
-                        //     position: "top-center",
-                        //     autoClose: 7000,
-                        // });
-                        // window.$("#exampleModal404").modal('hide');
-    
-                    });
-    
+         const data = await Final(currentAddress)
+        if (data) {
+            const pairof = await GetPair(currentAddress.contractAddy);
+            if (pairof) {
+                let lockdetails = await GetLocked(pairof);
+                console.log("details", lockdetails.amountLocked);
+                console.log("details", lockdetails.lockTime);
+                console.log("details", lockdetails.tokenAddress);
+                console.log("details", lockdetails.unlockTime);
+                console.log("details", lockdetails.user);
+                // const totalTokens = new BigNumber(Projectamount).multipliedBy(new BigNumber(10).pow(Projectdecimal));
+                // const epochTime = new Date(date).getTime() / 1000.0;
+                if (lockdetails) {
+                    axios.post("https://app.rcsale.app/locked/lock", {
+                        tokenName: currentAddress.projectName, tokenAddress: lockdetails.tokenAddress, tokenDecimals: 18, account: account, unlockTime: new Date(lockdetails.unlockTime * 1000), amount: (lockdetails.amountLocked  / (10 ** 18) ), isLpToken: true
+
+                    })
+                        .then((response) => {
+
+                            if (response.data.status) {
+                                getDate(response.data.msg);
+                                toast.success('Lock Successfully', {
+                                    position: "top-center",
+                                    autoClose: 7000,
+                                });
+
+                            }
+                            setOpen(false)
+                        });
+
+                }
             }
-            catch (err) {
-                setOpen(false)
-                // eslint-disable-next-line no-console
-                // console.log(err);
-                // alert("Invalid Address")
-            }
+
         }
+
+
+        //end
+
+
+        await axios.post("https://app.rcsale.app/project/finalizeSale", { id: currentAddress.id })
+            .then((response) => {
+
+                if (response) {
+                    //start
+
+
+
+
+                }
+            })
+
+
         setOpen(false)
         toast.success('Finalization Done', {
             position: "top-center",
@@ -77,33 +109,30 @@ const Projects = () => {
         });
         getAlldata();
 
-        // else {
-        //     setOpen(false)
-        //    // getAlldata();
-        // }
+
     }
     const CancelFun = async (currentAddress) => {
 
-      
+
         setOpen(true)
         const data = await Cancel(currentAddress)
         console.log(data)
         setOpen(false)
-        if(data){
+        if (data) {
             try {
-    
+
                 await axios.post("https://app.rcsale.app/project/finalizeSale", { id: currentAddress.id })
                     .then((response) => {
-                     //   setOpen(false)
-                      //  getAlldata();
+                        //   setOpen(false)
+                        //  getAlldata();
                         // toast.success('Updated Successfully', {
                         //     position: "top-center",
                         //     autoClose: 7000,
                         // });
                         // window.$("#exampleModal404").modal('hide');
-    
+
                     });
-    
+
             }
             catch (err) {
                 setOpen(false)
@@ -144,52 +173,24 @@ const Projects = () => {
         }
     }
 
-    const addWhitelist=  async (address)=>{
-        console.log("adresses",projectAddresses);
+    const addWhitelist = async (address) => {
+        console.log("adresses", projectAddresses);
         console.log("presale addrees", address);
         var str = projectAddresses;
-		var result = str.split(',');
+        var result = str.split(',');
         console.log("res", result);
-       
-        setOpen(true)
-        try{
-        let data= await Finalwhitelist(address,result);
-        if(data){
-            setOpen(false);
-            toast.success('Added Successfully', {
-                position: "top-center",
-                autoClose: 7000,
-            });
-            // window.$("#exampleModal505").modal('hide');
-        }
-     }
-     catch(err) {
-        setOpen(false)
-        // eslint-disable-next-line no-console
-        // console.log(err);
-        // alert("Invalid Address")
-    }
-    }
 
-    const approveAudit = async (addy) => {
         setOpen(true)
-        console.log("presale", addy)
-       let approveWhitelist= await Finalbool(addy,togglersaudit);
-        if(approveWhitelist){
         try {
-
-            await axios.post("https://app.rcsale.app/project/approveWhitelistStatus", { id: ApproveIdaudit, status: togglersaudit })
-                .then((response) => {
-                    setOpen(false)
-                    getAlldata();
-                    toast.success('Updated Successfully', {
-                        position: "top-center",
-                        autoClose: 7000,
-                    });
-                    // window.$("#exampleModal404").modal('hide');
-
+            let data = await Finalwhitelist(address, result);
+            if (data) {
+                setOpen(false);
+                toast.success('Added Successfully', {
+                    position: "top-center",
+                    autoClose: 7000,
                 });
-
+                // window.$("#exampleModal505").modal('hide');
+            }
         }
         catch (err) {
             setOpen(false)
@@ -199,9 +200,73 @@ const Projects = () => {
         }
     }
 
+    const approveAudit = async (addy) => {
+        setOpen(true)
+        console.log("presale", addy)
+        let approveWhitelist = await Finalbool(addy, togglersaudit);
+        if (approveWhitelist) {
+            try {
+
+                await axios.post("https://app.rcsale.app/project/approveWhitelistStatus", { id: ApproveIdaudit, status: togglersaudit })
+                    .then((response) => {
+                        setOpen(false)
+                        getAlldata();
+                        toast.success('Updated Successfully', {
+                            position: "top-center",
+                            autoClose: 7000,
+                        });
+                        // window.$("#exampleModal404").modal('hide');
+
+                    });
+
+            }
+            catch (err) {
+                setOpen(false)
+                // eslint-disable-next-line no-console
+                // console.log(err);
+                // alert("Invalid Address")
+            }
+        }
+
     }
+    // const appap= async()=>{
+    //    const pairof= await GetPair("0x7E77a12f905aCF315a111f66DFb5fF1c0F3294Ef");
+    //     if(pairof){
+    //         let lockdetails= await GetLocked(pairof);
+    //         console.log("details",lockdetails.amountLocked );
+    //         console.log("details",lockdetails.lockTime );
+    //         console.log("details",lockdetails.tokenAddress );
+    //         console.log("details",lockdetails.unlockTime );
+    //         console.log("details",lockdetails.user );
+    //             // const totalTokens = new BigNumber(Projectamount).multipliedBy(new BigNumber(10).pow(Projectdecimal));
+    //             // const epochTime = new Date(date).getTime() / 1000.0;
+    //                 if (lockdetails) {
+    //                     await axios.post("https://app.rcsale.app/locked/lock", {
+    //                         tokenName: "Cake-LP", tokenAddress: lockdetails.tokenAddress, tokenDecimals: 18, account: account, unlockTime: new Date(lockdetails.unlockTime  * 1000), amount: (lockdetails.amountLocked / (10 ** 18)), isLpToken: true
+
+    //                     })
+    //                         .then((response) => {
+
+    //                             if (response.data.status) {
+    //                                 getDate(response.data.msg);
+    //                                 toast.success('Lock Successfully', {
+    //                                     position: "top-center",
+    //                                     autoClose: 7000,
+    //                                 });
+
+    //                             }
+    //                             setOpen(false)
+    //                         });
+
+    //                 }
+    //             }
+
+    //     }
+    //  }
+
     React.useEffect(() => {
         getAlldata();
+
     }, [])
 
     // render() {
@@ -219,7 +284,7 @@ const Projects = () => {
                             <div className="inner-submit-upper-div">
                                 <div className="row  ">
                                     <div className="searchbar">
-                                        <h1>Projects</h1>
+                                        <h1 >Projects</h1>
 
                                         <div className="searchContainer">
                                             <input className="searchBox" type="search"
@@ -248,10 +313,10 @@ const Projects = () => {
                                         </div> */}
                                     </div>
                                 </div>
-                               
+
                             </div>
                             <div className="inner-lower-div">
-                            <div className="row  setpad">
+                                <div className="row  setpad">
                                     <h2> <span className='warning'>Warning !</span> <span className='exlude'>Please exclude your Presale address from any fees and dividents !!</span>   </h2>
                                 </div>
                                 <div class="projects-table-main">
@@ -271,7 +336,7 @@ const Projects = () => {
                                             </thead>
                                             <tbody className="main-t-body-text" >
 
-                                                {data.filter((val) => {
+                                                {data?.filter((val) => {
                                                     if (searchTerm === "") {
                                                         return val
                                                     } else if (val.contactPersonName.toLowerCase().includes(searchTerm.toLowerCase())) {
@@ -316,7 +381,7 @@ const Projects = () => {
                                                                                             <h5>Are you sure to enable Whitelist?</h5>
                                                                                             <ul className="list-inline pt-20">
                                                                                                 <li className="list-inline-item">
-                                                                                                    <button type="button" class="buttion-on"  onClick={()=>approveAudit(elem.contractAddressDeployed)} data-toggle="modal" data-target="#exampleModal404">Approve</button>
+                                                                                                    <button type="button" class="buttion-on" onClick={() => approveAudit(elem.contractAddressDeployed)} data-toggle="modal" data-target="#exampleModal404">Approve</button>
                                                                                                 </li>
                                                                                                 <li className="list-inline-item">
                                                                                                     <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
@@ -341,11 +406,11 @@ const Projects = () => {
                                                                                         <div className="inner-side-content text-center pt-40">
                                                                                             <h4>Confirmation</h4>
                                                                                             <h5>Please enter addresses by comma separated</h5>
-                                                                                            <textarea   onChange={(e) => setprojectAddresses(e.target.value)} class="form-control" placeholder="Please enter addresses by comma separated" rows="10" id="comment"></textarea>
+                                                                                            <textarea onChange={(e) => setprojectAddresses(e.target.value)} class="form-control" placeholder="Please enter addresses by comma separated" rows="10" id="comment"></textarea>
                                                                                             {/* onChange={(e) => setprojectDescription(e.target.value)} */}
                                                                                             <ul className="list-inline pt-20" >
                                                                                                 <li className="list-inline-item">
-                                                                                                    <button type="button" class="buttion-on" onClick={()=>addWhitelist(elem.contractAddressDeployed)} data-toggle="modal" data-target="#exampleModal505" >Add</button>
+                                                                                                    <button type="button" class="buttion-on" onClick={() => addWhitelist(elem.contractAddressDeployed)} data-toggle="modal" data-target="#exampleModal505" >Add</button>
                                                                                                 </li>
                                                                                                 <li className="list-inline-item">
                                                                                                     <button type="button" class="btn-common" data-dismiss="modal">Cancel</button>
@@ -375,7 +440,7 @@ const Projects = () => {
                                                                     {/* elem.preSaleEndDateAndTime && new Date(elem.preSaleEndDateAndTime) < new Date() &&  */}
                                                                     {/* <Link className='buttion-on' >Approve</Link>  {elem.statusOfApplication}*/}
                                                                     <td id="gfngfmg" className={elem.statusOfApplication == 'Pending' ? 'text-green-pending' : elem.statusOfApplication == 'Approved' ? 'text-green-approved' : 'text-green-rejected'}>   {
-                                                                        elem.statusOfApplication === 'Approved' ? <button className={elem.finalizeSaleDone === true ? 'green1' : 'disabled1'} onClick={() => FinalFun({ id: elem.id, address: elem.contractAddressDeployed })}>Finalize</button> : <button className='disabled2' >Finalize</button>
+                                                                        elem.statusOfApplication === 'Approved' ? <button className={elem.finalizeSaleDone === true ? 'green1' : 'disabled1'} onClick={() => FinalFun({ id: elem.id, address: elem.contractAddressDeployed, projectName: elem.projectName, contractAddy:elem.contractAddress })}>Finalize</button> : <button className='disabled2' >Finalize</button>
                                                                     }<button className={elem.finalizeSaleDone === true ? 'green1' : 'disabled1'} onClick={() => CancelFun({ id: elem.id, address: elem.contractAddressDeployed })}>Cancel</button>  <Link to={"/project-details/" + id} className='disabled1 ml-2 text-white' >Detail</Link></td>
 
 
@@ -407,7 +472,7 @@ const Projects = () => {
                                             </tbody>
                                         </table>
                                         <div className="load-more-button">
-                                            <button type="button">Load More</button>
+                                            <button type="button" >Load More</button>
                                         </div>
                                     </div>
                                 </div>
