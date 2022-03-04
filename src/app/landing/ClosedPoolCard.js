@@ -12,7 +12,8 @@ const ClosedPoolCard = (props) => {
   //let progressValue=(((((props.TotalBnbPerTier/( 10**18) / props.tokenPriceInBNB))/((props.amountAllocatedForPresale)*(props.tierAllocation/100)))*100).toFixed(3));
   let progressValue=(((((props.TotalBnbPerTier/( 10**18) / props.tokenPriceInBNB))/((props.amountAllocatedForPresale)))*100).toFixed(3));
   progressValue = progressValue > 100 ? 100 : progressValue;
-
+ 
+  let cdate = (new Date(props?.liquidityUnlockTime)).toString();
   return (
 
     <div className=" card-main">
@@ -34,7 +35,7 @@ const ClosedPoolCard = (props) => {
         </div> */}
         <div className='button text-center'>
           <button>  closed </button> <br/>
-          <a> Liquidity unlockTime: {props?.liquidityUnlockTime} </a>
+          <a className='datefont'> Liquidity unlockTime:   {cdate} </a>
         </div>
       </div>
     </div>

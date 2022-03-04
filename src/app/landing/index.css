@@ -1337,7 +1337,7 @@ text-align: center;
   justify-content: unset;
 }
 .featured-pool-coming-soon .card-main .main-image button {
-  margin-left: 142px;
+  margin-left: 0px;
 }
 .featured-pool-closed .card-main .main-image{
   justify-content: unset;
@@ -1365,7 +1365,7 @@ text-align: center;
     margin-left: 67px;
 }
 .featured-pool-coming-soon .card-main .main-image button {
-  margin-left: 92px;
+  margin-left: 0px;
 }
 .featured-pool-closed .card-main .main-image button {
   /* margin-left: 91px; */
@@ -1389,7 +1389,7 @@ text-align: center;
     margin-left: 10px;
 }
 .featured-pool-coming-soon .card-main .main-image button {
-  margin-left: 36px;
+  margin-left: 0px;
 }
 .featured-pool-coming-soon h1 {
   font-size: 29px;
@@ -1466,4 +1466,9 @@ text-align: center;
   color: #ffffff;
   padding-right: 20px;
   font-size: 20px;
+}
+
+.datefont{
+  font-size: 12px;
+  
 }
