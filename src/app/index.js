@@ -29,6 +29,7 @@ import {useContarctAction,useClosingContarctAction} from "../redux/action"
 import { usePendingContarctAction } from '../redux/action';
 import ComingsoonPool from './comingsoon';
 import LockDetails from './lock-details';
+import Createtoken from './createToken/createtoken';
 
 const hist = createBrowserHistory();
 
@@ -58,9 +59,11 @@ useEagerConnect()
             <Route exact path='/lock-details/:id' component={props => <LockDetails {...props} />} />
             <Route exact path='/projects' component={props => <Projects {...props} />} />
             <Route exact path='/comingsoon/:id/:tier' component={props => <ComingsoonPool {...props} />} />
+
             {/* admin routes */}
             <Route exact path='/adminproject' component={props => <AdminProject {...props} />} />
             <Route exact path='/rclock' component={props => <RcLock {...props} />} />
+            <Route exact path='/createtoken' component={props => <Createtoken {...props} />} />
           </Switch>
         </Router>
       </div>

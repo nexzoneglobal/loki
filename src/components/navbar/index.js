@@ -66,6 +66,10 @@ const Navbar=(props)=>{
                                 
                                 <NavLink activeClassName="nav-link" className='pr-lg-3' to='/rclock'>RC Lock</NavLink>
                             </li>
+                            <li className="nav-item active">
+                                
+                                <NavLink activeClassName="nav-link" className='pr-lg-3' to='/createtoken'>Create Token</NavLink>
+                            </li>
                             </ul>
                             <div className="button-head">
                             {/* <button className="button-one" type="button" onClick={this.connectWallet}>Connect Wallet</button> */}
