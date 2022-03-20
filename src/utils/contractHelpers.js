@@ -5,6 +5,10 @@ import launchpadDeployerABI from './launchpadDeployerABI.json'
 import vaultToken from './vaultToken.json' 
 import IERC20 from './IERC20.json'
 import Factory from './uniswapfactory.json'
+import Standard from './standard.json'
+import Lptoken from './lptokenj.json'
+import BabyToken from './babytoken.json'
+import buybackToken from './buybackreward.json'
 const getContract = (abi, address, web3) => {
     const _web3 = web3 ?? web3NoAccount;
  
@@ -33,4 +37,21 @@ export const GetTokenContract = (address, web3) => {
 }
 export const getFactoryContract = (address, web3) => {
     return getContract(Factory, address, web3)
+}
+
+export const getStandardToken = (address, web3) => {
+    return getContract(Standard, address, web3)
+}
+
+
+export const getLPToken = (address, web3) => {
+    return getContract(Lptoken, address, web3)
+}
+
+export const getRewardBaby = (address, web3) => {
+    return getContract(BabyToken, address, web3)
+}
+
+export const getRewardBabybuyback = (address, web3) => {
+    return getContract(buybackToken, address, web3)
 }

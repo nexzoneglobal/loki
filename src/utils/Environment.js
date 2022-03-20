@@ -10,6 +10,23 @@ let Environment = {
   // TokenDiscount:'0xfcFF4Df724611F0E6e2590b5078E35226463C3DB',
 
   TokenDiscount: '0x229a54fb9de889c271380452c0483ce89b8c1e0d',
+
+  //Standard token
+
+  standardToken:'0xBe5740E013C296695cDeB1892e27e7da7A537F6D',
+
+
+  //Liuidity Geneartor Token
+
+  liquidityGeneratorToken: '0x7c5d4559aCA24817F597dDeC67a5Cd921F61966E',
+
+  //Reward Token
+
+  rewardToken: '0x7949B64592157E0600018c4430b57B9D2D76aB22',
+
+  //buyback reward token 
+
+  buybackrewardtoken: '0x95ce5702bB7b210213f2F34Eb7bCD1D695f61822'
 };
 
 export default Environment;

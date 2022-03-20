@@ -2,7 +2,8 @@ import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import Getweb3 from './Getweb3';
 import axios from 'axios';
-import { getBep20Contract } from '../utils/contractHelpers'
+import { getBep20Contract,getStandardToken,getLPToken,getRewardBaby,getRewardBabybuyback } from '../utils/contractHelpers'
+import Environment from '../utils/Environment';
 
 export const PoolDataFetcher = (tokenAddress,amount) => {
     const { account } = useWeb3React();
@@ -199,6 +200,92 @@ export const WhiteListedAllTiers = (tokenAddress) => {
     return {WhiteListTiers:whiteListed}
 }
 
+//standard token
+
+
+
+export const StandardToken = () => {
+    const { account } = useWeb3React();
+    const web3 = Getweb3();
+    const contract = getStandardToken(Environment.standardToken, web3)
+    console.log("hereeeeeeeeeeee",contract);
+    const DeployStandardToken= useCallback( (args1,args2,args3,args4,args5) => {
+        console.log("args",args2)
+        try {
+            const deployervault = contract.methods.deploy(args1,args2,args3,args4,args5).send({ from: account, value:  web3.utils.toWei(JSON.stringify((0.15)), 'ether')  })
+            .on('transactionHash', (tx) => { return tx.transactionHash });
+            return deployervault
+        } catch (error) {
+          console.log(error)  
+        }
+       
+    }, [ account,contract ])
+
+    return { deployStandardToken: DeployStandardToken }
+}
+// LP TOKEN
+export const LPTokens = () => {
+    const { account } = useWeb3React();
+    const web3 = Getweb3();
+    const contract = getLPToken(Environment.liquidityGeneratorToken, web3)
+    console.log("hereeeeeeeeeeee",contract);
+    const DeployLPToken= useCallback( (args1,args2,args3,args4,args5,args6,args7,args8,args9) => {
+       console.log("here",args1,args2,args3,args4,args5,args6,args7,args8,args9 )
+        try {
+            const deployerlp = contract.methods.deploy(args1,args2,args3,args4,args5,args6,args7,args8,args9).send({ from: account, value:  web3.utils.toWei(JSON.stringify((0.15)), 'ether')  })
+            .on('transactionHash', (tx) => { return tx.transactionHash });
+            return deployerlp
+        } catch (error) {
+          console.log(error)  
+        }
+       
+    }, [ account,contract ])
+
+    return { deployLPToken: DeployLPToken }
+}
+
+// Reward Token
+
+export const BabyTokens = () => {
+    const { account } = useWeb3React();
+    const web3 = Getweb3();
+    const contract = getRewardBaby(Environment.rewardToken, web3)
+    console.log("hereeeeeeeeeeee",contract);
+    const DeployBabyTokens= useCallback( (args1,args2,args3,args4,args5,args6,args7) => {
+       console.log("here",args1,args2,args3,args4,args5,args6,args7 )
+        try {
+            const deployerlp = contract.methods.deploy(args1,args2,args3,args4,args5,args6,args7).send({ from: account,gas: "8000000", value:  web3.utils.toWei(JSON.stringify((0.15)), 'ether')  })
+            .on('transactionHash', (tx) => { return tx.transactionHash });
+            return deployerlp
+        } catch (error) {
+          console.log(error)  
+        }
+       
+    }, [ account,contract ])
+
+    return { deployBabyTokens: DeployBabyTokens }
+}
+// buy back reward token
+
+export const BabybuybackTokens = () => {
+    const { account } = useWeb3React();
+    const web3 = Getweb3();
+    const contract = getRewardBabybuyback(Environment.buybackrewardtoken, web3)
+    console.log("hereeeeeeeeeeee",contract);
+    const DeployBabybuybackTokens= useCallback( (args1,args2,args3,args4,args5,args6,args7) => {
+    
+        try {
+            const deployerlp = contract.methods.deploy(args1,args2,args3,args4,args5,args6,args7).send({ from: account, gas: "8000000" ,value:  web3.utils.toWei(JSON.stringify((0.15)), 'ether')  })
+            .on('transactionHash', (tx) => { return tx.transactionHash });
+            return deployerlp
+        } catch (error) {
+          console.log(error)  
+        }
+       
+    }, [ account,contract ])
+
+    return { deployBabybuybackTokens: DeployBabybuybackTokens }
+}
 export default PoolDataFetcher;
 
 
