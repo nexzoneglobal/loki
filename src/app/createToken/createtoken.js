@@ -556,8 +556,9 @@ console.log("here ", data)
                                                                                         </td>
                                                                                         <td className="button-detailss">
                                                                                             <div className="d-flex">
+                                                                                           
                                                                                                 {/* <Link className='buttion-on' to={"/lock-details/" + id}>Detail</Link> */}
-                                                                                                <a className='buttion-on' href={`https://testnet.bscscan.com/token/${elem?.contractAddress}`
+                                                                                                <a className='buttion-on' href={`https://bscscan.com/address/${elem?.contractAddress}`
                                                                                                 } target="_blank">Detail</a>
                                                                                             </div>
 
