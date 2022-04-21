@@ -424,7 +424,7 @@ const Landing = () => {
                   <div className="col-lg-1"></div>
                   <div className="col-lg-6">
                       <div className="banner-head">
-                          A Launchpad built for the<span>ideas of tomorrow</span>
+                          A Launchpad built for <span>everyone</span>
                           <p>
                           Highly-vetted ideas and KYC Supported . Invest in projects at early stage or Launch your ideas easily.
                           </p>
