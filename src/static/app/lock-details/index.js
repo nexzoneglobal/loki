@@ -30,7 +30,7 @@ const LockDetails = (props) => {
     const getProjectDetail = async () => {
         try {
 
-            await axios.post("https://app.rcsale.app/project/editProject", { ...inputs, id, statusOfApplication: 'Approved' })
+            await axios.post("http://137.184.238.77:4750/project/editProject", { ...inputs, id, statusOfApplication: 'Approved' })
                 .then((response) => {
                     console.log("response========edit>", response)
                     // getDate(response.data.msg)
@@ -56,7 +56,7 @@ const LockDetails = (props) => {
     const getProjectRejected = async () => {
         try {
 
-            await axios.post("https://app.rcsale.app/project/editProject", { id, statusOfApplication: 'Rejected' })
+            await axios.post("http://137.184.238.77:4750/project/editProject", { id, statusOfApplication: 'Rejected' })
                 .then((response) => {
                     console.log("response========edit>", response)
                     // getDate(response.data.msg)
@@ -100,7 +100,7 @@ const LockDetails = (props) => {
 
         try {
 
-            axios.post("https://app.rcsale.app/locked/getLockedByID", { id: id })
+            axios.post("http://137.184.238.77:4750/locked/getLockedByID", { id: id })
                 .then((response) => {
 
                     setInputs(response.data.data)

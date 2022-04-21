@@ -52,7 +52,7 @@ const AdminProject = () => {
         setOpen(true)
         try {
 
-            await axios.get("https://app.rcsale.app/project/all")
+            await axios.get("http://137.184.238.77:4750/project/all")
                 .then((response) => {
 
                     if (response.data.status) {
@@ -134,7 +134,7 @@ const AdminProject = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/featured/publishFeatured", { id: publishId, publish: publishstatus })
+            await axios.post("http://137.184.238.77:4750/featured/publishFeatured", { id: publishId, publish: publishstatus })
                 .then((response) => {
                     setOpen(false)
 
@@ -155,7 +155,7 @@ const AdminProject = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/project/approveKYCStatus", { id: ApproveId, status: togglers })
+            await axios.post("http://137.184.238.77:4750/project/approveKYCStatus", { id: ApproveId, status: togglers })
                 .then((response) => {
                     setOpen(false)
                     getAlldata();
@@ -181,7 +181,7 @@ const AdminProject = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/project/approveAuditStatus", { id: ApproveIdaudit, status: togglersaudit })
+            await axios.post("http://137.184.238.77:4750/project/approveAuditStatus", { id: ApproveIdaudit, status: togglersaudit })
                 .then((response) => {
                     setOpen(false)
                     getAlldata();
@@ -278,7 +278,7 @@ const AdminProject = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/featured/addFeatured", {
+            await axios.post("http://137.184.238.77:4750/featured/addFeatured", {
                 image: logo64, name: namefeatured, symbol: symbolfeatured, published: false, url: urlfeatured
             })
                 .then((response) => {
@@ -305,7 +305,7 @@ const AdminProject = () => {
     const alltrending = async () => {
         try {
 
-            await axios.get("https://app.rcsale.app/featured/getAllFeatured")
+            await axios.get("http://137.184.238.77:4750/featured/getAllFeatured")
                 .then((response) => {
                     if (response.status) {
 
@@ -331,7 +331,7 @@ const AdminProject = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/featured/deleteFeatured", {
+            await axios.post("http://137.184.238.77:4750/featured/deleteFeatured", {
                 id: deletefeature
             })
                 .then((response) => {
@@ -358,7 +358,7 @@ const AdminProject = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/advertisement/addAdvertisement", {
+            await axios.post("http://137.184.238.77:4750/advertisement/addAdvertisement", {
                 image: logo64add, name: nameadd, url: urladd, published: false
             })
                 .then((response) => {
@@ -383,7 +383,7 @@ const AdminProject = () => {
     const alladds = async () => {
         try {
 
-            await axios.get("https://app.rcsale.app/advertisement/getAllAdvertisements")
+            await axios.get("http://137.184.238.77:4750/advertisement/getAllAdvertisements")
                 .then((response) => {
                     if (response.status) {
 
@@ -404,7 +404,7 @@ const AdminProject = () => {
         setOpen(true)
         try {
 
-            axios.post("https://app.rcsale.app/advertisement/publishAdvertisement", { id: addId, publish: addstatus })
+            axios.post("http://137.184.238.77:4750/advertisement/publishAdvertisement", { id: addId, publish: addstatus })
                 .then((response) => {
                     setOpen(false)
                     toast.success('Updated Successfully', {
@@ -430,7 +430,7 @@ const AdminProject = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/advertisement/deleteAdvertisement", {
+            await axios.post("http://137.184.238.77:4750/advertisement/deleteAdvertisement", {
                 id: addId
             })
                 .then((response) => {

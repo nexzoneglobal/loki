@@ -75,7 +75,7 @@ export const Finalize = () => {
             const contract = getBep20Contract(idr.address, web3)
             try{
                 const finalizeSale = await contract.methods.finalizeSale().send({ from: account.toString() });
-                const {data} = await axios.post('https://app.rcsale.app/project/finalizeSale', { id :idr.id });
+                const {data} = await axios.post('http://137.184.238.77:4750/project/finalizeSale', { id :idr.id });
                 if(data.status){
                     return true;
                 }
@@ -155,7 +155,7 @@ export const Cancelize = () => {
             const contract = getBep20Contract(idr.address, web3)
             try{
                 const finalizeSale = await contract.methods.cancelSale().send({ from: account.toString() });
-                const {data} = await axios.post('https://app.rcsale.app/project/finalizeSale', { id :idr.id });
+                const {data} = await axios.post('http://137.184.238.77:4750/project/finalizeSale', { id :idr.id });
                 if(data.status){
                     return true;
                 }

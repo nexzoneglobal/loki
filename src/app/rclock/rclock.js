@@ -86,7 +86,7 @@ const RcLock = () => {
 
                 let locktoken = await deployprojectonlaunchpadvault(Arguments._tokenAddress, Arguments.amountToLock, Arguments._unlockTime);
                 if (locktoken) {
-                    await axios.post("https://app.rcsale.app/locked/lock", {
+                    await axios.post("http://137.184.238.77:4750/locked/lock", {
                         tokenName: Projectname, tokenAddress: Projecttoken, tokenDecimals: Projectdecimal, account: account, unlockTime: date, amount: Projectamount, isLpToken: isLpTokens
 
                     })
@@ -129,7 +129,7 @@ const RcLock = () => {
         setOpen(true)
         try {
 
-            await axios.get("https://app.rcsale.app/locked/getAllLockedTokens")
+            await axios.get("http://137.184.238.77:4750/locked/getAllLockedTokens")
                 .then((response) => {
 
                     if (response.data.status) {
@@ -148,7 +148,7 @@ const RcLock = () => {
         setOpen(true)
         try {
 
-            await axios.get("https://app.rcsale.app/locked/getAllLockedLp")
+            await axios.get("http://137.184.238.77:4750/locked/getAllLockedLp")
                 .then((response) => {
 
                     if (response.data.status) {
@@ -168,7 +168,7 @@ const RcLock = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/locked/getLockedTokensOfAddress", { account: account })
+            await axios.post("http://137.184.238.77:4750/locked/getLockedTokensOfAddress", { account: account })
                 .then((response) => {
 
                     if (response.data.status) {
@@ -191,7 +191,7 @@ const RcLock = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/locked/getLockedLpOfAddress", { account: account })
+            await axios.post("http://137.184.238.77:4750/locked/getLockedLpOfAddress", { account: account })
                 .then((response) => {
 
                     if (response.data.status) {
@@ -214,7 +214,7 @@ const RcLock = () => {
     const searchtoken= async(e)=>{
         try {
     
-          await axios.post("https://app.rcsale.app/ocked/searchTokensByName",{search:e})
+          await axios.post("http://137.184.238.77:4750/ocked/searchTokensByName",{search:e})
             .then((response) => {
               if (response.status) {
                 console.log("response", response.data);
@@ -230,7 +230,7 @@ const RcLock = () => {
       const searchliquidity= async(e)=>{
         try {
     
-          await axios.post("https://app.rcsale.app/locked/searchLPByName",{search:e})
+          await axios.post("http://137.184.238.77:4750/locked/searchLPByName",{search:e})
             .then((response) => {
               if (response.status) {
                 console.log("response", response.data);
@@ -291,7 +291,7 @@ const RcLock = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/featured/publishFeatured", { id: publishId, publish: publishstatus })
+            await axios.post("http://137.184.238.77:4750/featured/publishFeatured", { id: publishId, publish: publishstatus })
                 .then((response) => {
                     setOpen(false)
 
@@ -312,7 +312,7 @@ const RcLock = () => {
     //     setOpen(true)
     //     try {
 
-    //         await axios.post("https://app.rcsale.app/project/approveKYCStatus", { id: ApproveId, status: togglers })
+    //         await axios.post("http://137.184.238.77:4750/project/approveKYCStatus", { id: ApproveId, status: togglers })
     //             .then((response) => {
     //                 setOpen(false)
     //                 getAlldata();
@@ -407,7 +407,7 @@ const RcLock = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/featured/addFeatured", {
+            await axios.post("http://137.184.238.77:4750/featured/addFeatured", {
                 image: logo64, name: namefeatured, symbol: symbolfeatured, published: false, url: urlfeatured
             })
                 .then((response) => {
@@ -434,7 +434,7 @@ const RcLock = () => {
     const alltrending = async () => {
         try {
 
-            await axios.get("https://app.rcsale.app/featured/getAllFeatured")
+            await axios.get("http://137.184.238.77:4750/featured/getAllFeatured")
                 .then((response) => {
                     if (response.status) {
 
@@ -460,7 +460,7 @@ const RcLock = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/featured/deleteFeatured", {
+            await axios.post("http://137.184.238.77:4750/featured/deleteFeatured", {
                 id: deletefeature
             })
                 .then((response) => {
@@ -487,7 +487,7 @@ const RcLock = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/advertisement/addAdvertisement", {
+            await axios.post("http://137.184.238.77:4750/advertisement/addAdvertisement", {
                 image: logo64add, name: nameadd, url: urladd, published: false
             })
                 .then((response) => {
@@ -512,7 +512,7 @@ const RcLock = () => {
     const alladds = async () => {
         try {
 
-            await axios.get("https://app.rcsale.app/advertisement/getAllAdvertisements")
+            await axios.get("http://137.184.238.77:4750/advertisement/getAllAdvertisements")
                 .then((response) => {
                     if (response.status) {
 
@@ -533,7 +533,7 @@ const RcLock = () => {
         setOpen(true)
         try {
 
-            axios.post("https://app.rcsale.app/advertisement/publishAdvertisement", { id: addId, publish: addstatus })
+            axios.post("http://137.184.238.77:4750/advertisement/publishAdvertisement", { id: addId, publish: addstatus })
                 .then((response) => {
                     setOpen(false)
                     toast.success('Updated Successfully', {
@@ -559,7 +559,7 @@ const RcLock = () => {
         setOpen(true)
         try {
 
-            await axios.post("https://app.rcsale.app/advertisement/deleteAdvertisement", {
+            await axios.post("http://137.184.238.77:4750/advertisement/deleteAdvertisement", {
                 id: addId
             })
                 .then((response) => {

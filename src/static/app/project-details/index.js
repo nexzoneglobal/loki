@@ -51,7 +51,7 @@ const SubmitProject = (props) => {
         const getProjectDetail=async()=>{
             try {
         
-                  await axios.post("https://app.rcsale.app/project/editProject",{...inputs,id,statusOfApplication:'Approved'})
+                  await axios.post("http://137.184.238.77:4750/project/editProject",{...inputs,id,statusOfApplication:'Approved'})
                     .then((response) => {
                         console.log("response========edit>",response)
                         // getDate(response.data.msg)
@@ -77,7 +77,7 @@ const SubmitProject = (props) => {
         const getProjectRejected=async()=>{
             try {
         
-                  await axios.post("https://app.rcsale.app/project/editProject",{id,statusOfApplication:'Rejected'})
+                  await axios.post("http://137.184.238.77:4750/project/editProject",{id,statusOfApplication:'Rejected'})
                     .then((response) => {
                         console.log("response========edit>",response)
                         // getDate(response.data.msg)
@@ -268,7 +268,7 @@ const SubmitProject = (props) => {
      
         try {
     
-               axios.get("https://app.rcsale.app/project/"+id)
+               axios.get("http://137.184.238.77:4750/project/"+id)
                 .then((response) => {
                     console.log("response========>",response)
                     setInputs(response.data.msg)

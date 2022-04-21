@@ -20,7 +20,7 @@ const Landing = () => {
   const toptrending = async () => {
     try {
 
-      await axios.get("https://app.rcsale.app/featured/getAllFeaturedPublished")
+      await axios.get("http://137.184.238.77:4750/featured/getAllFeaturedPublished")
         .then((response) => {
           // if (response.status) {
 
@@ -39,7 +39,7 @@ const Landing = () => {
   const adds = async () => {
     try {
 
-      await axios.get("https://app.rcsale.app/advertisement/getAllAdvertisementPublished")
+      await axios.get("http://137.184.238.77:4750/advertisement/getAllAdvertisementPublished")
         .then((response) => {
           if (response.status) {
 
@@ -181,7 +181,7 @@ const Landing = () => {
   const searchclose = async (e) => {
     try {
 
-      await axios.post("https://app.rcsale.app/project/searchFinished", { search: e })
+      await axios.post("http://137.184.238.77:4750/project/searchFinished", { search: e })
         .then((response) => {
           if (response.status) {
           
@@ -197,7 +197,7 @@ const Landing = () => {
   const searchOpen = async (e) => {
     try {
 
-      await axios.post("https://app.rcsale.app/project/searchFinished", { search: e })
+      await axios.post("http://137.184.238.77:4750/project/searchFinished", { search: e })
         .then((response) => {
           if (response.status) {
             console.log("response", response.data);
@@ -213,7 +213,7 @@ const Landing = () => {
   const searchComing = async (e) => {
     try {
 
-      await axios.post("https://app.rcsale.app/project/searchFinished", { search: e })
+      await axios.post("http://137.184.238.77:4750/project/searchFinished", { search: e })
         .then((response) => {
           if (response.status) {
             console.log("response", response.data);
@@ -424,9 +424,9 @@ const Landing = () => {
                   <div className="col-lg-1"></div>
                   <div className="col-lg-6">
                       <div className="banner-head">
-                          Get early access to the <span>ideas of tomorrow</span>
+                          A Launchpad built for the<span>ideas of tomorrow</span>
                           <p>
-                          Highly-vetted ideas and teams you can trust. Supported by industry-leading creators and funds.
+                          Highly-vetted ideas and KYC Supported . Invest in projects at early stage or Launch your ideas easily.
                           </p>
 
                         <a href="/submit-project" className="hero-button" type="button" >Create Launchpad</a>

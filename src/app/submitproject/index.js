@@ -311,7 +311,7 @@ const SubmitProject = () => {
                     let contractAddressDeployed = deployer.events.OwnershipTransferred[0].address;
 
 
-                    await axios.post('https://app.rcsale.app/project/createProject', {
+                    await axios.post('http://137.184.238.77:4750/project/createProject', {
                         projectName: projectName, symbol: projectSymbol, liquidityUnlockTime: unlockliquidity, auditLink: auditlink,
                         projectDescription: projectDescription, logoURL: logo64, contractAddress: contractAddress, websiteLink: websiteLink,
                         twitterLink: twitterLink, telegramlink: telegramLink, discrodLink: discardLink, mediumLink: mediumLink,

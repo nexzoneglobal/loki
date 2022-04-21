@@ -87,7 +87,7 @@ const Createtoken = () => {
                 var contractofAddress = approve.events[0].address;
                 console.log("approve", contractofAddress)
                 let argus2 = [Arguments.name_, Arguments.symbol_, Arguments.decimals_, Arguments.totalSupply_.toString(), Arguments.owner]
-                await axios.post("https://app.rcsale.app/token/token/verifyStandardToken", {
+                await axios.post("http://137.184.238.77:4750/token/token/verifyStandardToken", {
                     contractAddress: contractofAddress, arguments: argus2
 
                 })
@@ -123,7 +123,7 @@ const Createtoken = () => {
                 var contractofAddress = deployLPTokens.events[1].address;
 
                 var lpg2 = [lpg.name_, lpg.symbol_, lpg.totalSupply_.toNumber().toString(), lpg.router_, lpg.charityAddress_, lpg.taxFeeBps_, lpg.liquidityFeeBps_, lpg.charityFeeBps_, lpg._owner]
-                await axios.post("https://app.rcsale.app/token/verifyLiquidityGeneratorToken", {
+                await axios.post("http://137.184.238.77:4750/token/verifyLiquidityGeneratorToken", {
                     contractAddress: contractofAddress, arguments: lpg2
 
 
@@ -168,7 +168,7 @@ const Createtoken = () => {
                 console.log('here2', deployBaby)
                 var contractofAddress = deployBaby.events[2].address;
                 var RT2 = [RT.name_, RT.symbol_, RT.totalSupply_.toString(), RT.addrs, RT.feeSettings, RT.minimumTokenBalanceForDividends_, RT._owner]
-                await axios.post("https://app.rcsale.app/token/verifyBabyToken", {
+                await axios.post("http://137.184.238.77:4750/token/verifyBabyToken", {
                     contractAddress: contractofAddress, arguments: RT2, libraryAddress: '0xa39901BC0178D172B1bbEA1011dB51fc95519546'
                 })
                     .then((response) => {
@@ -206,7 +206,7 @@ const Createtoken = () => {
                 console.log("here", buybackdeploy);
                 var contractofAddress = buybackdeploy.events[1].address;
                 var bbrt2 = [bbrt.name_, bbrt.symbol_, bbrt.totalSupply_.toString(), bbrt.rewardToken_, bbrt.router_, bbrt.feeSettings_, bbrt._owner]
-                await axios.post("https://app.rcsale.app/token/verifyBuyBackBabyToken", {
+                await axios.post("http://137.184.238.77:4750/token/verifyBuyBackBabyToken", {
                     contractAddress: contractofAddress, arguments: bbrt2
                 })
                     .then((response) => {
@@ -224,7 +224,7 @@ const Createtoken = () => {
             }
             setOpen(false)
 
-            await axios.post("https://app.rcsale.app/token/addToken", {
+            await axios.post("http://137.184.238.77:4750/token/addToken", {
                 name: Projectname, symbol: Projecttokensymbol, decimals: Projectdecimal, totalSupply: Projectamount, contractAddress: contractofAddress, tokenOwner: account, tokenType: isLpTokens
 
             })
@@ -251,7 +251,7 @@ const Createtoken = () => {
 
     const userToken= async ()=>{
 
-        await axios.post("https://app.rcsale.app/token/getTokensOfUser", {
+        await axios.post("http://137.184.238.77:4750/token/getTokensOfUser", {
            account:account
 
         })

@@ -29,7 +29,7 @@ const Projects = () => {
     const getAlldata = async () => {
         try {
 
-            await axios.post("https://app.rcsale.app/project/getAllProjectsOfUser", { account: account })
+            await axios.post("http://137.184.238.77:4750/project/getAllProjectsOfUser", { account: account })
                 .then((response) => {
 
                     if (response.data.status) {
@@ -63,7 +63,7 @@ const Projects = () => {
                 // const totalTokens = new BigNumber(Projectamount).multipliedBy(new BigNumber(10).pow(Projectdecimal));
                 // const epochTime = new Date(date).getTime() / 1000.0;
                 if (lockdetails) {
-                    axios.post("https://app.rcsale.app/locked/lock", {
+                    axios.post("http://137.184.238.77:4750/locked/lock", {
                         tokenName: currentAddress.projectName, tokenAddress: lockdetails.tokenAddress, tokenDecimals: 18, account: account, unlockTime: new Date(lockdetails.unlockTime * 1000), amount: (lockdetails.amountLocked  / (10 ** 18) ), isLpToken: true
 
                     })
@@ -89,7 +89,7 @@ const Projects = () => {
         //end
 
 
-        await axios.post("https://app.rcsale.app/project/finalizeSale", { id: currentAddress.id })
+        await axios.post("http://137.184.238.77:4750/project/finalizeSale", { id: currentAddress.id })
             .then((response) => {
 
                 if (response) {
@@ -121,7 +121,7 @@ const Projects = () => {
         if (data) {
             try {
 
-                await axios.post("https://app.rcsale.app/project/finalizeSale", { id: currentAddress.id })
+                await axios.post("http://137.184.238.77:4750/project/finalizeSale", { id: currentAddress.id })
                     .then((response) => {
                         //   setOpen(false)
                         //  getAlldata();
@@ -207,7 +207,7 @@ const Projects = () => {
         if (approveWhitelist) {
             try {
 
-                await axios.post("https://app.rcsale.app/project/approveWhitelistStatus", { id: ApproveIdaudit, status: togglersaudit })
+                await axios.post("http://137.184.238.77:4750/project/approveWhitelistStatus", { id: ApproveIdaudit, status: togglersaudit })
                     .then((response) => {
                         setOpen(false)
                         getAlldata();
@@ -241,7 +241,7 @@ const Projects = () => {
     //             // const totalTokens = new BigNumber(Projectamount).multipliedBy(new BigNumber(10).pow(Projectdecimal));
     //             // const epochTime = new Date(date).getTime() / 1000.0;
     //                 if (lockdetails) {
-    //                     await axios.post("https://app.rcsale.app/locked/lock", {
+    //                     await axios.post("http://137.184.238.77:4750/locked/lock", {
     //                         tokenName: "Cake-LP", tokenAddress: lockdetails.tokenAddress, tokenDecimals: 18, account: account, unlockTime: new Date(lockdetails.unlockTime  * 1000), amount: (lockdetails.amountLocked / (10 ** 18)), isLpToken: true
 
     //                     })
